@@ -444,7 +444,7 @@ public sealed class ToolItem : ModItem, IElectricItem
 		var iconLayers = new IconLayer[_layers.Length];
 		for (int i = 0; i < _layers.Length; i++)
 			iconLayers[i] = new IconLayer(_layers[i].TexturePath, _layers[i].Tint);
-		ItemIconBaker.Install(Item.type, iconLayers);
+		ItemIconBaker.Install(Item.type, mirrorDiagonal: !IsMortar, iconLayers);
 	}
 
 	public override void PostDrawInInventory(SpriteBatch sb, Vector2 position, Rectangle frame,

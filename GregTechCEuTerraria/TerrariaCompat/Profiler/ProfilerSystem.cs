@@ -16,6 +16,7 @@ public sealed class ProfilerSystem : ModSystem
 {
 	private static int  _lastGc0, _lastGc1, _lastGc2;
 	private static long _lastAllocBytes;
+	private static long _lastThreadAllocBytes;
 	private static bool _gcBaselineSet;
 
 	// Real wall-clock timing
@@ -23,11 +24,17 @@ public sealed class ProfilerSystem : ModSystem
 	private static double _frameMsSum, _frameMsMax, _updatePhaseMsSum;
 	private static int    _frameCount;
 
+	private static long _updateStartBytes, _postUpdateBytes;
+
 	// Stamped at the start of the update loop
 	public override void PreUpdateEntities()
 	{
-		if (Profiler.Enabled)
-			_updateStartTs = System.Diagnostics.Stopwatch.GetTimestamp();
+		if (!Profiler.Enabled) return;
+		_updateStartTs = System.Diagnostics.Stopwatch.GetTimestamp();
+		long now = GC.GetAllocatedBytesForCurrentThread();
+		if (_postUpdateBytes != 0)
+			Profiler.AccumulateAlloc("tick", "frame_draw_phase", now - _postUpdateBytes);
+		_updateStartBytes = now;
 	}
 
 	public override void OnWorldLoad()
@@ -35,6 +42,7 @@ public sealed class ProfilerSystem : ModSystem
 		Profiler.Reset();
 		_gcBaselineSet = false;
 		_lastFrameTs = _lastSampleTs = _updateStartTs = 0;
+		_updateStartBytes = _postUpdateBytes = 0;
 		_frameMsSum = _frameMsMax = _updatePhaseMsSum = 0;
 		_frameCount = 0;
 		Profiler.Gauge("engine", "fps", (long)Main.frameRate);
@@ -45,6 +53,10 @@ public sealed class ProfilerSystem : ModSystem
 	public override void PostUpdateEverything()
 	{
 		if (!Profiler.Enabled) return;
+		long nowBytesPhase = GC.GetAllocatedBytesForCurrentThread();
+		if (_updateStartBytes != 0)
+			Profiler.AccumulateAlloc("tick", "frame_update_phase", nowBytesPhase - _updateStartBytes);
+		_postUpdateBytes = nowBytesPhase;
 		long nowTs = System.Diagnostics.Stopwatch.GetTimestamp();
 		double tickFreq = System.Diagnostics.Stopwatch.Frequency;
 		if (_lastFrameTs != 0)
@@ -94,6 +106,7 @@ public sealed class ProfilerSystem : ModSystem
 
 		int gc0 = GC.CollectionCount(0), gc1 = GC.CollectionCount(1), gc2 = GC.CollectionCount(2);
 		long allocBytes = GC.GetTotalAllocatedBytes(precise: false);
+		long threadAllocBytes = GC.GetAllocatedBytesForCurrentThread();
 		Profiler.Gauge("engine", "gc_gen0_total", gc0);
 		Profiler.Gauge("engine", "gc_gen1_total", gc1);
 		Profiler.Gauge("engine", "gc_gen2_total", gc2);
@@ -110,8 +123,11 @@ public sealed class ProfilerSystem : ModSystem
 			Profiler.Gauge("engine", "gc_gen1_per_sec", (long)(gc1Delta / sec));
 			Profiler.Gauge("engine", "gc_gen2_per_sec", (long)(gc2Delta / sec));
 			Profiler.Gauge("engine", "alloc_mb_per_sec", (long)(allocDelta / sec / (1024.0 * 1024.0)));
+			Profiler.Gauge("engine", "thread_alloc_mb_per_sec",
+				(long)((threadAllocBytes - _lastThreadAllocBytes) / sec / (1024.0 * 1024.0)));
 		}
 		_lastGc0 = gc0; _lastGc1 = gc1; _lastGc2 = gc2; _lastAllocBytes = allocBytes;
+		_lastThreadAllocBytes = threadAllocBytes;
 		_gcBaselineSet = true;
 
 		double frameBudgetTotalMsPerSec = 0;

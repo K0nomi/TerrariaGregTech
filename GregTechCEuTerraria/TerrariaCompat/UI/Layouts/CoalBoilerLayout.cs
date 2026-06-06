@@ -21,12 +21,12 @@ public static class CoalBoilerLayout
 		{
 			// Steam tank (left) - output, R-click empty bucket to drain
 			new LabelWidgetSpec(X: 6,  Y: 18, Text: "Steam",  Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 6,  Y: 28, Width: 14, Height: 54, Direction: IO.OUT, TankIndex: 0),
+			new FluidSlotWidgetSpec(X: 6,  Y: 28, Width: 14, Height: 54, Direction: IO.OUT, TankIndex: 0, FillBar: true),
 
 			// Water tank - input, R-click water bucket to fill. (Drain blocked
 			// by SteamBoilerMachine.GetTankClickCaps - upstream parity.)
 			new LabelWidgetSpec(X: 24, Y: 18, Text: "Water", Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 24, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 0),
+			new FluidSlotWidgetSpec(X: 24, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 0, FillBar: true),
 
 			// Temperature bar - vertical fill, cold->hot colour ramp. Mirrors
 			// upstream's ProgressWidget(getTemperaturePercent, 10x54, DOWN_TO_UP).

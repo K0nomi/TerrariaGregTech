@@ -7,21 +7,22 @@ using GregTechCEuTerraria.TerrariaCompat.Tiles.Machines;
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Layouts;
 
 // Shared GUI for the recipe-driven generators (steam turbine, gas turbine,
-// combustion) - input fuel tank -> progress arrow -> EU buffer bar. An output
-// fluid tank is shown only when the definition declares one: the steam turbine
-// emits distilled water, but the gas / combustion turbines have no fluid output
-// (OutputFluidTankCount == 0), so binding an IO.OUT slot to tank 0 there would
-// reference a nonexistent tank.
+// combustion) - input fuel tank -> progress arrow -> EU buffer bar
 public static class SteamTurbineLayout
 {
 	public static MachineUILayout Build(SimpleGeneratorMachine m)
 	{
 		bool hasOutput = (m.Definition?.OutputFluidTankCount ?? 0) > 0;
 
+		bool fluidVoided = hasOutput
+			&& m.GetOutputLimits() is { } lim
+			&& lim.TryGetValue(FluidRecipeCapability.CAP, out var fn)
+			&& fn >= 0 && fn < (m.Definition?.OutputFluidTankCount ?? 0);
+
 		var layout = new MachineUILayout
 		{
-			Width  = 180,
-			Height = 116,
+			Width  = fluidVoided ? 200 : 180,
+			Height = fluidVoided ? 134 : 116,
 			Title  = m.DisplayName,
 
 			Widgets =
@@ -44,6 +45,14 @@ public static class SteamTurbineLayout
 		{
 			layout.Widgets.Add(new LabelWidgetSpec(X: 84, Y: 26, Text: "Fluid Out", Scale: 0.65f));
 			layout.Widgets.Add(new FluidSlotWidgetSpec(X: 84, Y: 40, Width: 22, Height: 22, Direction: IO.OUT, TankIndex: 0));
+		}
+
+		if (fluidVoided)
+		{
+			layout.Widgets.Add(new LabelWidgetSpec(X: 12, Y: 106,
+				Text: "Byproducts lost - build a Large Steam", Scale: 0.6f, Color: OutputLimitWarning.Color));
+			layout.Widgets.Add(new LabelWidgetSpec(X: 12, Y: 118,
+				Text: "Turbine to recover distilled water", Scale: 0.6f, Color: OutputLimitWarning.Color));
 		}
 
 		return layout;

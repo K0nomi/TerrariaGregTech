@@ -4,9 +4,7 @@ using GregTechCEuTerraria.TerrariaCompat.Machine.Steam;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Layouts;
 
-// Solar Boiler GUI - port of SteamSolarBoiler's createUI. The same
-// water / steam / temperature columns as the coal boiler, but no fuel/ash
-// slots and no progress arrow (no fuel recipe) - a sunlit indicator instead.
+// Solar Boiler GUI - port of SteamSolarBoiler's createUI
 public static class SolarBoilerLayout
 {
 	public static MachineUILayout Build(SteamSolarBoiler boiler) => new()
@@ -19,12 +17,12 @@ public static class SolarBoilerLayout
 		{
 			// Steam tank (output) - R-click empty bucket to drain.
 			new LabelWidgetSpec(X: 6, Y: 18, Text: "Steam", Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 6, Y: 28, Width: 14, Height: 54, Direction: IO.OUT, TankIndex: 0),
+			new FluidSlotWidgetSpec(X: 6, Y: 28, Width: 14, Height: 54, Direction: IO.OUT, TankIndex: 0, FillBar: true),
 
 			// Water tank (input) - R-click water bucket to fill. (Drain blocked
 			// by SteamBoilerMachine.GetTankClickCaps - upstream parity.)
 			new LabelWidgetSpec(X: 24, Y: 18, Text: "Water", Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 24, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 0),
+			new FluidSlotWidgetSpec(X: 24, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 0, FillBar: true),
 
 			// Temperature bar - cold->hot vertical fill.
 			new LabelWidgetSpec(X: 42, Y: 18, Text: "Temp", Scale: 0.7f),

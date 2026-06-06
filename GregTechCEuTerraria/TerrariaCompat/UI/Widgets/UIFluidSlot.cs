@@ -21,14 +21,17 @@ public sealed class UIFluidSlot : UIElement
 	private readonly int _tankIndex;
 	private readonly bool _allowFill;
 	private readonly bool _allowDrain;
+	private readonly bool _fillBar;
 	private bool _rightDown;
 
-	public UIFluidSlot(MetaMachine entity, IO direction, int localTankIndex, int width, int height)
+	public UIFluidSlot(MetaMachine entity, IO direction, int localTankIndex, int width, int height,
+		bool fillBar = false)
 	{
 		_entity = entity;
 		_handler = (IFluidHandler)entity;
 		_tankIndex = entity.ResolveFluidTank(direction, localTankIndex);
 		(_allowFill, _allowDrain) = _handler.GetTankClickCaps(_tankIndex);
+		_fillBar = fillBar;
 		Width = StyleDimension.FromPixels(width);
 		Height = StyleDimension.FromPixels(height);
 	}
@@ -39,7 +42,9 @@ public sealed class UIFluidSlot : UIElement
 		var stored = _handler.GetTank(_tankIndex);
 		int capacity = _handler.GetCapacity(_tankIndex);
 
-		if (stored.IsEmpty)
+		if (_fillBar)
+			DrawFillBar(spriteBatch, bounds, stored, capacity);
+		else if (stored.IsEmpty)
 			spriteBatch.Draw(TextureAssets.MagicPixel.Value, bounds, new Color(25, 30, 50) * 0.9f);
 		else
 			BrowserFluidSlot.Draw(spriteBatch, bounds, stored.Type, stored.Amount,
@@ -68,6 +73,21 @@ public sealed class UIFluidSlot : UIElement
 			HandleClicks();
 		}
 		_rightDown = Main.mouseRight;
+	}
+
+	private static void DrawFillBar(SpriteBatch sb, Rectangle bounds, FluidStack stored, int capacity)
+	{
+		var tex = TextureAssets.MagicPixel.Value;
+		sb.Draw(tex, bounds, new Color(25, 30, 50) * 0.9f);
+
+		if (stored.IsEmpty || capacity <= 0) return;
+		float fill = System.Math.Clamp((float)stored.Amount / capacity, 0f, 1f);
+		int fillH = (int)(bounds.Height * fill);
+		if (fillH <= 0) return;
+
+		var fillRect = new Rectangle(bounds.X, bounds.Y + bounds.Height - fillH, bounds.Width, fillH);
+		if (!FluidIconRenderer.Draw(sb, stored.Type!, fillRect))
+			sb.Draw(tex, fillRect, FluidIconRenderer.RgbColor(stored.Type!.Color));
 	}
 
 	private void HandleClicks()

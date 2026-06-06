@@ -170,7 +170,7 @@ public sealed class ProfilerUIState : UIState
 		{
 			var members = groups[cat];
 			members.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
-			_list.Add(new CategoryHeader(cat, members));
+			_list.Add(new CategoryHeader(cat, members, this));
 			foreach (var c in members)
 			{
 				var row = new RowWidget(c, this);
@@ -182,22 +182,32 @@ public sealed class ProfilerUIState : UIState
 
 	internal void Select(ProfilerCounter c) => _selected = c;
 
+	internal bool IsRowVisible(UIElement el)
+	{
+		var lr = _list.GetDimensions().ToRectangle();
+		var r  = el.GetDimensions().ToRectangle();
+		return r.Bottom >= lr.Top && r.Top <= lr.Bottom;
+	}
+
 	// Visual divider + section title + aggregate sum (bytes/count categories
 	// only). Non-interactive; clicks fall through.
 	private sealed class CategoryHeader : UIElement
 	{
 		private readonly string _category;
 		private readonly List<ProfilerCounter> _members;
-		public CategoryHeader(string category, List<ProfilerCounter> members)
+		private readonly ProfilerUIState _owner;
+		public CategoryHeader(string category, List<ProfilerCounter> members, ProfilerUIState owner)
 		{
 			_category = category;
 			_members  = members;
+			_owner    = owner;
 			Width  = StyleDimension.FromPercent(1f);
 			Height = StyleDimension.FromPixels(22);
 			IgnoresMouseInteraction = true;
 		}
 		protected override void DrawSelf(SpriteBatch sb)
 		{
+			if (!_owner.IsRowVisible(this)) return;
 			var rect = GetDimensions().ToRectangle();
 			var px   = TextureAssets.MagicPixel.Value;
 			sb.Draw(px, rect, new Color(40, 48, 70, 200));
@@ -255,6 +265,7 @@ public sealed class ProfilerUIState : UIState
 		}
 		protected override void DrawSelf(SpriteBatch sb)
 		{
+			if (!_owner.IsRowVisible(this)) return;
 			var rect = GetDimensions().ToRectangle();
 			var px   = TextureAssets.MagicPixel.Value;
 			bool hover    = ContainsPoint(Main.MouseScreen);

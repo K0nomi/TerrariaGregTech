@@ -6,9 +6,7 @@ using GregTechCEuTerraria.TerrariaCompat.Machine.Steam;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Layouts;
 
-// Steam Miner GUI - steam tank | status readout | 2x2 output cache.
-// Mirrors MinerLayout, but the left fixture is a fluid widget over the
-// steam tank instead of an EnergyBar (steam machines have no EU).
+// Steam Miner GUI - steam tank | status readout | 2x2 output cache
 public static class SteamMinerLayout
 {
 	public static MachineUILayout Build(SteamMinerMachine miner)
@@ -43,7 +41,7 @@ public static class SteamMinerLayout
 		int leftX = Padding;
 		layout.Widgets.Add(new FluidSlotWidgetSpec(
 			X: leftX, Y: contentTop, Width: TankW, Height: cacheH,
-			Direction: IO.OUT, TankIndex: 0));
+			Direction: IO.OUT, TankIndex: 0, FillBar: true));
 
 		// Status readout.
 		int statusX = leftX + TankW + 8;

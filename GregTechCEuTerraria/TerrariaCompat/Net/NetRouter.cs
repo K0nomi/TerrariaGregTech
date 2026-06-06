@@ -6,8 +6,7 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Net;
 
-// Central packet dispatcher. Adding a new packet = bump PacketType enum +
-// add a case here + ship its Send/Handle methods on a packet class.
+// Central packet dispatcher
 public static class NetRouter
 {
 	private static Mod? _mod;
@@ -15,18 +14,17 @@ public static class NetRouter
 
 	public static void Handle(BinaryReader reader, int whoAmI)
 	{
-		// reader.BaseStream.Length is the 131070-byte tML receive buffer, NOT
-		// the message size. Real size = Position delta across the handler.
 		long entryPos = reader.BaseStream.Position;
 		var type = (PacketType)reader.ReadByte();
-		string typeName = type.ToString();
-		Profiler.Profiler.Count("net.in.count", typeName);
-		// Time the dispatch so client-side packet-handler cost folds into
-		// aggregate.frame_budget_ms_s. Before this, only ProfilerSync's
-		// handler was timed; the 2026-05-31 FPS=1 spike (8940 MachineStateSync
-		// packets in 1s) only registered 211 ms of timed work even though
-		// the frame took ~1000 ms - the missing ~800 ms was here.
-		long handleT0 = Stopwatch.GetTimestamp();
+		bool prof = Profiler.Profiler.Enabled;
+		string typeName = "";
+		long handleT0 = 0;
+		if (prof)
+		{
+			typeName = type.ToString();
+			Profiler.Profiler.Count("net.in.count", typeName);
+			handleT0 = Stopwatch.GetTimestamp();
+		}
 		switch (type)
 		{
 			case PacketType.MachineViewBegin: MachineViewPacket.HandleBegin(reader, whoAmI); break;
@@ -85,16 +83,15 @@ public static class NetRouter
 				NetHelpers.LogBadPacket("dispatch", $"unknown PacketType={(byte)type} from whoAmI={whoAmI}");
 				break;
 		}
-		Profiler.Profiler.AccumulateTimer("net.handle", typeName, Stopwatch.GetTimestamp() - handleT0);
-		Profiler.Profiler.Count("net.in.bytes", typeName, reader.BaseStream.Position - entryPos);
+		if (prof)
+		{
+			Profiler.Profiler.AccumulateTimer("net.handle", typeName, Stopwatch.GetTimestamp() - handleT0);
+			Profiler.Profiler.Count("net.in.bytes", typeName, reader.BaseStream.Position - entryPos);
+		}
 	}
 
-	// Allocate a packet pre-stamped with its type byte. Routes the type
-	// ordinal through one file.
 	public static ModPacket NewPacket(PacketType type)
 	{
-		// Count-only: ModPacket is sealed, no after-Send hook for byte size.
-		// `net.in.bytes.<type>` on the receiving side covers size.
 		Profiler.Profiler.Count("net.out.count", type.ToString());
 		var p = Mod.GetPacket();
 		p.Write((byte)type);

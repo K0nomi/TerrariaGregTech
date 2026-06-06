@@ -157,7 +157,6 @@ public sealed class CrateMachine : MetaMachine, IItemHandler
 		int used = 0;
 		foreach (var s in Inventory.Storage.Stacks) if (!s.IsAir) used++;
 		lines.Add($"Storage: {used} / {InventorySize} slots used");
-		lines.Add(_isTaped ? "Taped - keeps contents when broken"
-		                   : "Right-click with duct / basic tape to seal it");
+		lines.Add("Tape sealing is disabled - contents scatter when broken");
 	}
 }

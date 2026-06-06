@@ -5,9 +5,7 @@ using GregTechCEuTerraria.TerrariaCompat.Machine.Steam;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Layouts;
 
-// Liquid Boiler GUI - port of SteamLiquidBoilerMachine's createUI: the coal
-// boiler's water / steam / temperature columns, plus a liquid-fuel tank (no
-// item fuel/ash slots - the fuel is a fluid).
+// Liquid Boiler GUI - port of SteamLiquidBoilerMachine's createUI
 public static class LiquidBoilerLayout
 {
 	public static MachineUILayout Build(SteamLiquidBoilerMachine boiler) => new()
@@ -20,12 +18,12 @@ public static class LiquidBoilerLayout
 		{
 			// Steam tank (output) - R-click empty bucket to drain.
 			new LabelWidgetSpec(X: 6, Y: 18, Text: "Steam", Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 6, Y: 28, Width: 14, Height: 54, Direction: IO.OUT, TankIndex: 0),
+			new FluidSlotWidgetSpec(X: 6, Y: 28, Width: 14, Height: 54, Direction: IO.OUT, TankIndex: 0, FillBar: true),
 
 			// Water tank (input) - R-click water bucket to fill. (Drain blocked
 			// by SteamBoilerMachine.GetTankClickCaps - upstream parity.)
 			new LabelWidgetSpec(X: 24, Y: 18, Text: "Water", Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 24, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 0),
+			new FluidSlotWidgetSpec(X: 24, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 0, FillBar: true),
 
 			// Temperature bar - cold->hot vertical fill.
 			new LabelWidgetSpec(X: 42, Y: 18, Text: "Temp", Scale: 0.7f),
@@ -34,7 +32,7 @@ public static class LiquidBoilerLayout
 			// Liquid-fuel tank (input) - R-click a fuel bucket/cell to fill
 			// (creosote / lava). TankIndex 1 = the 2nd input fluid tank.
 			new LabelWidgetSpec(X: 60, Y: 18, Text: "Fuel", Scale: 0.7f),
-			new FluidSlotWidgetSpec(X: 60, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 1),
+			new FluidSlotWidgetSpec(X: 60, Y: 28, Width: 14, Height: 54, Direction: IO.IN, TankIndex: 1, FillBar: true),
 
 			// Live status.
 			new DynamicLabelWidgetSpec(X: 88, Y: 28,

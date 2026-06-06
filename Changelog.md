@@ -6,6 +6,7 @@
 - Added clay recipe from sand and water (thanks PotatoSagall)
 - Added terraprisma gt recipe (thanks abxx5)
 - Added so you can use gregtech rounds in guns (thanks PotatoSagall)
+- Added vanilla gems compat conversions (thanks hamood, thanks pruberu for implementation)
 - Changed EBF-chan to spawn on world creation, updated visuals (thanks QiuQiu)
 - Changed pipes logic so they can interact from behind of the machines (thanks Dedust, ADtsd)
 - Changed recipe browser search logic to ignore crafting tools when those aren't relevant
@@ -21,10 +22,13 @@
 - Fixed crafting station icons in recipe browser for hand recipes (thanks Char, PotatoSagall)
 - Fixed axe power (thanks MrKo_no)
 - Fixed steam multiblocks casings (thanks TrRzeczy)
-- Fixed multiplay multiblock recipe display sync output amounts (thanks TrRzeczy)
+- Fixed multiplayer multiblock recipe display sync output amounts (thanks TrRzeczy)
 - Fixed pre-hv macerator byproduct (thanks TrRzeczy)
 - Fixed right click to open machine UI when holding item (thanks TrRzeczy)
 - Fixed slow Magic Storage loading time (thanks Flungus)
+- Fixed multiblock preview render overhead
+- Fixed tools render rotation (thanks pruberu)
+- Disabled crate+tape interaction until its fixed (thanks hamood)
 
 Existing worlds should be fine to update
 

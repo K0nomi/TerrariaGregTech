@@ -54,7 +54,7 @@ public static class SteamMachineLayout
 
 		// Steam tank - the steam machine's "power gauge" (IO.IN, single tank)
 		layout.Widgets.Add(new FluidSlotWidgetSpec(X: leftPad + steamX, Y: 40,
-			Width: steamW, Height: steamH, Direction: IO.IN, TankIndex: 0));
+			Width: steamW, Height: steamH, Direction: IO.IN, TankIndex: 0, FillBar: true));
 
 		// Footer status line
 		layout.Widgets.Add(new DynamicLabelWidgetSpec(X: leftPad, Y: footerY,

@@ -372,7 +372,8 @@ public abstract class MultiblockControllerMachine : MetaMachine
 
 	public virtual bool AllowCircuitSlots() => true;
 
-	public virtual IBlockPattern? GetPattern() => Definition?.PatternFactory?.Invoke();
+	private IBlockPattern? _cachedPattern;
+	public virtual IBlockPattern? GetPattern() => _cachedPattern ??= Definition?.PatternFactory?.Invoke();
 
 	// Unsafe to call directly - matcher mutates state. Use Check*WithLock.
 	public virtual bool CheckPattern()

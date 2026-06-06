@@ -109,19 +109,27 @@ public sealed class EnergyNetSystem : ModSystem
 		{
 			using (Profiler.Profiler.TimeAlloc("tick", "client_post_update"))
 			{
+				bool prof = Profiler.Profiler.Enabled;
 				foreach (var te in TileEntity.ByID.Values)
 				{
 					if (te is not TerrariaCompat.Machine.MetaMachine machine) continue;
-					long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-					long b0 = System.GC.GetAllocatedBytesForCurrentThread();
+					long t0 = 0, b0 = 0;
+					if (prof)
+					{
+						t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+						b0 = System.GC.GetAllocatedBytesForCurrentThread();
+					}
 					machine.OnClientPostUpdate();
-					string typeName = machine.GetType().Name;
-					Profiler.Profiler.AccumulateTimer(
-						"tick.client_post_update.by_type", typeName,
-						System.Diagnostics.Stopwatch.GetTimestamp() - t0);
-					Profiler.Profiler.AccumulateAlloc(
-						"tick.client_post_update.by_type", typeName,
-						System.GC.GetAllocatedBytesForCurrentThread() - b0);
+					if (prof)
+					{
+						string typeName = machine.GetType().Name;
+						Profiler.Profiler.AccumulateTimer(
+							"tick.client_post_update.by_type", typeName,
+							System.Diagnostics.Stopwatch.GetTimestamp() - t0);
+						Profiler.Profiler.AccumulateAlloc(
+							"tick.client_post_update.by_type", typeName,
+							System.GC.GetAllocatedBytesForCurrentThread() - b0);
+					}
 				}
 			}
 		}
@@ -135,21 +143,27 @@ public sealed class EnergyNetSystem : ModSystem
 		if (TerrariaCompat.Machine.MetaMachine.IsClient) return;
 
 		int machineCount = 0;
+		bool prof = Profiler.Profiler.Enabled;
 		using (Profiler.Profiler.TimeAlloc("tick", "machine_systemtick"))
 		{
 			foreach (var te in TileEntity.ByID.Values)
 			{
-				if (te is TerrariaCompat.Machine.MetaMachine machine)
+				if (te is not TerrariaCompat.Machine.MetaMachine machine) continue;
+				long t0 = 0, b0 = 0;
+				if (prof)
 				{
-					long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-					long b0 = System.GC.GetAllocatedBytesForCurrentThread();
-					try { machine.SystemTick(); }
-					catch (System.Exception ex)
-					{
-						ModContent.GetInstance<GregTechCEuTerraria>()?.Logger.Warn(
-							$"[SystemTick] ({machine.Position.X},{machine.Position.Y}) " +
-							$"{machine.GetType().Name} threw - isolated, continuing", ex);
-					}
+					t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+					b0 = System.GC.GetAllocatedBytesForCurrentThread();
+				}
+				try { machine.SystemTick(); }
+				catch (System.Exception ex)
+				{
+					ModContent.GetInstance<GregTechCEuTerraria>()?.Logger.Warn(
+						$"[SystemTick] ({machine.Position.X},{machine.Position.Y}) " +
+						$"{machine.GetType().Name} threw - isolated, continuing", ex);
+				}
+				if (prof)
+				{
 					long elapsed = System.Diagnostics.Stopwatch.GetTimestamp() - t0;
 					long allocated = System.GC.GetAllocatedBytesForCurrentThread() - b0;
 					string typeName = machine.GetType().Name;
@@ -157,8 +171,8 @@ public sealed class EnergyNetSystem : ModSystem
 						"tick.machine_systemtick.by_type", typeName, elapsed);
 					Profiler.Profiler.AccumulateAlloc(
 						"tick.machine_systemtick.by_type", typeName, allocated);
-					machineCount++;
 				}
+				machineCount++;
 			}
 		}
 		Profiler.Profiler.Gauge("counts", "machines", machineCount);

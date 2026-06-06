@@ -107,7 +107,14 @@ public sealed class ProfilerUISystem : ModSystem
 			{
 				Main.mouseLeftRelease = false;
 				SoundEngine.PlaySound(SoundID.MenuTick);
-				Toggle();
+				bool shift = Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftShift)
+				          || Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightShift);
+				if (shift)
+				{
+					string path = global::GregTechCEuTerraria.TerrariaCompat.Profiler.ProfilerSystem.DumpToFile();
+					Main.NewText($"[GregTech] Profile saved to {path}", 180, 220, 255);
+				}
+				else Toggle();
 			}
 		}
 
@@ -131,7 +138,7 @@ public sealed class ProfilerUISystem : ModSystem
 			sb.Draw(px, new Rectangle(rect.X, rect.Bottom - 1, rect.Width, 1), b);
 			sb.Draw(px, new Rectangle(rect.X, rect.Y, 1, rect.Height), b);
 			sb.Draw(px, new Rectangle(rect.Right - 1, rect.Y, 1, rect.Height), b);
-			Main.instance.MouseText("Open Profiler");
+			Main.instance.MouseText("Open Profiler  (Shift+Click: snapshot, panel closed)");
 		}
 	}
 }

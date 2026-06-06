@@ -136,15 +136,17 @@ public sealed record CircuitButtonWidgetSpec(int X, int Y, int Width = 22, int H
 	}
 }
 
-// Bucket fill/drain via RMB. TankIndex is local to Direction
-public sealed record FluidSlotWidgetSpec(int X, int Y, int Width, int Height, IO Direction, int TankIndex = 0)
+// Bucket fill/drain via RMB. TankIndex is local to Direction.
+// FillBar = vertical fill-column render
+public sealed record FluidSlotWidgetSpec(int X, int Y, int Width, int Height, IO Direction,
+		int TankIndex = 0, bool FillBar = false)
 	: WidgetSpec(X, Y)
 {
 	public override UIElement Create(MetaMachine entity)
 	{
 		if (entity is not IFluidHandler)
 			throw new InvalidOperationException($"{entity.GetType().Name} does not implement IFluidHandler - FluidSlotWidget requires one");
-		return new UIFluidSlot(entity, Direction, TankIndex, Width, Height);
+		return new UIFluidSlot(entity, Direction, TankIndex, Width, Height, FillBar);
 	}
 }
 

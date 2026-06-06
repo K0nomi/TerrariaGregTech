@@ -12,17 +12,7 @@ namespace GregTechCEuTerraria.TerrariaCompat.Items;
 
 // Single render path for every dump-driven item icon. Composites the upstream
 // layer stack with per-layer tint, 2x nearest-neighbour upscales, installs the
-// baked Texture2D into TextureAssets.Item[itemType]. Vanilla then draws it
-// everywhere - inventory, world, AND held-item swing (the swing reads
-// TextureAssets.Item with no PreDraw hook). Lazy + idempotent via HashSet.
-//
-// State-dependent visuals (battery charge, circuit config, fluid contents)
-// STILL need PreDraw for inventory/world; this only installs the default-state
-// image so the swing animation isn't broken.
-//
-// `Scale` (0..1; 1=default) lets a layer's source render smaller than its
-// native size, centred on the canvas - used by WireItem to differentiate wire
-// sizes from one shared `wire_end.png`. Scale>1 unsupported.
+// baked Texture2D into TextureAssets.Item[itemType]
 internal readonly record struct IconLayer(string TexturePath, Color Tint, float Scale = 1f)
 {
 	public IconLayer(string texturePath) : this(texturePath, Color.White, 1f) { }
@@ -34,10 +24,13 @@ internal static class ItemIconBaker
 	private const int UpscaleFactor = 2;
 	private static readonly HashSet<int> _done = new();
 
-	public static void Install(int itemType, params IconLayer[] layers)
+	public static void Install(int itemType, params IconLayer[] layers) =>
+		Install(itemType, false, layers);
+
+	public static void Install(int itemType, bool mirrorDiagonal, IconLayer[] layers)
 	{
 		if (itemType <= 0 || layers.Length == 0) return;
-		if (Main.dedServ) return;                              // no GraphicsDevice
+		if (Main.dedServ) return;
 		if (!_done.Add(itemType)) return;
 
 		Color[]? canvas = null;
@@ -57,6 +50,7 @@ internal static class ItemIconBaker
 			AlphaCompositeOver(canvas, px);
 		}
 		if (canvas == null) { _done.Remove(itemType); return; }
+		if (mirrorDiagonal) canvas = MirrorDiagonal(canvas, w, h);
 		InstallPixels(itemType, canvas, w, h);
 	}
 
@@ -75,7 +69,6 @@ internal static class ItemIconBaker
 		TextureAssets.Item[itemType] = MachineRenderer.WrapAsset(baked, $"gtceu_item_{itemType}");
 	}
 
-	// Per-channel multiply (alpha preserved). White = no-op.
 	private static void Tint(Color[] px, Color tint)
 	{
 		if (tint == Color.White) return;
@@ -90,8 +83,6 @@ internal static class ItemIconBaker
 		}
 	}
 
-	// Straight-alpha Porter-Duff src-over (tML loads PNGs straight RGBA, so the
-	// premultiplied form over-brightens edges). Same formula as MaterialBlockRenderer.SrcOver.
 	private static void AlphaCompositeOver(Color[] dst, Color[] src)
 	{
 		for (int k = 0; k < dst.Length; k++)
@@ -113,9 +104,6 @@ internal static class ItemIconBaker
 		}
 	}
 
-	// Nearest-neighbour downscale + centred placement on a fresh wxh canvas.
-	// One PNG renders at different visual sizes (WireItem per wire size)
-	// without changing the bake's output dimensions.
 	private static Color[] ScaleCentered(Color[] src, int w, int h, float scale)
 	{
 		int sw = System.Math.Max(1, (int)System.Math.Round(w * scale));
@@ -132,6 +120,15 @@ internal static class ItemIconBaker
 				dst[(oy + dy) * w + (ox + dx)] = src[sy * w + sx];
 			}
 		}
+		return dst;
+	}
+
+	private static Color[] MirrorDiagonal(Color[] src, int w, int h)
+	{
+		var dst = new Color[src.Length];
+		for (int y = 0; y < h; y++)
+			for (int x = 0; x < w; x++)
+				dst[y * w + x] = src[(w - 1 - x) * w + (h - 1 - y)];
 		return dst;
 	}
 
