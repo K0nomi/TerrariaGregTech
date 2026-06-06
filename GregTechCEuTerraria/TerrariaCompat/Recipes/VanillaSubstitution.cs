@@ -54,6 +54,11 @@ public static class VanillaItemMap
 		{ "minecraft:copper_ingot",     ItemID.CopperBar },
 		{ "minecraft:diamond",          ItemID.Diamond },
 		{ "minecraft:emerald",          ItemID.Emerald },
+		{ "minecraft:amethyst_shard", 	ItemID.Amethyst },
+		{ "gtceu:amethyst_gem",		 	ItemID.Amethyst },
+		{ "gtceu:ruby_gem", 			ItemID.Ruby },
+		{ "gtceu:topaz_gem",			ItemID.Topaz },
+		{ "gtceu:sapphire_gem",			ItemID.Sapphire },
 
 		// Common drops
 		{ "minecraft:torch",            ItemID.Torch },
@@ -214,7 +219,6 @@ public static class VanillaItemMap
 		{ "minecraft:sugar",            ("sugar", "dust") },
 		{ "minecraft:blaze_powder",     ("blaze", "dust") },
 		{ "minecraft:bone_meal",        ("bone", "dust") },
-		{ "minecraft:amethyst_shard",   ("amethyst", "gem") },
 		{ "minecraft:lapis_lazuli",     ("lapis", "gem") },
 		{ "minecraft:quartz",           ("nether_quartz", "gem") },
 		{ "minecraft:coal",             ("coal", "gem") },

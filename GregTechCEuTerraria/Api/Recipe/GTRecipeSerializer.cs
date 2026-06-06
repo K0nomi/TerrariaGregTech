@@ -61,7 +61,7 @@ public static class GTRecipeSerializer
 		if (colon >= 0) station = station[(colon + 1)..];
 		var recipeType = GTRecipeType.GetOrCreate(station);
 
-		int duration         = GetInt(root, "duration", 200);
+		int duration         = GetInt(root, "duration", 0);
 		int parallels        = GetInt(root, "parallels", 1);
 		int subtickParallels = GetInt(root, "subtickParallels", 1);
 		int batchParallels   = GetInt(root, "batchParallels", 1);
