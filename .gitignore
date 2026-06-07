@@ -8,6 +8,9 @@ obj/
 *.user
 *.suo
 
+# tML auto-generated
+tModLoader.targets
+
 # Python caches
 __pycache__/
 *.pyc
