@@ -163,7 +163,8 @@ public static class NativeRecipeProxy
 			{
 				[ItemRecipeCapability.CAP] = new List<RecipeContent>
 				{
-					ItemContent(new ItemStackIngredient(rec.createItem.type), rec.createItem.stack),
+					ItemContent(new ItemStackIngredient(rec.createItem.type,
+						IngredientResolverImpl.StableItemId(rec.createItem.type)), rec.createItem.stack),
 				},
 			};
 
@@ -181,7 +182,7 @@ public static class NativeRecipeProxy
 				if (TryBuildGroupedIngredient(rec, req.type, out var grouped))
 					ing = grouped;
 				else
-					ing = new ItemStackIngredient(req.type);
+					ing = new ItemStackIngredient(req.type, IngredientResolverImpl.StableItemId(req.type));
 
 				itemInputs.Add(ItemContent(ing, count));
 			}

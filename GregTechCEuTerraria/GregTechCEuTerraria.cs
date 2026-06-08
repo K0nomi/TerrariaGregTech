@@ -101,8 +101,11 @@ public sealed class GregTechCEuTerraria : Mod
 		TerrariaCompat.Tiles.Casings.CasingRegistry.Register(this);
 		Stage("Registering turbine rotors");
 		TerrariaCompat.Items.TurbineRotorItemLoader.Register(this);
+		var resolver = TerrariaCompat.Recipes.IngredientResolverImpl.Instance;
+		IIngredientResolver.Default = resolver;
+
 		Stage("Loading recipes (~32k)");
-		RecipeJsonLoader.Load(this, TerrariaCompat.Recipes.IngredientResolverImpl.Instance);
+		RecipeJsonLoader.Load(this, resolver);
 		Stage("Synthesising biome world-I/O recipes");
 		TerrariaCompat.Machine.Multiblock.Electric.BiomeWorldIORecipeSynth.Register(this);
 		Stage("Verifying recipe coverage");
@@ -124,6 +127,8 @@ public sealed class GregTechCEuTerraria : Mod
 	public override void Unload()
 	{
 		RuntimeTextureRegistry.DisposeAll();
+
+		IIngredientResolver.Default = null;
 
 		TerrariaCompat.BossDrops.BossDropRegistry.Unload();
 		TerrariaCompat.BossDrops.MultiblockBag.MultiblockBagLoader.Unload();

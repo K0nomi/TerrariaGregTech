@@ -7,9 +7,11 @@
 - Added warning to empty whitelist on filters for better UX (thanks TrRzeczy)
 - Added questbook wip disclaimer (thanks megacraftbuilder)
 - Added extra resin source
+- Added ability to use nether stars in a star cannon (thanks Royal Tek)
 - Changed oil drilling rig to give you more oil per cycle (thanks TrRzeczy)
 - Changed solar boilers and panels sky check so its more convenient to use (thanks TrRzeczy, TheLarvi)
 - Changed ore rarity so lava won't destroy them (thanks hamood)
+- Fixed running recipe loading inconsistency on changing mods (thanks TrRzeczy)
 - Fixed duplicated mining speed tooltip (thanks Konomi)
 - Fixed EBF-chan name render and census support (thanks Konomi for implementation)
 - Fixed recipe browser chance render for very low chances (thanks TrRzeczy)

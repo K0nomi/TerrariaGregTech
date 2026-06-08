@@ -183,17 +183,18 @@ public static class GTRecipeNbt
 				tag["fluid"] = SaveFluidIngredient(fc.Fluid);
 				break;
 			case NBTPredicateIngredient n:
-				tag["itemType"]   = n.ItemType;
 				tag["upstreamId"] = n.UpstreamId;
+				if (string.IsNullOrEmpty(n.UpstreamId)) tag["itemType"] = n.ItemType;
 				if (n.OutputNbt != null) tag["outputNbt"] = n.OutputNbt;
 				break;
 			case TagIngredient t:
 				tag["tagName"] = t.TagName;
-				tag["types"]   = new List<int>(t.ResolvedTypes);
+				if (string.IsNullOrEmpty(t.TagName) || t.TagName[0] == '$')
+					tag["types"] = new List<int>(t.ResolvedTypes);
 				break;
 			case ItemStackIngredient i:
-				tag["itemType"]   = i.ItemType;
 				tag["upstreamId"] = i.UpstreamId;
+				if (string.IsNullOrEmpty(i.UpstreamId)) tag["itemType"] = i.ItemType;
 				break;
 		}
 		return tag;
@@ -213,15 +214,42 @@ public static class GTRecipeNbt
 			case "gtceu:fluid_container":
 				return new FluidContainerIngredient(LoadFluidIngredient(tag.Get<TagCompound>("fluid")));
 			case "forge:nbt":
-				return NBTPredicateIngredient.Of(tag.GetInt("itemType"),
-					NBTPredicateIngredient.ALWAYS_TRUE, tag.GetString("upstreamId"),
-					tag.ContainsKey("outputNbt") ? tag.GetString("outputNbt") : null);
+			{
+				string upstreamId = tag.GetString("upstreamId");
+				string? outputNbt = tag.ContainsKey("outputNbt") ? tag.GetString("outputNbt") : null;
+				int itemType = 0;
+				if (outputNbt != null && NBTPredicateIngredient.ResolveItemTypeFromNbt is { } nbtHook)
+					itemType = nbtHook(upstreamId, outputNbt);
+				if (itemType == 0)
+					itemType = ResolveItemTypeStable(upstreamId, tag);
+				return NBTPredicateIngredient.Of(itemType,
+					NBTPredicateIngredient.ALWAYS_TRUE, upstreamId, outputNbt);
+			}
 			case "minecraft:tag":
-				return new TagIngredient(tag.GetString("tagName"), new List<int>(tag.GetList<int>("types")));
+			{
+				string tagName = tag.GetString("tagName");
+				IReadOnlyList<int>? resolved = !string.IsNullOrEmpty(tagName) && tagName[0] != '$'
+					? IIngredientResolver.Default?.ResolveItemTag(tagName)
+					: null;
+				List<int> types = resolved is { Count: > 0 }
+					? new List<int>(resolved)
+					: (tag.ContainsKey("types") ? new List<int>(tag.GetList<int>("types")) : new List<int>());
+				return new TagIngredient(tagName, types);
+			}
 			case "minecraft:item":
 			default:
-				return new ItemStackIngredient(tag.GetInt("itemType"), tag.GetString("upstreamId"));
+			{
+				string upstreamId = tag.GetString("upstreamId");
+				return new ItemStackIngredient(ResolveItemTypeStable(upstreamId, tag), upstreamId);
+			}
 		}
+	}
+
+	private static int ResolveItemTypeStable(string upstreamId, TagCompound tag)
+	{
+		if (string.IsNullOrEmpty(upstreamId) || IIngredientResolver.Default is null)
+			return tag.GetInt("itemType");
+		return IIngredientResolver.Default.ResolveItemType(upstreamId);
 	}
 
 	private static TagCompound SaveFluidIngredient(FluidIngredient f)

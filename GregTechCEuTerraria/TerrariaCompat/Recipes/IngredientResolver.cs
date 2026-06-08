@@ -21,6 +21,14 @@ public sealed class IngredientResolverImpl : IIngredientResolver
 		if (upstreamId.StartsWith("terraria:", System.StringComparison.Ordinal))
 			return Terraria.ID.ItemID.Search.TryGetId(upstreamId["terraria:".Length..], out var tid) ? tid : 0;
 
+		if (upstreamId.IndexOf(':') < 0)
+		{
+			int slash = upstreamId.IndexOf('/');
+			if (slash > 0 && Terraria.ModLoader.ModContent.TryFind<Terraria.ModLoader.ModItem>(
+				    upstreamId[..slash], upstreamId[(slash + 1)..], out var mi))
+				return mi.Type;
+		}
+
 		// 1. Hand-curated mappings.
 		if (VanillaItemMap.TryGet(upstreamId, out var v)) return v;
 
@@ -49,6 +57,14 @@ public sealed class IngredientResolverImpl : IIngredientResolver
 		return 0;
 	}
 
+	public static string StableItemId(int type)
+	{
+		if (type <= 0) return "";
+		if (Terraria.ModLoader.ItemLoader.GetItem(type) is { } modItem)
+			return modItem.FullName;
+		return Terraria.ID.ItemID.Search.TryGetName(type, out var name) ? "terraria:" + name : "";
+	}
+
 	public IReadOnlyList<int> ResolveItemTag(string tagName)
 	{
 		if (string.IsNullOrEmpty(tagName)) return Array.Empty<int>();
@@ -63,9 +79,7 @@ public sealed class IngredientResolverImpl : IIngredientResolver
 		// the upstream tag dump also lists gtceu:* members (e.g. rubber_log).
 		if (VanillaItemMap.TryGetTagItem(tagName, out var vt))
 			types.Add(vt);
-		// EXCLUSIVE multi-item mappings (forge:marble -> only Marble Block,
-		// minecraft:fishes -> 8 species) - short-circuit the dump expansion
-		// below so dump gtceu:* members can't slip in.
+		// multi-item mappings (forge:marble -> only Marble Block, minecraft:fishes -> 8 species)
 		bool exclusive = false;
 		if (VanillaItemMap.TryGetTagItems(tagName, out var multi))
 		{
@@ -74,8 +88,6 @@ public sealed class IngredientResolverImpl : IIngredientResolver
 			exclusive = true;
 		}
 
-		// GT item tags - expand recursively + resolve each member. Skipped
-		// when MultiTagItems already declared the full match set.
 		if (!exclusive && Items.Registry.RegistryTagLoader.HasTag(tagName))
 		{
 			foreach (var memberId in Items.Registry.RegistryTagLoader.ExpandItems(tagName))
