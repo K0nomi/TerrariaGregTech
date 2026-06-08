@@ -419,6 +419,27 @@ public sealed class PipeSettingsState : UIState
 				Top  = StyleDimension.FromPixels(extraY),
 			});
 		}
+
+		bool hasFilterModeRow = TryReadFilterModeAllowFlow(pcv.GetCoverAtSide(side), out _, out _);
+		int simpleGridBottom  = editorY + btnH + 4 + 28 * 3;
+		int warnY = hasFilterModeRow ? simpleGridBottom + 4 + btnH + 2 : simpleGridBottom + 2;
+		cell.Append(new UIDynamicLabel(
+			() => IsEmptyBlockingWhitelist(pcv.GetCoverAtSide(side), isFluid) ? FilterWarning.Text : "",
+			scale: 0.72f,
+			color: FilterWarning.Color)
+		{
+			Left   = StyleDimension.FromPixels(x),
+			Top    = StyleDimension.FromPixels(warnY),
+			Width  = StyleDimension.FromPixels(w),
+			Height = StyleDimension.FromPixels(14),
+		});
+	}
+
+	internal static bool IsEmptyBlockingWhitelist(CoverBehavior? cover, bool fluid)
+	{
+		if (cover is null) return false;
+		return fluid ? FilterWarning.IsEmptyWhitelist(cover.UiFluidFilter)
+		             : FilterWarning.IsEmptyWhitelist(cover.UiItemFilter);
 	}
 
 	private static bool FilterIsBlackList(CoverBehavior? cover, bool fluid)

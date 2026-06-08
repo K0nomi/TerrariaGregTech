@@ -43,7 +43,9 @@ public sealed class LongDistancePipeLayerSystem : ModSystem
 	public override void PostDrawTiles()
 	{
 		var held = Main.LocalPlayer?.HeldItem;
-		if (held?.ModItem is Items.Pipes.LongDistancePipeItem)
+		bool ldLayer = held?.ModItem is Items.Pipes.LongDistancePipeItem
+		            || (held?.ModItem is Items.Tools.ToolItem tool && tool.IsWrench);
+		if (ldLayer)
 			LongDistancePipeRenderer.DrawForegroundOverlay();
 	}
 

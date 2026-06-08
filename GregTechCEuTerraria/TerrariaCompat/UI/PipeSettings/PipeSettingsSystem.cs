@@ -1,5 +1,6 @@
 #nullable enable
 using GregTechCEuTerraria.Api.Capability;
+using GregTechCEuTerraria.Api.Cover;
 using System.Collections.Generic;
 using GregTechCEuTerraria.TerrariaCompat.Pipelike;
 using GregTechCEuTerraria.TerrariaCompat.Pipelike.Fluid;
@@ -254,6 +255,8 @@ public sealed class PipeSettingsSystem : ModSystem
 		if (!string.IsNullOrEmpty(contents)) { sb.Append(contents); sb.Append('\n'); }
 		else if (layer == PipeKind.Fluid)    { sb.Append("Pipe: empty\n"); }
 		if (!string.IsNullOrEmpty(netLine))  { sb.Append(netLine);  sb.Append('\n'); }
+		string warn = EmptyWhitelistWarningLine(layer, x, y);
+		if (!string.IsNullOrEmpty(warn))     { sb.Append(warn);     sb.Append('\n'); }
 		if (_hoverHasOpenable) sb.Append("RMB to setup the pipe");
 		else                   { if (sb.Length > 0 && sb[sb.Length - 1] == '\n') sb.Length--; }
 		return sb.ToString();
@@ -298,6 +301,19 @@ public sealed class PipeSettingsSystem : ModSystem
 		string state = active ? "[c/55FF55:Active]" : "[c/AAAAAA:Idle]";
 		string ep    = hasEndpoint ? "endpoint reached" : "[c/FFAA44:no endpoint]";
 		return $"Optical Pipe: {state} * {ep}";
+	}
+
+	private static string EmptyWhitelistWarningLine(PipeKind layer, int x, int y)
+	{
+		bool fluid = layer == PipeKind.Fluid;
+		PipeCoverable? pcv = fluid              ? FluidPipeLayerSystem.GetSides(x, y)
+		                   : layer == PipeKind.Item ? ItemPipeLayerSystem.GetSides(x, y)
+		                   : null;
+		if (pcv is null) return "";
+		foreach (var side in CoverSides.All)
+			if (PipeSettingsState.IsEmptyBlockingWhitelist(pcv.GetCoverAtSide(side), fluid))
+				return "[c/FF4646:! Empty whitelist - this side blocks everything]";
+		return "";
 	}
 
 	private static string ItemThroughputLine(int x, int y)

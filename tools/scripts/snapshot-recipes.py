@@ -126,6 +126,7 @@ REMOVED_TOKENS = (
     "slime_block", "ender_chest", "rubber_slab", "glass_vial",
     "rubber_boat", "rubber_door", "rubber_gloves", "rubber_fence", "rubber_trapdoor",
     "rubber_sign",
+    "rubber_wood",
     "_indicator",
     "_pressure_plate", "_button",
     "chainmail", "face_mask",
@@ -143,15 +144,10 @@ REMOVED_TOKENS = (
     "brown_mushroom", "kelp", "pitcher_pod", "potato", "sweet_berries",
     "ink_sac", "music_disc", "deepslate_bricks",
     "energy_converter",
-    # Monitors (central_monitor / advanced_monitor / monitor) and their
-    # casing + computer_monitor_cover - not ported. Bare `monitor` token
-    # catches every variant (monitor / advanced_monitor / central_monitor /
-    # monitor_casing / computer_monitor_cover).
-    "monitor",
+    "monitor", # not ported yet (AE2 ingredient)
     "charcoal_pile_igniter", # not ported
     "chicken", "rabbit", "porkchop", "mutton",
     "melon", "packed_ice", "blue_ice",
-    # Every GregTech coloured lamp - not ported
     "borderless_lamp", "redstone_lamp",
     "white_lamp", "orange_lamp", "magenta_lamp", "light_blue_lamp",
     "yellow_lamp", "lime_lamp", "pink_lamp", "gray_lamp", "light_gray_lamp",
@@ -259,8 +255,7 @@ def is_alt_host_ore_recipe(obj):
     return walk(obj)
 
 
-# Applied Energistics 2 (ME network) parts are not ported until the AE2
-# integration lands
+# Applied Energistics 2 parts are not ported yet
 def is_ae2_recipe(obj):
     """True if a recipe references any AE2 ME part (gtceu:me_* item id)."""
     def walk(x):
@@ -318,7 +313,6 @@ REMOVED_RECIPE_TYPES = (
     "gtceu:crafting_facade_cover",
     "gtceu:crafting_tool_head_replace",
 )
-
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)

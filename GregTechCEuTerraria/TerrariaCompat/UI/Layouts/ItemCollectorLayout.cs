@@ -8,10 +8,7 @@ using Terraria.UI;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Layouts;
 
-// Port of ItemCollectorMachine.createTemplate + createEnergyBar (java:313-407).
-// Layout: [energy bar][filter editor][output grid]. Charger / power-toggle /
-// IO-config attached by MachineUIState. Filter editor swaps subtree on
-// FilterOrdinal change via SwappableRegionWidgetSpec.
+// Port of ItemCollectorMachine.createTemplate
 public static class ItemCollectorLayout
 {
 	private const int SlotSize = 22;
@@ -55,7 +52,6 @@ public static class ItemCollectorLayout
 		int filterX = leftX + EnergyW + 8;
 		int filterY = contentTop;
 
-		// Filter-type cycle - stays put across editor rebuilds.
 		layout.Widgets.Add(new TextButtonWidgetSpec(
 			X: filterX, Y: filterY,
 			Label:   () => "Filter: " + (machine.FilterOrdinal == 1 ? "Tags" : "Items"),
@@ -64,7 +60,6 @@ public static class ItemCollectorLayout
 			Tooltip: "Items - 3x3 phantom item grid\nTags - tag expression",
 			Width: PhantomGrid, Height: HeaderH));
 
-		// Swaps subtree on ordinal flip.
 		int editorY = filterY + HeaderH + 4;
 		layout.Widgets.Add(new SwappableRegionWidgetSpec(
 			X: filterX, Y: editorY,
@@ -90,7 +85,6 @@ public static class ItemCollectorLayout
 		return layout;
 	}
 
-	// Children positioned in already-scaled pixels (`s` = layout scale).
 	private static void BuildFilterEditor(UISwappableContainer container, float s, MetaMachine entity)
 	{
 		var machine = (ItemCollectorMachine)entity;
@@ -121,7 +115,7 @@ public static class ItemCollectorLayout
 				{
 					Left   = StyleDimension.FromPixels(gx * s),
 					Top    = StyleDimension.FromPixels(gy * s),
-					Width  = StyleDimension.FromPixels(SlotSize * s - 1),   // 1-px seam
+					Width  = StyleDimension.FromPixels(SlotSize * s - 1),
 					Height = StyleDimension.FromPixels(SlotSize * s - 1),
 				};
 				container.Append(slot);
@@ -153,9 +147,18 @@ public static class ItemCollectorLayout
 				Top  = StyleDimension.FromPixels((ToggleH + 4) * s),
 			};
 			container.Append(nbtBtn);
+
+			var warn = new UIDynamicLabel(
+				getter: () => FilterWarning.IsEmptyWhitelist(machine.SimpleFilter) ? FilterWarning.Text : "",
+				scale:  0.62f,
+				color:  FilterWarning.Color)
+			{
+				Left = StyleDimension.FromPixels(tx * s),
+				Top  = StyleDimension.FromPixels((ToggleH * 2 + 8) * s),
+			};
+			container.Append(warn);
 		}
 
-		// Range readout - always present (mode-independent).
 		var range = new UIDynamicLabel(
 			getter: () =>
 			{
@@ -171,7 +174,6 @@ public static class ItemCollectorLayout
 		container.Append(range);
 	}
 
-	// Verbatim from CoverSettingsUI / MagnetUIState.
 	private const string TagFilterInfo =
 		"Accepts complex expressions:\n"
 		+ "a & b = AND   *   a | b = OR   *   a ^ b = XOR\n"

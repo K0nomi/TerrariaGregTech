@@ -288,6 +288,8 @@ public sealed class ItemCollectorMachine : TieredEnergyMachine, IFilterableMachi
 		lines.Add($"Range: {Range} / {MaxRange} tiles");
 		lines.Add($"Draw: {EnergyPerTick:N0} EU/t");
 		lines.Add($"Filter: {(_filterOrdinal == 1 ? "Tags" : "Items")}");
+		if (_filterOrdinal == 0 && UI.FilterWarning.IsEmptyWhitelist(SimpleFilter))
+			lines.Add("[c/FF4646:! Empty whitelist - collects nothing]");
 		if (!_isWorkingEnabled) lines.Add("Disabled");
 		else if (_active)        lines.Add("Active");
 	}

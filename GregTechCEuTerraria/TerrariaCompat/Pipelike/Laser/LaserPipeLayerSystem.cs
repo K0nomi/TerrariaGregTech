@@ -69,7 +69,9 @@ public sealed class LaserPipeLayerSystem : ModSystem
 	public override void PostDrawTiles()
 	{
 		var held = Main.LocalPlayer?.HeldItem;
-		if (held?.ModItem is Items.Pipes.LaserPipeItem)
+		bool laserLayer = held?.ModItem is Items.Pipes.LaserPipeItem
+		               || (held?.ModItem is Items.Tools.ToolItem tool && tool.IsWireCutter);
+		if (laserLayer)
 			LaserPipeRenderer.DrawLaserForegroundOverlay();
 	}
 

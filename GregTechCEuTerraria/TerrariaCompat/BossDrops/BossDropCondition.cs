@@ -14,3 +14,10 @@ public sealed class BossDropCondition : IItemDropRuleCondition
 	public bool CanShowItemDropInUI() => GTConfig.Instance?.EnableBossDrops ?? true;
 	public string GetConditionDescription() => Language.GetTextValue("Mods.GregTechCEuTerraria.BossDrops.ConditionDescription");
 }
+
+public sealed class BossDropLastPartCondition : IItemDropRuleCondition
+{
+	public bool CanDrop(DropAttemptInfo info) => (GTConfig.Instance?.EnableBossDrops ?? true) && info.npc.boss;
+	public bool CanShowItemDropInUI() => GTConfig.Instance?.EnableBossDrops ?? true;
+	public string GetConditionDescription() => Language.GetTextValue("Mods.GregTechCEuTerraria.BossDrops.ConditionDescription");
+}

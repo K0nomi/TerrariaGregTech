@@ -79,7 +79,8 @@ public sealed class ItemPipeLayerSystem : ModSystem
 		var held = Main.LocalPlayer?.HeldItem;
 		if (held is null) return;
 		bool itemLayer = held.ModItem is Items.Pipes.SimpleItemPipeItem
-		              || (held.ModItem is Items.Pipes.PipeItem pipe && pipe.Kind == PipeKind.Item);
+		              || (held.ModItem is Items.Pipes.PipeItem pipe && pipe.Kind == PipeKind.Item)
+		              || (held.ModItem is Items.Tools.ToolItem tool && tool.IsWrench);
 		if (!itemLayer) return;
 		PipeRenderer.DrawItemForegroundOverlay();
 	}

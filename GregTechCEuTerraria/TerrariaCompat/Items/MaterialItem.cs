@@ -72,7 +72,7 @@ public sealed class MaterialItem : ModItem, ITextureWarmUp
 		Item.width = 32;
 		Item.height = 32;
 		Item.value = 0;
-		Item.rare = ItemRarityID.White;
+		Item.rare = ItemRarityID.Blue;
 		if (_prefix?.Id is "block" or "raw_ore_block" or "frame" && _id is not null)
 		{
 			int? tileType = Tiles.MaterialBlockTileRegistry.Get(_id);

@@ -4,7 +4,6 @@ using GregTechCEuTerraria.TerrariaCompat.Machine.Steam;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Layouts;
 
-// Solar Boiler GUI - port of SteamSolarBoiler's createUI
 public static class SolarBoilerLayout
 {
 	public static MachineUILayout Build(SteamSolarBoiler boiler) => new()
@@ -29,8 +28,7 @@ public static class SolarBoilerLayout
 			new TemperatureBarWidgetSpec(X: 42, Y: 28, Width: 14, Height: 54),
 
 			// Sunlit indicator - the solar boiler heats only while it can see sky.
-			new DynamicLabelWidgetSpec(X: 72, Y: 28,
-				Getter: () => boiler.IsSunlit ? "Sunlit - heating" : "No sunlight", Scale: 0.7f),
+			new DynamicLabelWidgetSpec(X: 72, Y: 28, Getter: () => boiler.SkyStatusCached == Utils.SunlightAccess.SkyStatus.Clear ? "Sunlit - heating" : "No sunlight", Scale: 0.7f),
 
 			new DynamicLabelWidgetSpec(X: 72, Y: 44, Getter: () =>
 			{

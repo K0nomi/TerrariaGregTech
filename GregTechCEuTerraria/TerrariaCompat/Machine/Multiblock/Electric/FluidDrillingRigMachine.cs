@@ -39,8 +39,7 @@ public class FluidDrillingRigMachine : WorkableElectricMultiblockMachine
 		_              => 1,
 	};
 
-	// Upstream's tooltip shows mB x multiplier x 1.5 (pretty-print, not actual).
-	private int BaseProduction => 1;
+	private int BaseProduction => 100;
 
 	private int ProductionPerCycle => BaseProduction * RigMultiplier;
 
@@ -149,7 +148,7 @@ public class FluidDrillingRigMachine : WorkableElectricMultiblockMachine
 		{
 			string biome = _biomeCached ? _cachedBiome.ToString() : "scanning";
 			string fluidName = string.IsNullOrEmpty(_lastFluidId) ? "?" : _lastFluidId;
-			lines.Add($"[c/55FF55:Drilling ({biome}):] {fluidName} {ProductionPerCycle}mB / {CycleTicks / 60.0:0.0}s");
+			lines.Add($"[c/55FF55:Drilling ({biome}):] {fluidName} {ProductionPerCycle}mB / {CycleTicks / 20.0:0.0}s");
 		}
 		else
 		{

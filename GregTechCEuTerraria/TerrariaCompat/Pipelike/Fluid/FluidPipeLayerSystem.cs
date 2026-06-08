@@ -106,7 +106,8 @@ public sealed class FluidPipeLayerSystem : ModSystem
 		var held = Main.LocalPlayer?.HeldItem;
 		if (held is null) return;
 		bool fluidLayer = held.ModItem is Items.Pipes.SimpleFluidPipeItem
-		               || (held.ModItem is Items.Pipes.PipeItem pipe && pipe.Kind == PipeKind.Fluid);
+		                  || (held.ModItem is Items.Pipes.PipeItem pipe && pipe.Kind == PipeKind.Fluid)
+		                  || (held.ModItem is Items.Tools.ToolItem tool && tool.IsWrench);
 		if (!fluidLayer) return;
 		PipeRenderer.DrawFluidForegroundOverlay();
 	}

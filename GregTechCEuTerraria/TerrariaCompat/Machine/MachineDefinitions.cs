@@ -468,10 +468,10 @@ public static class MachineDefinitions
 			PatternFactory  = BuildPrimitivePumpPattern,
 		});
 
-		LargeBoiler("bronze",        "Large Bronze Boiler",        "steam_machine_casing",   "bronze_pipe_casing",        "bronze_firebox_casing",        800,  4);
-		LargeBoiler("steel",         "Large Steel Boiler",         "solid_machine_casing",   "steel_pipe_casing",         "steel_firebox_casing",        1300,  6);
-		LargeBoiler("titanium",      "Large Titanium Boiler",      "stable_machine_casing",  "titanium_pipe_casing",      "titanium_firebox_casing",     2000,  8);
-		LargeBoiler("tungstensteel", "Large Tungstensteel Boiler", "robust_machine_casing",  "tungstensteel_pipe_casing", "tungstensteel_firebox_casing", 3000, 12);
+		LargeBoiler("bronze",        "Large Bronze Boiler",        "steam_machine_casing",   "bronze_pipe_casing",        "bronze_firebox_casing",        800,  1);
+		LargeBoiler("steel",         "Large Steel Boiler",         "solid_machine_casing",   "steel_pipe_casing",         "steel_firebox_casing",        1800,  1);
+		LargeBoiler("titanium",      "Large Titanium Boiler",      "stable_machine_casing",  "titanium_pipe_casing",      "titanium_firebox_casing",     3200,  1);
+		LargeBoiler("tungstensteel", "Large Tungstensteel Boiler", "robust_machine_casing",  "tungstensteel_pipe_casing", "tungstensteel_firebox_casing", 6400,  2);
 
 		ItemBus("input_bus",  "Input Bus",  IO.IN,  AllTiers);
 		ItemBus("output_bus", "Output Bus", IO.OUT, AllTiers);

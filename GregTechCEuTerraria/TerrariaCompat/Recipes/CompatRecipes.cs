@@ -182,7 +182,6 @@ public static class CompatRecipes
 	""";
 
 	// coke clay without brick form
-	// simple pipes
 	private const string Misc = """
 	[
 	  { "id": "crafting_shaped/compat_compressed_coke_clay_formless", "type": "minecraft:crafting_shaped",
@@ -193,8 +192,12 @@ public static class CompatRecipes
 	        "ingredient": { "tag": "minecraft:sand" } } }
 	    ] },
 	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 2,
-	      "ingredient": { "item": "gtceu:compressed_coke_clay" } } } ] } },
+	      "ingredient": { "item": "gtceu:compressed_coke_clay" } } } ] } }
+	]
+	""";
 
+	private const string SimplePipes = """
+	[
 	  { "id": "crafting_shaped/compat_simple_item_pipe", "type": "minecraft:crafting_shaped",
 	    "inputs":  { "item": [
 	      { "content": { "type": "gtceu:sized", "count": 3,
@@ -209,7 +212,63 @@ public static class CompatRecipes
 	        "ingredient": { "tag": "minecraft:logs" } } }
 	    ] },
 	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
-	      "ingredient": { "item": "gtceu:simple_fluid_pipe" } } } ] } }
+	      "ingredient": { "item": "gtceu:simple_fluid_pipe" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_item_pipe_small", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 2,
+	        "ingredient": { "item": "minecraft:stone" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_item_pipe_small" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_item_pipe_large", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 5,
+	        "ingredient": { "item": "minecraft:stone" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_item_pipe_large" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_item_pipe_huge", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 8,
+	        "ingredient": { "item": "minecraft:stone" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_item_pipe_huge" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_fluid_pipe_tiny", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 1,
+	        "ingredient": { "tag": "minecraft:logs" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_fluid_pipe_tiny" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_fluid_pipe_small", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 2,
+	        "ingredient": { "tag": "minecraft:logs" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_fluid_pipe_small" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_fluid_pipe_large", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 6,
+	        "ingredient": { "tag": "minecraft:logs" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_fluid_pipe_large" } } } ] } },
+
+	  { "id": "crafting_shaped/compat_simple_fluid_pipe_huge", "type": "minecraft:crafting_shaped",
+	    "inputs":  { "item": [
+	      { "content": { "type": "gtceu:sized", "count": 12,
+	        "ingredient": { "tag": "minecraft:logs" } } }
+	    ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 4,
+	      "ingredient": { "item": "gtceu:simple_fluid_pipe_huge" } } } ] } }
 	]
 	""";
 
@@ -313,10 +372,22 @@ public static class CompatRecipes
 	]
 	""";
 
+	// Terraria Amber to redstone to unlock skyblock
+	private const string RedstoneGem = """
+	[
+	  { "id": "macerator/compat_macerate_redstone_gem", "type": "gtceu:macerator", "duration": 25,
+	    "inputs":  { "item": [ { "content": { "type": "gtceu:sized", "count": 1,
+	      "ingredient": { "item": "gtceu:redstone_gem" } } } ] },
+	    "tickInputs": { "eu": [ { "content": 2 } ] },
+	    "outputs": { "item": [ { "content": { "type": "gtceu:sized", "count": 16,
+	      "ingredient": { "item": "gtceu:redstone_dust" } } } ] } }
+	]
+	""";
+
 	private static readonly string[] JsonGroups =
 	{
-		HatchesAndBuses, Bootstrap, SteamMachineOverrides, Misc, Casings, Clay,
-		TerrariaIntermediates, TerraPrisma,
+		HatchesAndBuses, Bootstrap, SteamMachineOverrides, Misc, SimplePipes, Casings, Clay,
+		TerrariaIntermediates, TerraPrisma, RedstoneGem,
 	};
 
 	// Per-tier crafting recipes for our custom-block machines

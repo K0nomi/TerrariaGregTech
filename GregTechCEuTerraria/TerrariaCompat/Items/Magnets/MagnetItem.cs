@@ -282,6 +282,10 @@ public sealed class MagnetItem : ModItem, IElectricItem, ITextureWarmUp
 			$"{_storedEu:N0} / {_maxEu:N0} EU  ({pct:F0}%)"));
 		tooltips.Add(new TooltipLine(Mod, "MagnetState",
 			_isActive ? "Enabled" : "Disabled"));
+		if (_filterOrdinal == 0 && UI.FilterWarning.IsEmptyWhitelist(_simpleFilter))
+			tooltips.Add(new TooltipLine(Mod, "MagnetFilterWarn",
+				"! Empty whitelist - pulls nothing")
+			{ OverrideColor = UI.FilterWarning.Color });
 		tooltips.Add(new TooltipLine(Mod, "MagnetHint",
 			$"Equip in an accessory slot to activate  *  Use (right-click held): filter settings  *  Right-click in inventory: pause/resume  *  Range {_rangeTiles}"));
 	}

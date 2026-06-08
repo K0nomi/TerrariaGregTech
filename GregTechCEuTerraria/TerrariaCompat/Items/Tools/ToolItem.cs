@@ -531,9 +531,6 @@ public sealed class ToolItem : ModItem, IElectricItem
 		if (IsKnife)
 			tooltips.Add(new TooltipLine(Mod, "GTFriendlyFire", "Can harm friendly NPCs.")
 				{ OverrideColor = new Color(220, 60, 60) });
-		tooltips.Add(new TooltipLine(Mod, "GTHarvestLevel", $"Harvest level: {_harvestLevel}"));
-		if (_type.Definition.SuitableForBlockBreaking)
-			tooltips.Add(new TooltipLine(Mod, "GTMiningSpeed", $"Mining speed: {_toolSpeed:0.#}"));
 		if (IsElectric)
 		{
 			float pct = _maxCharge > 0 ? (float)_storedEu / _maxCharge * 100 : 0;

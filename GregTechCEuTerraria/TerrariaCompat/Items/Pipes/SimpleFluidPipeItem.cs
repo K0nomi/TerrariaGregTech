@@ -9,20 +9,41 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Items.Pipes;
 
-// Fluid twin of SimpleItemPipeItem. Sentinel MaterialId "simple_fluid".
-// Stats matched to a wooden fluid pipe - 20 mB/t, single channel, no
-// gas/cryo/plasma/acid containment.
+// throughput base = Potin (40 scaled), heat tolerance + containment = Naquadah + acid-proof
 public sealed class SimpleFluidPipeItem : ModItem, ITextureWarmUp
 {
-	public override string Name     => "simple_fluid_pipe";
-	public override string Texture  => "GregTechCEuTerraria/Content/Textures/block/pipe/pipe_normal_in";
+	private const int PotinBaseThroughput = 40;
+	private const int  NaquadahMaxTemp     = 3776;
+	private const bool NaquadahGasProof    = true;
+	private const bool NaquadahAcidProof   = true;
+	private const bool NaquadahCryoProof   = true;
+	private const bool NaquadahPlasmaProof = true;
+
+	private readonly PipeSize? _size;
+
+	public SimpleFluidPipeItem() { }
+	public SimpleFluidPipeItem(PipeSize size) { _size = size; }
+
+	public override bool IsLoadingEnabled(Mod mod) => _size != null;
+
+	private PipeSize Size     => _size ?? PipeSize.Normal;
+	private string   SizeWord => PipeSizes.Word(Size);
+
+	public override string Name => Size == PipeSize.Normal
+		? "simple_fluid_pipe"
+		: $"simple_fluid_pipe_{SizeWord}";
+
+	public override string Texture => $"GregTechCEuTerraria/Content/Textures/block/pipe/pipe_{SizeWord}_in";
 	protected override bool CloneNewInstances => true;
 
 	public override void SetStaticDefaults()
 	{
+		string label = Size == PipeSize.Normal
+			? "Simple Fluid Pipe"
+			: $"{Capitalize(SizeWord)} Simple Fluid Pipe";
 		Language.GetOrRegister(
 			$"Mods.GregTechCEuTerraria.Items.{Name}.DisplayName",
-			() => "Simple Fluid Pipe");
+			() => label);
 	}
 
 	public override void SetDefaults()
@@ -37,17 +58,20 @@ public sealed class SimpleFluidPipeItem : ModItem, ITextureWarmUp
 		Item.UseSound = SoundID.Item50;
 	}
 
+	private int Throughput => PotinBaseThroughput * PipeSizes.FluidPipeCapacityMultiplier(Size);
+
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
 	{
 		base.ModifyTooltips(tooltips);
-		tooltips.Add(new TooltipLine(Mod, "PipeKind", "Simple Fluid Pipe"));
-		tooltips.Add(new TooltipLine(Mod, "PipeRate", "[c/55FFFF:Transfer Rate:] 20 mB/t"));
-		tooltips.Add(new TooltipLine(Mod, "PipeTemp", "[c/FF5555:Temperature Limit:] 300 K"));
-		tooltips.Add(new TooltipLine(Mod, "PipeNotGasProof", "[c/AA0000:Gases may leak!]"));
-		tooltips.Add(new TooltipLine(Mod, "PipeSimple",
-			"[c/AAFFAA:Auto-connects to adjacent storage on placement.]"));
-		tooltips.Add(new TooltipLine(Mod, "PipeSimpleUI",
-			"[c/AAFFAA:Right-click to toggle per-side mode (Off / Insert / Extract).]"));
+		tooltips.Add(new TooltipLine(Mod, "PipeKind", $"{Capitalize(SizeWord)} Simple Fluid Pipe"));
+		tooltips.Add(new TooltipLine(Mod, "PipeRate", $"[c/55FFFF:Transfer Rate:] {Throughput:N0} mB/t"));
+		tooltips.Add(new TooltipLine(Mod, "PipeTemp", $"[c/FF5555:Temperature Limit:] {NaquadahMaxTemp} K"));
+		tooltips.Add(new TooltipLine(Mod, "PipeGasProof",   "[c/FFAA00:Can handle Gases]"));
+		tooltips.Add(new TooltipLine(Mod, "PipeCryoProof",  "[c/FFAA00:Can handle Cryogenics]"));
+		tooltips.Add(new TooltipLine(Mod, "PipePlasmaProof","[c/FFAA00:Can handle all Plasmas]"));
+		tooltips.Add(new TooltipLine(Mod, "PipePlasmaProof","[c/FFAA00:Can handle Acid]"));
+		tooltips.Add(new TooltipLine(Mod, "PipeSimple", "[c/AAFFAA:Auto-connects to adjacent storage on placement.]"));
+		tooltips.Add(new TooltipLine(Mod, "PipeSimpleUI", "[c/AAFFAA:Right-click to toggle per-side mode (Off / Insert / Extract).]"));
 	}
 
 	public override bool? UseItem(Player player)
@@ -60,14 +84,14 @@ public sealed class SimpleFluidPipeItem : ModItem, ITextureWarmUp
 
 		var cell = new Pipelike.Fluid.FluidPipeCell(
 			MaterialId:          "simple_fluid",
-			Size:                PipeSize.Normal,
-			Throughput:          20,
-			Channels:            1,
-			MaxFluidTemperature: 300,
-			GasProof:            false,
-			CryoProof:           false,
-			PlasmaProof:         false,
-			AcidProof:           false,
+			Size:                Size,
+			Throughput:          Throughput,
+			Channels:            PipeSizes.FluidPipeChannels(Size),
+			MaxFluidTemperature: NaquadahMaxTemp,
+			GasProof:            NaquadahGasProof,
+			CryoProof:           NaquadahCryoProof,
+			PlasmaProof:         NaquadahPlasmaProof,
+			AcidProof:           NaquadahAcidProof,
 			IsSimple:            true);
 
 		if (!Pipelike.Fluid.FluidPipeLayerHandle.Instance.TryPlace(cell, x, y, player))
@@ -90,4 +114,6 @@ public sealed class SimpleFluidPipeItem : ModItem, ITextureWarmUp
 			Pipelike.Fluid.FluidPipeLayerHandle.Instance,
 			ref _removeCooldown, Item.useTime);
 	}
+
+	private static string Capitalize(string s) => string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s[1..];
 }

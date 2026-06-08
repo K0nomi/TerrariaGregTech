@@ -8,46 +8,29 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.BossDrops;
 
-// Tier-keyed boss-drop table. The per-tier shape:
-// each tier row carries 3 distinct materials (Hull/Frame
-// collapsed since they're always equal, plus Cable + Wire) and an optional
-// component list (the SMD/wafer pieces that go INTO the tier's circuit).
-//
-// Per-material form picks raw_<m> if it exists upstream, else <m>_dust
-// (alloys + non-mineable elements like graphene / americium have no raw).
-// All ids resolve against the registry dump - items the dump doesn't carry
-// are skipped with a warning so a missing entry never NRPs a boss kill.
+// Tier-keyed boss-drop table
 public static class BossDropRegistry
 {
 	public readonly record struct Drop(int ItemType, int Min, int Max);
 	public readonly record struct TierSpec(string Name, string[] Materials, string[]? Components);
 
-	// Quantities - LV-baseline ranges, scaled by TierMultiplier[tierIdx].
-	// Raw ore drops in bulk because players need a stockpile to feed the
-	// ore-processing chain (macerator -> wash -> centrifuge -> smelt). Higher
-	// tiers drop dramatically more - UV gives ~10x LV - both because the
-	// bosses are harder and because UV-tier recipes consume many more
-	// materials. First material in each tier row is the hull/frame metal
-	// and gets a 2x range vs. cable/wire. All quantities clamp to the
-	// Terraria stack ceiling (9999).
-	private const int RawHullMin     =  16, RawHullMax     = 1024;
-	private const int RawCableMin    =  16, RawCableMax    =  512;
-	private const int DustHullMin    =  16, DustHullMax    =  256;
-	private const int DustCableMin   =  16, DustCableMax   =  128;
-	private const int ComponentMin   =   4, ComponentMax   =   16;
+	// Quantities - LV-baseline ranges, scaled by TierMultiplier[tierIdx]
+	private const int RawHullMin     =  16, RawHullMax     = 256;
+	private const int RawCableMin    =  16, RawCableMax    = 128;
+	private const int DustHullMin    =  16, DustHullMax    = 64;
+	private const int DustCableMin   =  16, DustCableMax   = 64;
+	private const int ComponentMin   =   1, ComponentMax   = 8;
 	private const int StackCeiling   = 9999;
 
-	// Indexed by tier (0=Steam unused - King Slime is hand-authored, 1=LV..8=UV).
-	// Roughly 1.4x per tier - LV anchor at 1.0, UV ~ 10x.
+	// 0=Steam unused - King Slime is hand-authored, 1=LV..8=UV)
 	private static readonly double[] TierMultiplier =
-		{ 1.0, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0, 10.0 };
+		{ 1.0, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 6.0, 10.0 };
 
-	// First entry per tier = Hull/Frame material (wider drop range).
 	private static readonly TierSpec[] Tiers =
 	{
 		new("Steam", new[] { "bronze", "invar" },                                              null),
-		new("LV",    new[] { "steel", "tin", "copper" },                                       new[] { "vacuum_tube", "resistor", "diode", "ender_pearl_gem" }),
-		new("MV",    new[] { "aluminium", "copper", "cupronickel" },                           new[] { "resistor", "transistor", "capacitor" }),
+		new("LV",    new[] { "steel", "tin", "copper" },                                       new[] { "vacuum_tube", "resistor", "ender_pearl_gem" }),
+		new("MV",    new[] { "aluminium", "copper", "nickel" },                                new[] { "diode", "transistor", "capacitor" }),
 		new("HV",    new[] { "stainless_steel", "silver", "electrum" },                        new[] { "smd_diode", "smd_resistor", "smd_transistor" }),
 		new("EV",    new[] { "titanium", "aluminium", "kanthal" },                             new[] { "smd_capacitor", "smd_inductor" }),
 		new("IV",    new[] { "tungsten_steel", "tungsten", "graphene" },                       new[] { "advanced_smd_diode", "advanced_smd_resistor", "ram_wafer" }),
@@ -56,66 +39,64 @@ public static class BossDropRegistry
 		new("UV",    new[] { "tritanium", "yttrium_barium_cuprate", "americium" },             new[] { "nano_cpu_wafer", "hpic_wafer" }),
 	};
 
-	// Hand-authored special: King Slime is the only Steam boss, so it drops a
-	// heap of bronze + the prerequisite metals to bootstrap into Steam tier.
 	private static readonly (string item, int min, int max)[] KingSlimeOverride =
 	{
-		// Bronze is the steam-tier hull alloy - needs the most. Scaled to roughly
-		// match LV hull dust range so the player can bootstrap a full steam
-		// workshop from one kill.
-		("bronze_dust",  64, 512),
-		("invar_dust",   16, 128),
-		("copper_dust",  64, 512),
-		("tin_dust",     64, 512),
-		// Raw tin in LV-hull bulk so smelting + alloying chains have material.
-		("raw_tin",      32, 256),
+		("bronze_dust",  64, 128),
+		("invar_dust",   16, 64),
+		("copper_dust",  64, 256),
+		("tin_dust",     64, 256)
 	};
 
-	// NPCID -> (tier index, include circuit components). Components fire only
-	// for the boss rows where the spec wrote "+ TIER circuit components".
+	private static readonly Dictionary<short, (string item, int min, int max)[]> BossExtraDrops = new()
+	{
+		{ NPCID.WallofFlesh, new[] { ("nether_star_gem", 1, 1) } },
+	};
+
 	private static readonly (short Npc, int TierIdx, bool Components)[] BossTable =
 	{
-		// Steam (index 0) - King Slime gets the hand-authored override below.
+		// Steam
 		(NPCID.KingSlime,         0, false),
 
-		// LV (index 1)
+		// LV
 		(NPCID.EyeofCthulhu,      1, true),
 		(NPCID.EaterofWorldsHead, 1, true),
+		(NPCID.EaterofWorldsBody, 1, true),
+		(NPCID.EaterofWorldsTail, 1, true),
 		(NPCID.BrainofCthulhu,    1, true),
 		(NPCID.Deerclops,         1, false),
 
-		// MV (index 2)
+		// MV
 		(NPCID.QueenBee,          2, false),
 		(NPCID.SkeletronHead,     2, true),
 		(NPCID.WallofFlesh,       2, true),
 
-		// HV (index 3)
-		(NPCID.PirateShip,        3, false), // Flying Dutchman
+		// HV
+		(NPCID.PirateShip,        3, false),
 		(NPCID.TheDestroyer,      3, true),
 		(NPCID.Retinazer,         3, true),
 		(NPCID.Spazmatism,        3, true),
 		(NPCID.SkeletronPrime,    3, true),
 
-		// EV (index 4)
+		// EV
 		(NPCID.QueenSlimeBoss,    4, false),
 		(NPCID.Plantera,          4, true),
 
-		// IV (index 5)
+		// IV
 		(NPCID.MourningWood,      5, false),
 		(NPCID.Everscream,        5, false),
 		(NPCID.Pumpking,          5, true),
 		(NPCID.SantaNK1,          5, true),
 		(NPCID.IceQueen,          5, true),
 
-		// LuV (index 6)
+		// LuV
 		(NPCID.Golem,             6, false),
 		(NPCID.MartianSaucerCore, 6, true),
 
-		// ZPM (index 7)
+		// ZPM
 		(NPCID.DukeFishron,       7, false),
 		(NPCID.CultistBoss,       7, true),
 
-		// UV (index 8) - all four Pillars share the same drop (per design call).
+		// UV
 		(NPCID.LunarTowerSolar,    8, false),
 		(NPCID.LunarTowerVortex,   8, false),
 		(NPCID.LunarTowerNebula,   8, false),
@@ -124,23 +105,23 @@ public static class BossDropRegistry
 		(NPCID.MoonLordCore,       8, true),
 	};
 
-	// Resolved at Mod.Load - NPCID -> list of (itemType, min, max).
+	private static readonly HashSet<short> MultiPartBosses = new()
+	{
+		NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
+		NPCID.Retinazer, NPCID.Spazmatism,
+	};
+
+	public static bool IsMultiPart(short npcType) => MultiPartBosses.Contains(npcType);
+
+
 	private static readonly Dictionary<short, List<Drop>> _resolved = new();
-	// NPCID -> list of multiblock-bag itemTypes assigned to this boss's tier.
 	private static readonly Dictionary<short, List<int>> _bagsByBoss = new();
 
-	// Per-tier resolved material/component lists, kept after Resolve() so a
-	// custom ModNPC boss can mirror a vanilla boss's tier loot (e.g. the
-	// Fallen EBF reuses Eye-of-Cthulhu's LV-tier "age loot"). Null until load.
 	private static List<Drop>[]? _tierResolved;
 	private static List<Drop>?[]? _tierComponents;
 
-	public static bool TryGet(short npcType, out List<Drop> drops) =>
-		_resolved.TryGetValue(npcType, out drops!);
+	public static bool TryGet(short npcType, out List<Drop> drops) => _resolved.TryGetValue(npcType, out drops!);
 
-	// Returns a fresh copy of the resolved drops for a tier index
-	// (0=Steam..8=UV). `withComponents` mirrors the BossTable "include circuit
-	// components" flag. Empty before Mod.Load finishes resolving.
 	public static List<Drop> GetTierDrops(int tierIdx, bool withComponents)
 	{
 		var list = new List<Drop>();
@@ -154,9 +135,6 @@ public static class BossDropRegistry
 	public static bool TryGetBags(short npcType, out List<int> bagItemTypes) =>
 		_bagsByBoss.TryGetValue(npcType, out bagItemTypes!);
 
-	// Map a tier index (0=Steam..8=UV) back to the bosses in BossTable at that
-	// tier - used by the multiblock-bag wiring to attach each bag to every
-	// boss in its tier bucket.
 	public static IEnumerable<short> BossesForTier(int tierIdx)
 	{
 		foreach (var (npc, idx, _) in BossTable)
@@ -168,15 +146,11 @@ public static class BossDropRegistry
 		_resolved.Clear();
 		int totalDrops = 0, missing = 0;
 
-		Language.GetOrRegister("Mods.GregTechCEuTerraria.BossDrops.ConditionDescription",
-			() => "Requires boss drops enabled in config.");
+		Language.GetOrRegister("Mods.GregTechCEuTerraria.BossDrops.ConditionDescription", () => "Requires boss drops enabled in config.");
 		Language.GetOrRegister("Mods.GregTechCEuTerraria.Configs.GTConfig.DisplayName", () => "GregTech");
 		Language.GetOrRegister("Mods.GregTechCEuTerraria.Configs.GTConfig.EnableBossDrops.Label", () => "Enable GregTech boss drops");
-		Language.GetOrRegister("Mods.GregTechCEuTerraria.Configs.GTConfig.EnableBossDrops.Tooltip",
-			() => "If enabled, vanilla bosses drop tier-appropriate GregTech raw ores, dusts, and circuit components.");
+		Language.GetOrRegister("Mods.GregTechCEuTerraria.Configs.GTConfig.EnableBossDrops.Tooltip", () => "If enabled, vanilla bosses drop tier-appropriate GregTech raw ores, dusts, and circuit components.");
 
-		// Resolve each tier row's material + component item ids once, scaled
-		// by the tier multiplier.
 		var tierResolved = new List<Drop>[Tiers.Length];
 		var tierComponents = new List<Drop>?[Tiers.Length];
 		for (int i = 0; i < Tiers.Length; i++)
@@ -214,14 +188,12 @@ public static class BossDropRegistry
 			}
 		}
 
-		// Keep the per-tier lists around for GetTierDrops (custom-boss reuse).
 		_tierResolved = tierResolved;
 		_tierComponents = tierComponents;
 
-		// Compose per-boss drop lists.
 		foreach (var (npc, tierIdx, withComponents) in BossTable)
 		{
-			if (npc == NPCID.KingSlime) continue; // handled below
+			if (npc == NPCID.KingSlime) continue;
 			var list = new List<Drop>(tierResolved[tierIdx]);
 			if (withComponents && tierComponents[tierIdx] is { } comps)
 				list.AddRange(comps);
@@ -229,7 +201,6 @@ public static class BossDropRegistry
 			totalDrops += list.Count;
 		}
 
-		// King Slime hand-authored override.
 		var ks = new List<Drop>();
 		foreach (var (id, min, max) in KingSlimeOverride)
 		{
@@ -239,16 +210,23 @@ public static class BossDropRegistry
 		_resolved[NPCID.KingSlime] = ks;
 		totalDrops += ks.Count;
 
+		foreach (var (npc, extras) in BossExtraDrops)
+		{
+			if (!_resolved.TryGetValue(npc, out var list))
+				_resolved[npc] = list = new List<Drop>();
+			foreach (var (id, min, max) in extras)
+			{
+				if (TryResolveBareId(id, out int t)) { list.Add(new Drop(t, min, max)); totalDrops++; }
+				else { mod.Logger.Warn($"[BossDrops] Extra drop for NPC {npc}: '{id}' not found"); missing++; }
+			}
+		}
+
 		mod.Logger.Info($"[BossDrops] Resolved {_resolved.Count} bosses, {totalDrops} drop entries" +
 			(missing > 0 ? $" ({missing} unresolved - logged above)" : ""));
 
 		ResolveMultiblockBags(mod);
 	}
 
-	// Walk every registered multiblock bag, look up its target tier, and add it
-	// to every boss at that tier. Runs AFTER MultiblockBagLoader.Register so the
-	// bag item types exist. Bags whose target tier has no boss assignment are
-	// silently skipped (e.g. a future "post-Moon-Lord" tier 9 with no bosses).
 	private static void ResolveMultiblockBags(Mod mod)
 	{
 		_bagsByBoss.Clear();
@@ -282,9 +260,6 @@ public static class BossDropRegistry
 		return v > StackCeiling ? StackCeiling : (v < 1 ? 1 : v);
 	}
 
-	// Material picker: raw_<m> if it exists upstream, else <m>_dust. Mirrors
-	// the spec's "ore for raws, dust for alloys" rule via dump existence.
-	// `isRaw` reports which branch hit so quantity tiers can differ.
 	private static bool TryResolveMaterial(string material, out int itemType, out bool isRaw)
 	{
 		if (MaterialItemRegistry.TryGetByUpstreamId("raw_" + material, out itemType)) { isRaw = true;  return true; }
@@ -296,8 +271,6 @@ public static class BossDropRegistry
 
 	private static bool TryResolveBareId(string bareId, out int itemType)
 	{
-		// Material items first (raw_tin / copper_dust / bronze_dust ...),
-		// then inert registry items (resistor / vacuum_tube / smd_* / wafers).
 		if (MaterialItemRegistry.TryGetByUpstreamId(bareId, out itemType)) return true;
 		if (RegistryItemLoader.TryGet("gtceu:" + bareId, out itemType)) return true;
 		itemType = 0;

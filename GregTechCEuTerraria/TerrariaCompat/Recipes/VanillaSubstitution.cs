@@ -59,6 +59,7 @@ public static class VanillaItemMap
 		{ "gtceu:ruby_gem", 			ItemID.Ruby },
 		{ "gtceu:topaz_gem",			ItemID.Topaz },
 		{ "gtceu:sapphire_gem",			ItemID.Sapphire },
+		{ "gtceu:redstone_gem",			ItemID.Amber },
 
 		// Common drops
 		{ "minecraft:torch",            ItemID.Torch },

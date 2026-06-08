@@ -281,7 +281,11 @@ def emit_items(materials, lines, indent, tr=None, lang=None):
         val = json.dumps(display, ensure_ascii=False) if q else display
         lines.append(f"{i2}{key}: {{")
         lines.append(f"{i2}\tDisplayName: {val}")
-        lines.append(f'{i2}\tTooltip: ""')
+        tip = _item_tooltip(lang, key)
+        if tip is not None:
+            lines.append(f"{i2}\tTooltip: {json.dumps(tip, ensure_ascii=False)}")
+        elif tr is None:
+            lines.append(f'{i2}\tTooltip: ""')
         lines.append(f"{i2}}}")
 
     dump = _load_dump()
@@ -493,6 +497,24 @@ def _mc_to_terraria(s):
             break
         text = cleaned
     return text.strip()
+
+
+def _item_tooltip(lang, iid):
+    if not lang:
+        return None
+    for ns in ("item.gtceu.", "block.gtceu."):
+        base = f"{ns}{iid}.tooltip"
+        raw = []
+        if base in lang:
+            raw.append(lang[base])
+        n = 0
+        while f"{base}.{n}" in lang:
+            raw.append(lang[f"{base}.{n}"])
+            n += 1
+        if raw:
+            text = "\n".join(raw)
+            return "\n".join(_mc_to_terraria(ln) for ln in text.split("\n"))
+    return None
 
 
 def emit_machine_tooltips(lines, indent, lang):

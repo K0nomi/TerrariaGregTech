@@ -1,5 +1,7 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using GregTechCEuTerraria.Api.Capability.Recipe;
 using GregTechCEuTerraria.Api.Fluids;
 using GregTechCEuTerraria.Api.Recipe;
@@ -18,7 +20,6 @@ using RecipeContent = GregTechCEuTerraria.Api.Recipe.Content.Content;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI.Widgets;
 
-// Draws one recipe as `[in1][in2] -> [out1][out2]`
 public static class RecipeRowRenderer
 {
 	public const int RowHeight = 40;
@@ -103,7 +104,6 @@ public static class RecipeRowRenderer
 		}
 		else if (stationLabel.Length > 0)
 		{
-			// Fallback for abstract stations with no block (crafting_shaped, ...).
 			Terraria.Utils.DrawBorderString(sb, stationLabel,
 				new Vector2(labelX, cy + 1),
 				new Color(180, 220, 255), 0.7f);
@@ -124,7 +124,6 @@ public static class RecipeRowRenderer
 		bool totalCwu = Api.Recipe.RecipeDataUtil.GetBool(recipe.Data, "duration_is_total_cwu");
 		if (recipe.Duration > 0 || eut > 0)
 		{
-			// Duration is MC ticks (FromMcTicks gate preserves 20 Hz cadence).
 			string durStr;
 			if (totalCwu)
 			{
@@ -154,7 +153,6 @@ public static class RecipeRowRenderer
 				new Color(255, 210, 110) * (lightColor.A / 255f), 0.62f);
 		}
 
-		// Quick-craft chip - visible only when a matching vanilla recipe is in Main.availableRecipe[]
 		if (FindAvailableVanillaCraft(recipe) != null)
 			DrawCraftButton(sb, CraftButtonRect(bounds));
 	}
@@ -350,8 +348,7 @@ public static class RecipeRowRenderer
 		}
 		else
 		{
-			int pct = (int)(content.Chance * 100L / max);
-			label = $"{pct}%";
+			label = $"{FormatChancePercent(content.Chance, max)}%";
 			tint  = isOutput
 				? lightColor * 0.95f
 				: new Color(255, 240, 160) * (lightColor.A / 255f);
@@ -361,6 +358,14 @@ public static class RecipeRowRenderer
 		Terraria.Utils.DrawBorderString(sb, label,
 			new Vector2(dest.Right - size.X - 2, dest.Y + 2),
 			tint, scale);
+	}
+
+	private static string FormatChancePercent(int chance, int max)
+	{
+		float pct = chance * 100f / max;
+		return pct != MathF.Floor(pct)
+			? pct.ToString("0.##", CultureInfo.InvariantCulture)
+			: ((int)pct).ToString(CultureInfo.InvariantCulture);
 	}
 
 	private static void DrawFluidCell(SpriteBatch sb, Rectangle dest, Ingredient ing, Color lightColor)
@@ -557,7 +562,7 @@ public static class RecipeRowRenderer
 		{
 			chanceLine = content.Chance == 0
 				? "\nTool - not consumed"
-				: $"\nChance: {(int)(content.Chance * 100L / max)}%";
+				: $"\nChance: {FormatChancePercent(content.Chance, max)}%";
 		}
 
 		if (IsFluid(ing))

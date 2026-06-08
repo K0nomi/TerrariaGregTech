@@ -10,10 +10,15 @@ namespace GregTechCEuTerraria.TerrariaCompat.Items.Tools;
 
 public sealed class ToolWorldEffects : GlobalTile
 {
-	private static int _rubberWood = -1;
-	private static int RubberWood => _rubberWood >= 0
-		? _rubberWood
-		: (_rubberWood = IngredientResolverImpl.Instance.ResolveItemType("gtceu:rubber_wood"));
+	private static int _rubberLog = -1;
+	private static int RubberLog => _rubberLog >= 0
+		? _rubberLog
+		: (_rubberLog = IngredientResolverImpl.Instance.ResolveItemType("gtceu:rubber_log"));
+
+	private static int _stickyResin = -1;
+	private static int StickyResin => _stickyResin >= 0
+		? _stickyResin
+		: (_stickyResin = IngredientResolverImpl.Instance.ResolveItemType("gtceu:sticky_resin"));
 
 	private static readonly HashSet<int> SoftTiles = new()
 	{
@@ -46,9 +51,21 @@ public sealed class ToolWorldEffects : GlobalTile
 		var holder = NearestToolHolder(i, j);
 		if (holder?.HeldItem?.ModItem is not ToolItem tool) return true;
 
-		if (tool.IsSawLike && (type == TileID.Trees || type == TileID.PalmTree) && RubberWood > 0)
+		if (tool.IsSawLike && type == TileID.PalmTree && StickyResin > 0)
 		{
-			SpawnItem(i, j, RubberWood, 1);
+			SpawnItem(i, j, StickyResin, 1);
+			return false;
+		}
+
+		if (tool.IsSawLike && type == TileID.Trees && RubberLog > 0)
+		{
+			SpawnItem(i, j, RubberLog, 1);
+			if (j + 1 < Main.maxTilesY)
+			{
+				var below = Main.tile[i, j + 1];
+				if (below.HasTile && below.TileType != TileID.Trees)
+					SpawnItem(i, j, ItemID.Acorn, tool.Tier + 1);
+			}
 			return false;
 		}
 

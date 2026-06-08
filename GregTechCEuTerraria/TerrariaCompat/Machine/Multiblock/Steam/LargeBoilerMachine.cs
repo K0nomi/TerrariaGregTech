@@ -12,25 +12,13 @@ using Terraria.ModLoader.IO;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Machine.Multiblock.Steam;
 
-// Port of LargeBoilerMachine. Multi-tier (bronze/steel/titanium/tungstensteel)
-// steam producer. Burns fuel -> heats up -> drains water from input hatches ->
-// fills steam into output hatches. Per-tier (maxTemp, heatSpeed) on Definition.
-// Throttle is player-controlled via BoilerThrottleSetAction (server-auth).
-// Upstream's secondary-explosion grid dropped (primary KillTile only).
-//
-// DEVIATION: upstream's onStructureFormed/Invalid-
-// scoped TickableSubscription collapses onto OnTick (every other multi here).
-// The `tanksSeen == 0` guard stands in for the post-load rebind window
-// (IsFormed persists across save, CapabilitiesFlat doesn't). Observable
-// behavior identical to upstream.
 public class LargeBoilerMachine : WorkableMultiblockMachine
 {
 	protected override string Label => Definition?.Label ?? "Large Boiler";
 
 	private const int TicksPerSteamGeneration = 5;
 
-	// Upstream config default (steamPerWater).
-	public const int SteamPerWater = 150;
+	public const int SteamPerWater = 160;
 
 	public int CurrentTemperature { get; private set; }
 	public int Throttle           { get; private set; } = 100;
@@ -47,11 +35,7 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 	{
 		base.OnTick();
 		if (!IsServer || !IsFormed) return;
-		// MC-aligned timer - raw % N (see MetaMachine.GetMcOffsetTimer).
 		long t = GetMcOffsetTimer();
-
-		// Heat ramp: +HeatSpeed*10 every 10 MC-ticks while working, capped;
-		// otherwise cool by CoolDownRate (mirror of updateCurrentTemperature).
 		if (Recipe.IsWorking())
 		{
 			if (t % 10 == 0 && CurrentTemperature < MaxTemperature)
@@ -73,8 +57,6 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 		}
 		if (maxDrain <= 0) return;
 
-		// DrainInternal - boiler IS the recipe consumer, bypass CanCapOutput
-		// (upstream tank.handleRecipe(IO.IN, ...)). Walks IO.IN + IO.BOTH.
 		int waterRemaining = maxDrain;
 		int tanksSeen = 0;
 		foreach (var tank in CollectFluidTanks(IO.IN, IO.BOTH))
@@ -91,12 +73,9 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 		int waterDrained = maxDrain - waterRemaining;
 		SteamGenerated = waterDrained * SteamPerWater;
 
-		// Post-load rebind window (~3 ticks): IsFormed persists but
-		// CapabilitiesFlat hasn't been rebuilt - skip the water-starved
-		// explosion check or every world-join would detonate.
+		// Post-load rebind window (~3 ticks), skip the explosion check on world-join
 		if (tanksSeen == 0) return;
 
-		// FillInternal - boiler IS the recipe producer, bypass CanCapInput gate.
 		if (waterDrained > 0)
 		{
 			int steamRemaining = SteamGenerated;
@@ -112,12 +91,10 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 			}
 		}
 
-		// Water-starved while hot.
 		if (waterDrained < maxDrain)
 			ExplodeBoiler();
 	}
 
-	// Walk IO.BOTH too - dual-hatch parts register only there.
 	private IEnumerable<IFluidHandler> CollectFluidTanks(params IO[] directions)
 	{
 		foreach (var direction in directions)
@@ -132,7 +109,6 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 
 	protected virtual int GetCoolDownRate() => 1;
 
-	// Mid-recipe rescale (upstream modifyFuelBurnTime).
 	public void SetThrottle(int newThrottle)
 	{
 		newThrottle = System.Math.Clamp(newThrottle, 25, 100);
@@ -180,7 +156,6 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 		Common.Machine.Trait.EnvironmentalExplosionTrait.DoExplosionAt(this, 2.0f);
 	}
 
-	// Throttle scales fuel-burn duration (higher throttle -> faster -> more heat/sec).
 	public class LargeBoilerRecipeLogic : RecipeLogic
 	{
 		private int _currentThrottle = 100;
@@ -195,7 +170,6 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 			}
 		}
 
-		// Verbatim modifyFuelBurnTime.
 		public void OnThrottleChanged(int oldThrottle, int newThrottle)
 		{
 			if (_lastRecipe == null) return;
@@ -205,7 +179,6 @@ public class LargeBoilerMachine : WorkableMultiblockMachine
 			_currentThrottle = newThrottle;
 		}
 
-		// Else post-reload throttle changes rescale from the 100% baseline for one transition.
 		public override void Save(TagCompound tag)
 		{
 			base.Save(tag);

@@ -11,9 +11,7 @@ using Terraria.UI;
 
 namespace GregTechCEuTerraria.TerrariaCompat.UI;
 
-// Single open-machine-UI policy (vanilla chest behaviour). Tied to
-// Main.playerInventory so the inventory panel shows alongside, giving slot
-// widgets a natural drag source.
+// Tied to Main.playerInventory so the inventory panel shows alongside
 public sealed class MachineUISystem : ModSystem
 {
 	private UserInterface? _ui;
@@ -39,13 +37,12 @@ public sealed class MachineUISystem : ModSystem
 	{
 		var sys = ModContent.GetInstance<MachineUISystem>();
 		if (sys?._ui is null || sys._state is null) return;
-		ModUIRegistry.OnOpen(Close); // close any other mod-side modal first
+		ModUIRegistry.OnOpen(Close);
+		CloseVanillaChest();
 		sys._state.Bind(entity, layout);
 		sys._ui.SetState(sys._state);
 		Main.playerInventory = true;
 		SoundEngine.PlaySound(SoundID.MenuOpen);
-		// Tell the server to start streaming state + accept our actions. SP
-		// already has authoritative state in-process - gate to skip the alloc.
 		if (Main.netMode == NetmodeID.MultiplayerClient)
 			TerrariaCompat.Net.MachineViewPacket.SendBegin(entity.Position);
 	}
@@ -54,8 +51,7 @@ public sealed class MachineUISystem : ModSystem
 	{
 		var sys = ModContent.GetInstance<MachineUISystem>();
 		if (sys?._ui is null || sys._state is null) return;
-		if (sys._ui.CurrentState == null) return;   // already closed
-		// Capture entity BEFORE Unbind so the End packet targets the right tile.
+		if (sys._ui.CurrentState == null) return;
 		var entity = sys._state.Entity;
 		sys._state.Unbind();
 		sys._ui.SetState(null);
@@ -65,6 +61,18 @@ public sealed class MachineUISystem : ModSystem
 		SoundEngine.PlaySound(SoundID.MenuClose);
 		if (Main.netMode == NetmodeID.MultiplayerClient && entity != null)
 			TerrariaCompat.Net.MachineViewPacket.SendEnd(entity.Position);
+	}
+
+	private static void CloseVanillaChest()
+	{
+		var plr = Main.LocalPlayer;
+		if (plr.chest == -1) return;
+		plr.chest = -1;
+		Main.recBigList = false;
+		Terraria.Recipe.FindRecipes();
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		if (Main.netMode == NetmodeID.MultiplayerClient)
+			NetMessage.SendData(MessageID.SyncPlayerChestIndex, -1, -1, null, Main.myPlayer, -1f);
 	}
 
 	public static bool IsOpen
@@ -78,8 +86,6 @@ public sealed class MachineUISystem : ModSystem
 
 	public static bool IsOccludedByHigherModal => UILayers.IsAnyHigherPriorityModalOpen(LayerName);
 
-	// Used by ModPlayer.ShiftClickSlot to route shift-clicks into the open
-	// machine's input slots (vanilla chest parity).
 	public static MetaMachine? CurrentEntity
 	{
 		get
@@ -97,7 +103,8 @@ public sealed class MachineUISystem : ModSystem
 
 		if (_ui.CurrentState != null)
 		{
-			if (!Main.playerInventory) { Close(); return; }   // mirror chest auto-close
+			if (!Main.playerInventory) { Close(); return; }
+			if (Main.LocalPlayer.chest != -1) { Close(); return; }
 
 			var bound = _state?.Entity;
 			if (bound != null)
@@ -108,8 +115,6 @@ public sealed class MachineUISystem : ModSystem
 					return;
 				}
 
-				// Same tile-interaction reach the chest UI uses (no separate
-				// hardcoded distance - reach extensions extend the window).
 				bool inReach = false;
 				foreach (var (cx, cy) in bound.Cells())
 				{
@@ -127,15 +132,11 @@ public sealed class MachineUISystem : ModSystem
 			}
 		}
 
-		// Skip widget updates when a higher-priority modal is on top (close
-		// checks above still run).
 		if (!UILayers.IsAnyHigherPriorityModalOpen(LayerName))
 			_ui.Update(gameTime);
 		ModalEscape.DbgMI_AfterUpdateUI = Main.LocalPlayer.mouseInterface;
 	}
 
-	// PostUpdateInput per ModalEscape phase-2 rule. Esc closes via the inventory
-	// (Esc -> inventory closes -> us); no per-modal Esc handler needed.
 	public override void PostUpdateInput()
 	{
 		if (Main.dedServ || !IsOpen || _state is null) return;

@@ -1,3 +1,23 @@
+## 0.0.4
+
+- Added native gt tooltips for crafting ingredients (thanks Konomi)
+- Added nether star to WoF drop pool (thanks Flungus, hamood)
+- Added redstone relation to amber (thanks Neko CR-21)
+- Added bigger variations of simple pipes (thanks Flungus)
+- Added warning to empty whitelist on filters for better UX (thanks TrRzeczy)
+- Added questbook wip disclaimer (thanks megacraftbuilder)
+- Added quick stack support for gt containers (thanks hamood)
+- Added extra resin source
+- Changed oil drilling rig to give you more oil per cycle (thanks TrRzeczy)
+- Changed solar boilers and panels sky check so its more convenient to use (thanks TrRzeczy, TheLarvi)
+- Changed ore rarity so lava won't destroy them (thanks hamood)
+- Fixed duplicated mining speed tooltip (thanks Konomi)
+- Fixed EBF-chan name render and census support (thanks Konomi for implementation)
+- Fixed recipe browser chance render for very low chances (thanks TrRzeczy)
+- Fixed trees dropping rubber wood instead of rubber logs, added acorns (thanks HiKoNe, Natsuki)
+- Fixed EoW and BoC loot droprates (thanks HiKoNe)
+- Fixed wrenches pipe highlight (thanks hamood)
+
 ## 0.0.3
 
 - Added recipe browser station query clicks (thanks PotatoSagall)

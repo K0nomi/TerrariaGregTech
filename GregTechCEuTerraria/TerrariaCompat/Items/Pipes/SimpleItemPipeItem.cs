@@ -16,20 +16,34 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Items.Pipes;
 
-// Early-game item pipe with a simplified 3-state per-side UI. Sentinel
-// MaterialId "simple_item" separates its network from real material pipes.
-// Stats sit between tin and copper - out-classed past the steam age.
+// throughput rate 0.25
 public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 {
-	public override string Name     => "simple_item_pipe";
-	public override string Texture  => "GregTechCEuTerraria/Content/Textures/block/pipe/pipe_normal_in";
+	private readonly PipeSize? _size;
+
+	public SimpleItemPipeItem() { }
+	public SimpleItemPipeItem(PipeSize size) { _size = size; }
+
+	public override bool IsLoadingEnabled(Mod mod) => _size != null;
+
+	private PipeSize Size     => _size ?? PipeSize.Normal;
+	private string   SizeWord => PipeSizes.Word(Size);
+
+	public override string Name => Size == PipeSize.Normal
+		? "simple_item_pipe"
+		: $"simple_item_pipe_{SizeWord}";
+
+	public override string Texture => $"GregTechCEuTerraria/Content/Textures/block/pipe/pipe_{SizeWord}_in";
 	protected override bool CloneNewInstances => true;
 
 	public override void SetStaticDefaults()
 	{
+		string label = Size == PipeSize.Normal
+			? "Simple Item Pipe"
+			: $"{Capitalize(SizeWord)} Simple Item Pipe";
 		Language.GetOrRegister(
 			$"Mods.GregTechCEuTerraria.Items.{Name}.DisplayName",
-			() => "Simple Item Pipe");
+			() => label);
 	}
 
 	public override void SetDefaults()
@@ -47,12 +61,15 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
 	{
 		base.ModifyTooltips(tooltips);
-		tooltips.Add(new TooltipLine(Mod, "PipeKind", "Simple Item Pipe"));
-		tooltips.Add(new TooltipLine(Mod, "PipeRate", "[c/55FFFF:Transfer Rate:] 16 items/s"));
-		tooltips.Add(new TooltipLine(Mod, "PipeSimple",
-			"[c/AAFFAA:Auto-connects to adjacent storage on placement.]"));
-		tooltips.Add(new TooltipLine(Mod, "PipeSimpleUI",
-			"[c/AAFFAA:Right-click to toggle per-side mode (Off / Insert / Extract).]"));
+		tooltips.Add(new TooltipLine(Mod, "PipeKind", $"{Capitalize(SizeWord)} Simple Item Pipe"));
+
+		float rate = 0.25f * Pipelike.ItemPipe.ItemPipeSizeModifier.For(Size, false).RateMultiplier;
+		string rateLine = (rate % 1 != 0f)
+			? $"[c/55FFFF:Transfer Rate:] {(int)((rate * 64) + 0.5f)} items/s"
+			: $"[c/55FFFF:Transfer Rate:] {(int)rate} stacks/s";
+		tooltips.Add(new TooltipLine(Mod, "PipeRate", rateLine));
+		tooltips.Add(new TooltipLine(Mod, "PipeSimple", "[c/AAFFAA:Auto-connects to adjacent storage on placement.]"));
+		tooltips.Add(new TooltipLine(Mod, "PipeSimpleUI", "[c/AAFFAA:Right-click to toggle per-side mode (Off / Insert / Extract).]"));
 	}
 
 	public override bool? UseItem(Player player)
@@ -63,20 +80,21 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 		if (x <= 0 || x >= Main.maxTilesX - 1 || y <= 0 || y >= Main.maxTilesY - 1) return false;
 		if (Item.stack <= 0) return false;
 
+		var mod      = Pipelike.ItemPipe.ItemPipeSizeModifier.For(Size, restrictive: false);
+		int priority = (int)((1 * mod.ResistanceMultiplier) + 0.5f);
+		float rate   = 0.25f * mod.RateMultiplier;
+
 		var cell = new Pipelike.ItemPipe.ItemPipeCell(
 			MaterialId:   "simple_item",
-			Size:         PipeSize.Normal,
+			Size:         Size,
 			Restrictive:  false,
-			Priority:     2,
-			// 16 items/s = 0.25 stacks/s -> upstream's "(int)(rate*64+0.5) items/s" branch.
-			TransferRate: 0.25f,
+			Priority:     priority,
+			TransferRate: rate,
 			IsSimple:     true);
 
 		if (!Pipelike.ItemPipe.ItemPipeLayerHandle.Instance.TryPlace(cell, x, y, player))
 			return false;
 
-		// Auto-INSERT on placement via the same server-authoritative packet
-		// the panel uses (cell already exists server-side via TryPlace).
 		AutoInsertOnAdjacentStorage(Pipelike.PipeKind.Item, x, y);
 
 		Item.stack--;
@@ -108,7 +126,6 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 
 	private int _removeCooldown;
 
-	// Same helper PipeItem uses - hover hint, cell-info, RMB cut.
 	public override void HoldItem(Player player)
 	{
 		((ITextureWarmUp)this).WarmUpTexture();
@@ -116,4 +133,6 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 			Pipelike.ItemPipe.ItemPipeLayerHandle.Instance,
 			ref _removeCooldown, Item.useTime);
 	}
+
+	private static string Capitalize(string s) => string.IsNullOrEmpty(s) ? s : char.ToUpperInvariant(s[0]) + s[1..];
 }

@@ -25640,12 +25640,12 @@ active_transformer: {
 
 activity_detector_cover: {
 	DisplayName: Activity Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives out][c/FFFFFF:Activity Status][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 advanced_activity_detector_cover: {
 	DisplayName: Advanced Activity Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives out][c/FFFFFF:Machine Progress][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 advanced_computer_casing: {
@@ -25665,32 +25665,44 @@ advanced_electric_jetpack: {
 
 advanced_energy_detector_cover: {
 	DisplayName: Advanced Energy Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives][c/FFFFFF:RS-Latch][c/AAAAAA: controlled][c/FFFFFF:Energy Status][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 advanced_fluid_detector_cover: {
 	DisplayName: Advanced Fluid Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives][c/FFFFFF:RS-Latch][c/AAAAAA: controlled][c/FFFFFF:Fluid Storage Status][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 advanced_fluid_voiding_cover: {
 	DisplayName: Advanced Fluid Voiding Cover
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Voids][c/FFFFFF:Fluids][c/AAAAAA: with amount control as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Activate with [c/FFFFFF:Soft Mallet][c/AAAAAA: after placement.]
+		'''
 }
 
 advanced_integrated_circuit: {
 	DisplayName: Advanced Integrated Circuit
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller and more powerful]
+		[c/FFAA00:HV-Tier Circuit]
+		'''
 }
 
 advanced_item_detector_cover: {
 	DisplayName: Advanced Item Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives][c/FFFFFF:RS-Latch][c/AAAAAA: controlled][c/FFFFFF:Item Storage Status][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 advanced_item_voiding_cover: {
 	DisplayName: Advanced Item Voiding Cover
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Voids][c/FFFFFF:Items][c/AAAAAA: with amount control as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Activate with [c/FFFFFF:Soft Mallet][c/AAAAAA: after placement.]
+		'''
 }
 
 advanced_monitor: {
@@ -25715,37 +25727,37 @@ advanced_quarktech_chestplate: {
 
 advanced_smd_capacitor: {
 	DisplayName: Advanced SMD Capacitor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Advanced Electronic Component]"
 }
 
 advanced_smd_diode: {
 	DisplayName: Advanced SMD Diode
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Advanced Electronic Component]"
 }
 
 advanced_smd_inductor: {
 	DisplayName: Advanced SMD Inductor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Advanced Electronic Component]"
 }
 
 advanced_smd_resistor: {
 	DisplayName: Advanced SMD Resistor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Advanced Electronic Component]"
 }
 
 advanced_smd_transistor: {
 	DisplayName: Advanced SMD Transistor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Advanced Electronic Component]"
 }
 
 advanced_soc: {
 	DisplayName: ASoC
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Advanced System on Chip]"
 }
 
 advanced_soc_wafer: {
 	DisplayName: ASoC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Advanced Circuit]"
 }
 
 alloy_blast_smelter: {
@@ -25775,7 +25787,7 @@ antimatter_hazard_sign_block: {
 
 anvil_casting_mold: {
 	DisplayName: Casting Mold (Anvil)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for shaping Anvils]"
 }
 
 assembly_line: {
@@ -25810,7 +25822,7 @@ auto_maintenance_hatch: {
 
 ball_casting_mold: {
 	DisplayName: Casting Mold (Ball)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Balls]"
 }
 
 basic_data_access_hatch: {
@@ -25820,17 +25832,29 @@ basic_data_access_hatch: {
 
 basic_electronic_circuit: {
 	DisplayName: Basic Electronic Circuit
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Your First Circuit]
+		[c/FF5555:LV-Tier Circuit]
+		'''
 }
 
 basic_integrated_circuit: {
 	DisplayName: Basic Integrated Circuit
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller and more powerful]
+		[c/FFAA00:LV-Tier Circuit]
+		'''
 }
 
 basic_tape: {
 	DisplayName: Tape
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Not strong enough for mechanical issues]
+		Can be used to pick up crates without dropping their items
+		'''
 }
 
 bio_chaff: {
@@ -25880,17 +25904,17 @@ black_studs: {
 
 blacklight: {
 	DisplayName: Blacklight
-	Tooltip: ""
+	Tooltip: Long-Wave [c/FF55FF:Ultraviolet][c/AAAAAA: light source]
 }
 
 block_casting_mold: {
 	DisplayName: Casting Mold (Block)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Blocks]"
 }
 
 block_extruder_mold: {
 	DisplayName: Extruder Mold (Block)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Blocks]"
 }
 
 blue_borderless_lamp: {
@@ -25930,7 +25954,7 @@ blue_studs: {
 
 bolt_extruder_mold: {
 	DisplayName: Extruder Mold (Bolt)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Bolts]"
 }
 
 boss_hazard_sign_block: {
@@ -25940,12 +25964,12 @@ boss_hazard_sign_block: {
 
 bottle_casting_mold: {
 	DisplayName: Casting Mold (Bottle)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Bottles]"
 }
 
 bottle_extruder_mold: {
 	DisplayName: Extruder Mold (Bottle)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Bottles]"
 }
 
 brick_wooden_form: {
@@ -26045,7 +26069,7 @@ brown_studs: {
 
 capacitor: {
 	DisplayName: Capacitor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Basic Electronic Component]"
 }
 
 carbon_fiber_mesh: {
@@ -26070,7 +26094,7 @@ causality_hazard_sign_block: {
 
 cell_extruder_mold: {
 	DisplayName: Extruder Mold (Cell)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Cells]"
 }
 
 central_monitor: {
@@ -26260,7 +26284,7 @@ computer_heat_vent: {
 
 computer_monitor_cover: {
 	DisplayName: Computer Monitor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Displays][c/FFFFFF:Data][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 configurable_maintenance_hatch: {
@@ -26275,12 +26299,12 @@ corrosion_proof_casing: {
 
 cpu_chip: {
 	DisplayName: CPU Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Central Processing Unit]"
 }
 
 cpu_wafer: {
 	DisplayName: CPU Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Processing Unit]"
 }
 
 cracked_dark_concrete_bricks: {
@@ -26340,32 +26364,48 @@ crushing_wheels: {
 
 crystal_cpu: {
 	DisplayName: Crystal CPU
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Crystal Processing Unit]"
 }
 
 crystal_processor: {
 	DisplayName: Crystal Processor
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Taking Advantage of Crystal Engraving]
+		[c/5555FF:IV-Tier Circuit]
+		'''
 }
 
 crystal_processor_assembly: {
 	DisplayName: Crystal Processor Assembly
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Taking Advantage of Crystal Engraving]
+		[c/5555FF:LuV-Tier Circuit]
+		'''
 }
 
 crystal_processor_computer: {
 	DisplayName: Crystal Processor Supercomputer
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Taking Advantage of Crystal Engraving]
+		[c/5555FF:ZPM-Tier Circuit]
+		'''
 }
 
 crystal_processor_mainframe: {
 	DisplayName: Crystal Processor Mainframe
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Taking Advantage of Crystal Engraving]
+		[c/5555FF:UV-Tier Circuit]
+		'''
 }
 
 crystal_soc: {
 	DisplayName: Crystal SoC
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Crystal System on Chip]"
 }
 
 cupronickel_coil_block: {
@@ -26410,7 +26450,7 @@ cyan_studs: {
 
 cylinder_casting_mold: {
 	DisplayName: Casting Mold (Cylinder)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for shaping Cylinders]"
 }
 
 dark_concrete: {
@@ -26465,7 +26505,7 @@ data_module: {
 
 data_orb: {
 	DisplayName: Data Orb
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A High Capacity Data Storage]"
 }
 
 data_receiver_hatch: {
@@ -26475,7 +26515,7 @@ data_receiver_hatch: {
 
 data_stick: {
 	DisplayName: Data Stick
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Low Capacity Data Storage]"
 }
 
 data_transmitter_hatch: {
@@ -26490,7 +26530,7 @@ diamond_grinding_head: {
 
 diode: {
 	DisplayName: Diode
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Basic Electronic Component]"
 }
 
 distillation_tower: {
@@ -26505,7 +26545,7 @@ dough: {
 
 duct_tape: {
 	DisplayName: BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:If you can't fix it with this, use more of it!]"
 }
 
 dynamite: {
@@ -26530,12 +26570,12 @@ electrolytic_cell: {
 
 empty_mold: {
 	DisplayName: Empty Mold
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Plate to make Molds and Extrude Shapes]"
 }
 
 empty_spray_can: {
 	DisplayName: Spray Can (Empty)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Can be filled with sprays of various colors]"
 }
 
 empty_tier_i_battery: {
@@ -26560,7 +26600,7 @@ empty_wooden_form: {
 
 ender_fluid_link_cover: {
 	DisplayName: Ender Fluid Link
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Transports][c/FFFFFF:Fluids][c/AAAAAA: with a][c/FFFFFF:Wireless][c/FF55FF:Ender][c/FFFFFF: Connection][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 ender_item_link_cover: {
@@ -26580,22 +26620,22 @@ energium_dust: {
 
 energy_cluster: {
 	DisplayName: Energy Cluster
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 energy_crystal: {
 	DisplayName: Energium Crystal
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 energy_detector_cover: {
 	DisplayName: Energy Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives out][c/FFFFFF:Energy Amount][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 energy_module: {
 	DisplayName: Energy Module
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 engine_intake_casing: {
@@ -26605,7 +26645,7 @@ engine_intake_casing: {
 
 engraved_crystal_chip: {
 	DisplayName: Engraved Crystal Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Needed for Circuits]"
 }
 
 engraved_lapotron_crystal_chip: {
@@ -26615,12 +26655,12 @@ engraved_lapotron_crystal_chip: {
 
 epoxy_circuit_board: {
 	DisplayName: Epoxy Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An Advanced Board]"
 }
 
 epoxy_printed_circuit_board: {
 	DisplayName: Epoxy Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An Advanced Circuit Board]"
 }
 
 ev_16a_energy_converter: {
@@ -26685,7 +26725,7 @@ ev_battery_buffer_8x: {
 
 ev_battery_hull: {
 	DisplayName: Small Vanadium Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/AA00AA:EV][c/AAAAAA:Battery Hull]"
 }
 
 ev_bedrock_ore_miner: {
@@ -27100,12 +27140,12 @@ ev_transformer_4a: {
 
 ev_vanadium_battery: {
 	DisplayName: Small Vanadium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 ev_voltage_coil: {
 	DisplayName: Extreme Voltage Coil
-	Tooltip: ""
+	Tooltip: Extreme Coil
 }
 
 ev_wiremill: {
@@ -27135,7 +27175,11 @@ extreme_engine_intake_casing: {
 
 facade_cover: {
 	DisplayName: %s Cover Facade
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Decorative Outfit][c/FFFFFF:Cover][c/AAAAAA:.]
+		[c/AAAAAA:Crafted using an Iron Plate and any block]
+		'''
 }
 
 face_mask: {
@@ -27150,12 +27194,12 @@ fertilizer: {
 
 fiber_reinforced_circuit_board: {
 	DisplayName: Fiber-Reinforced Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An Extreme Board]"
 }
 
 fiber_reinforced_printed_circuit_board: {
 	DisplayName: Fiber-Reinforced Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A More Advanced Circuit Board]"
 }
 
 filter_casing: {
@@ -27170,7 +27214,7 @@ fire_hazard_sign_block: {
 
 firebrick: {
 	DisplayName: Firebrick
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Heat resistant]"
 }
 
 firebricks: {
@@ -27185,22 +27229,34 @@ fluid_cell: {
 
 fluid_detector_cover: {
 	DisplayName: Fluid Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives out][c/FFFFFF:Fluid Amount][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 fluid_filter: {
 	DisplayName: Fluid Filter
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Filters][c/FFFFFF:Fluid][c/AAAAAA: I/O as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Can be used as an [c/FFFFFF:Electric Pump][c/AAAAAA: and][c/FFFFFF:Fluid Regulator][c/AAAAAA: upgrade.]
+		'''
 }
 
 fluid_tag_filter: {
 	DisplayName: Fluid Tag Filter
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Filters][c/FFFFFF:Fluid][c/AAAAAA: I/O with][c/FFFFFF:Fluid Tags][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Can be used as an [c/FFFFFF:Electric Pump][c/AAAAAA: and][c/FFFFFF:Fluid Regulator][c/AAAAAA: upgrade.]
+		'''
 }
 
 fluid_voiding_cover: {
 	DisplayName: Fluid Voiding Cover
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Voids][c/FFFFFF:Fluids][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Activate with [c/FFFFFF:Soft Mallet][c/AAAAAA: after placement.]
+		'''
 }
 
 foam: {
@@ -27210,7 +27266,7 @@ foam: {
 
 foil_extruder_mold: {
 	DisplayName: Extruder Mold (Foil)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Foils from Non-Metals]"
 }
 
 frost_hazard_sign_block: {
@@ -27255,17 +27311,17 @@ gas_large_turbine: {
 
 gear_casting_mold: {
 	DisplayName: Casting Mold (Gear)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Gears]"
 }
 
 gear_extruder_mold: {
 	DisplayName: Extruder Mold (Gear)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Gears]"
 }
 
 gelled_toluene: {
 	DisplayName: Gelled Toluene
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Explosive]"
 }
 
 generic_hazard_sign_block: {
@@ -27290,17 +27346,25 @@ gold_drum: {
 
 good_electronic_circuit: {
 	DisplayName: Good Electronic Circuit
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Your Second Circuit]
+		[c/FF5555:MV-Tier Circuit]
+		'''
 }
 
 good_integrated_circuit: {
 	DisplayName: Good Integrated Circuit
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller and more powerful]
+		[c/FFAA00:MV-Tier Circuit]
+		'''
 }
 
 gravi_star: {
 	DisplayName: Gravi-Star
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Ultimate Nether Star]"
 }
 
 gravitation_engine_unit: {
@@ -27445,12 +27509,12 @@ high_voltage_hazard_sign_block: {
 
 highly_advanced_soc: {
 	DisplayName: HASoC
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Highly Advanced System on Chip]"
 }
 
 highly_advanced_soc_wafer: {
 	DisplayName: HASoC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Highly Advanced Circuit]"
 }
 
 hp_steam_alloy_smelter: {
@@ -27540,12 +27604,12 @@ hpca_heat_sink_component: {
 
 hpic_chip: {
 	DisplayName: HPIC Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:High Power IC]"
 }
 
 hpic_wafer: {
 	DisplayName: HPIC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw High Power Circuit]"
 }
 
 hssg_coil_block: {
@@ -27630,7 +27694,7 @@ hv_battery_buffer_8x: {
 
 hv_battery_hull: {
 	DisplayName: Large Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/FFAA00:HV][c/AAAAAA:Battery Hull]"
 }
 
 hv_bedrock_ore_miner: {
@@ -27660,7 +27724,7 @@ hv_buffer: {
 
 hv_cadmium_battery: {
 	DisplayName: Large Cadmium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 hv_canner: {
@@ -27880,7 +27944,7 @@ hv_lathe: {
 
 hv_lithium_battery: {
 	DisplayName: Large Lithium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 hv_macerator: {
@@ -27980,7 +28044,7 @@ hv_sifter: {
 
 hv_sodium_battery: {
 	DisplayName: Large Sodium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 hv_solar_panel: {
@@ -28030,7 +28094,7 @@ hv_transformer_4a: {
 
 hv_voltage_coil: {
 	DisplayName: High Voltage Coil
-	Tooltip: ""
+	Tooltip: Advanced Coil
 }
 
 hv_wiremill: {
@@ -28045,12 +28109,12 @@ hv_world_accelerator: {
 
 ilc_chip: {
 	DisplayName: IC Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Integrated Logic Circuit]"
 }
 
 ilc_wafer: {
 	DisplayName: ILC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Integrated Circuit]"
 }
 
 image_module: {
@@ -28065,7 +28129,7 @@ implosion_compressor: {
 
 inductor: {
 	DisplayName: Inductor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Small Coil]"
 }
 
 industrial_steam_casing: {
@@ -28085,17 +28149,17 @@ inert_machine_casing: {
 
 infinite_water_cover: {
 	DisplayName: Infinite Water Cover
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Fills attached containers with][c/5555FF:Water][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 ingot_casting_mold: {
 	DisplayName: Casting Mold (Ingot)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Ingots]"
 }
 
 ingot_extruder_mold: {
 	DisplayName: Extruder Mold (Ingot)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for, wait, can't we just use a Furnace?]"
 }
 
 invar_lighter: {
@@ -28110,27 +28174,43 @@ iron_minecart_wheels: {
 
 item_detector_cover: {
 	DisplayName: Item Detector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Gives out][c/FFFFFF:Item Amount][c/AAAAAA: as Redstone as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 item_filter: {
 	DisplayName: Item Filter
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Filters][c/FFFFFF:Item][c/AAAAAA: I/O as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Can be used as a [c/FFFFFF:Conveyor Module][c/AAAAAA: and][c/FFFFFF:Robotic Arm][c/AAAAAA: upgrade.]
+		'''
 }
 
 item_smart_filter: {
 	DisplayName: Smart Item Filter
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Filters][c/FFFFFF:Item][c/AAAAAA: I/O with][c/FFFFFF:Machine Recipes][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Can be used as a [c/FFFFFF:Conveyor Module][c/AAAAAA: and][c/FFFFFF:Robotic Arm][c/AAAAAA: upgrade.]
+		'''
 }
 
 item_tag_filter: {
 	DisplayName: Item Tag Filter
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Filters][c/FFFFFF:Item][c/AAAAAA: I/O with][c/FFFFFF:Item Tags][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Can be used as a [c/FFFFFF:Conveyor Module][c/AAAAAA: and][c/FFFFFF:Robotic Arm][c/AAAAAA: upgrade.]
+		'''
 }
 
 item_voiding_cover: {
 	DisplayName: Item Voiding Cover
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Voids][c/FFFFFF:Items][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]
+		Activate with [c/FFFFFF:Soft Mallet][c/AAAAAA: after placement.]
+		'''
 }
 
 iv_1024a_laser_source_hatch: {
@@ -28220,7 +28300,7 @@ iv_battery_buffer_8x: {
 
 iv_battery_hull: {
 	DisplayName: Medium Vanadium Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/0000AA:IV][c/AAAAAA:Battery Hull]"
 }
 
 iv_bender: {
@@ -28615,12 +28695,12 @@ iv_transformer_4a: {
 
 iv_vanadium_battery: {
 	DisplayName: Medium Vanadium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 iv_voltage_coil: {
 	DisplayName: Insane Voltage Coil
-	Tooltip: ""
+	Tooltip: Elite Coil
 }
 
 iv_wiremill: {
@@ -28645,17 +28725,17 @@ laminated_glass: {
 
 lapotron_crystal: {
 	DisplayName: Lapotron Crystal
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 lapotronic_energy_orb: {
 	DisplayName: Lapotronic Energy Orb
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 lapotronic_energy_orb_cluster: {
 	DisplayName: Lapotronic Energy Orb Cluster
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 large_arc_smelter: {
@@ -29025,12 +29105,12 @@ lp_steam_solid_boiler: {
 
 lpic_chip: {
 	DisplayName: LPIC Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Low Power IC]"
 }
 
 lpic_wafer: {
 	DisplayName: LPIC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Low Power Circuit]"
 }
 
 luv_1024a_laser_source_hatch: {
@@ -29120,7 +29200,7 @@ luv_battery_buffer_8x: {
 
 luv_battery_hull: {
 	DisplayName: Large Vanadium Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/FF55FF:LuV][c/AAAAAA:Battery Hull]"
 }
 
 luv_bender: {
@@ -29525,12 +29605,12 @@ luv_transformer_4a: {
 
 luv_vanadium_battery: {
 	DisplayName: Large Vanadium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 luv_voltage_coil: {
 	DisplayName: Ludicrous Voltage Coil
-	Tooltip: ""
+	Tooltip: Master Coil
 }
 
 luv_wiremill: {
@@ -29605,7 +29685,7 @@ lv_battery_buffer_8x: {
 
 lv_battery_hull: {
 	DisplayName: Small Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty LV Battery Hull]"
 }
 
 lv_bender: {
@@ -29630,7 +29710,7 @@ lv_buffer: {
 
 lv_cadmium_battery: {
 	DisplayName: Small Cadmium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 lv_canner: {
@@ -29845,7 +29925,7 @@ lv_lathe: {
 
 lv_lithium_battery: {
 	DisplayName: Small Lithium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 lv_macerator: {
@@ -29940,7 +30020,7 @@ lv_sifter: {
 
 lv_sodium_battery: {
 	DisplayName: Small Sodium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 lv_solar_panel: {
@@ -29990,7 +30070,7 @@ lv_transformer_4a: {
 
 lv_voltage_coil: {
 	DisplayName: Low Voltage Coil
-	Tooltip: ""
+	Tooltip: Basic Coil
 }
 
 lv_wiremill: {
@@ -30140,7 +30220,7 @@ max_8a_energy_converter: {
 
 max_battery: {
 	DisplayName: Ultimate Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Fill this to win Minecraft]"
 }
 
 max_battery_buffer_16x: {
@@ -30315,27 +30395,47 @@ mega_vacuum_freezer: {
 
 micro_processor: {
 	DisplayName: Microprocessor
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Amazing Computation Speed!]
+		[c/FFFF55:MV-Tier Circuit]
+		'''
 }
 
 micro_processor_assembly: {
 	DisplayName: Microprocessor Assembly
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Amazing Computation Speed!]
+		[c/FFFF55:HV-Tier Circuit]
+		'''
 }
 
 micro_processor_computer: {
 	DisplayName: Microprocessor Supercomputer
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Amazing Computation Speed!]
+		[c/FFFF55:EV-Tier Circuit]
+		'''
 }
 
 micro_processor_mainframe: {
 	DisplayName: Microprocessor Mainframe
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Amazing Computation Speed!]
+		[c/FFFF55:IV-Tier Circuit]
+		'''
 }
 
 microchip_processor: {
 	DisplayName: Microchip Processor
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:A Superior Basic Circuit]
+		[c/FFFF55:LV-Tier Circuit]
+		'''
 }
 
 mob_infestation_hazard_sign_block: {
@@ -30400,12 +30500,12 @@ mossy_red_granite_cobblestone: {
 
 mpic_chip: {
 	DisplayName: MPIC Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Power IC]"
 }
 
 mpic_wafer: {
 	DisplayName: MPIC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Power Circuit]"
 }
 
 multi_smelter: {
@@ -30415,12 +30515,12 @@ multi_smelter: {
 
 multilayer_fiber_reinforced_circuit_board: {
 	DisplayName: Multi-layer Fiber-Reinforced Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An Elite Board]"
 }
 
 multilayer_fiber_reinforced_printed_circuit_board: {
 	DisplayName: Multi-layer Fiber-Reinforced Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An Elite Circuit Board]"
 }
 
 mv_16a_energy_converter: {
@@ -30485,7 +30585,7 @@ mv_battery_buffer_8x: {
 
 mv_battery_hull: {
 	DisplayName: Medium Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/55FFFF:MV][c/AAAAAA:Battery Hull]"
 }
 
 mv_bedrock_ore_miner: {
@@ -30515,7 +30615,7 @@ mv_buffer: {
 
 mv_cadmium_battery: {
 	DisplayName: Medium Cadmium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 mv_canner: {
@@ -30730,7 +30830,7 @@ mv_lathe: {
 
 mv_lithium_battery: {
 	DisplayName: Medium Lithium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 mv_macerator: {
@@ -30825,7 +30925,7 @@ mv_sifter: {
 
 mv_sodium_battery: {
 	DisplayName: Medium Sodium Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 mv_solar_panel: {
@@ -30875,7 +30975,7 @@ mv_transformer_4a: {
 
 mv_voltage_coil: {
 	DisplayName: Medium Voltage Coil
-	Tooltip: ""
+	Tooltip: Good Coil
 }
 
 mv_wiremill: {
@@ -30890,62 +30990,82 @@ mv_world_accelerator: {
 
 name_casting_mold: {
 	DisplayName: Casting Mold (Name)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for naming Items in the Forming Press (rename Mold with Anvil)]"
 }
 
 nan_certificate: {
 	DisplayName: Certificate of Not Being a Noob Anymore
-	Tooltip: ""
+	Tooltip: Challenge Accepted!
 }
 
 nand_chip: {
 	DisplayName: NAND Chip
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:A Superior Simple Circuit]
+		[c/FFAA00:ULV-Tier Circuit]
+		'''
 }
 
 nand_memory_chip: {
 	DisplayName: NAND Memory Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:NAND Logic Gate]"
 }
 
 nand_memory_wafer: {
 	DisplayName: NAND Memory Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Logic Gate]"
 }
 
 nano_cpu_chip: {
 	DisplayName: Nano CPU Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Nano Central Processing Unit]"
 }
 
 nano_cpu_wafer: {
 	DisplayName: Nano CPU Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Nano Circuit]"
 }
 
 nano_processor: {
 	DisplayName: Nanoprocessor
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller than ever]
+		[c/55FFFF:HV-Tier Circuit]
+		'''
 }
 
 nano_processor_assembly: {
 	DisplayName: Nanoprocessor Assembly
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller than ever]
+		[c/55FFFF:EV-Tier Circuit]
+		'''
 }
 
 nano_processor_computer: {
 	DisplayName: Nanoprocessor Supercomputer
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller than ever]
+		[c/55FFFF:IV-Tier Circuit]
+		'''
 }
 
 nano_processor_mainframe: {
 	DisplayName: Nanoprocessor Mainframe
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Smaller than ever]
+		[c/55FFFF:LuV-Tier Circuit]
+		'''
 }
 
 nano_saber: {
 	DisplayName: Nano Saber
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Ryujin no ken wo kurae!]"
 }
 
 nanomuscle_boots: {
@@ -30970,7 +31090,7 @@ nanomuscle_leggings: {
 
 naquadah_boule: {
 	DisplayName: Naquadah-doped Monocrystalline Silicon Boule
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 naquadah_coil_block: {
@@ -30980,7 +31100,7 @@ naquadah_coil_block: {
 
 naquadah_wafer: {
 	DisplayName: Naquadah-doped Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 network_switch: {
@@ -30990,22 +31110,22 @@ network_switch: {
 
 neuro_processing_unit: {
 	DisplayName: Neuro Processing Unit
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Neuro CPU]"
 }
 
 neutron_reflector: {
 	DisplayName: Iridium Neutron Reflector
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Indestructible]"
 }
 
 neutronium_boule: {
 	DisplayName: Neutronium-doped Monocrystalline Silicon Boule
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 neutronium_wafer: {
 	DisplayName: Neutronium-doped Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 nichrome_coil_block: {
@@ -31030,12 +31150,12 @@ nonconducting_casing: {
 
 nor_memory_chip: {
 	DisplayName: NOR Memory Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:NOR Logic Gate]"
 }
 
 nor_memory_wafer: {
 	DisplayName: NOR Memory Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Logic Gate]"
 }
 
 normal_duct_pipe: {
@@ -31045,12 +31165,12 @@ normal_duct_pipe: {
 
 normal_laser_pipe: {
 	DisplayName: Normal Laser Pipe
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Transmitting power with][c/FFFFFF:no loss][c/AAAAAA: in straight lines]"
 }
 
 normal_optical_pipe: {
 	DisplayName: Optical Fiber Cable
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Transmitting][c/FFFFFF:Computation][c/AAAAAA: or][c/FFFFFF:Research Data]"
 }
 
 normal_pipe_casting_mold: {
@@ -31065,7 +31185,7 @@ normal_pipe_extruder_mold: {
 
 nugget_casting_mold: {
 	DisplayName: Casting Mold (Nugget)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Nuggets]"
 }
 
 object_holder: {
@@ -31580,7 +31700,7 @@ paracetamol_pill: {
 
 petri_dish: {
 	DisplayName: Petri Dish
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:For cultivating Cells]"
 }
 
 petrified_foam: {
@@ -31590,22 +31710,22 @@ petrified_foam: {
 
 phenolic_circuit_board: {
 	DisplayName: Phenolic Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Good Board]"
 }
 
 phenolic_printed_circuit_board: {
 	DisplayName: Phenolic Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Good Circuit Board]"
 }
 
 phosphorus_boule: {
 	DisplayName: Phosphorus-doped Monocrystalline Silicon Boule
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 phosphorus_wafer: {
 	DisplayName: Phosphorus-doped Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 pill_casting_mold: {
@@ -31665,22 +31785,22 @@ plasma_large_turbine: {
 
 plastic_circuit_board: {
 	DisplayName: Plastic Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Good Board]"
 }
 
 plastic_printed_circuit_board: {
 	DisplayName: Plastic Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Good Circuit Board]"
 }
 
 plate_casting_mold: {
 	DisplayName: Casting Mold (Plate)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Plates]"
 }
 
 plate_extruder_mold: {
 	DisplayName: Extruder Mold (Plate)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Plates]"
 }
 
 platinum_lighter: {
@@ -31745,7 +31865,13 @@ primitive_pump: {
 
 programmed_circuit: {
 	DisplayName: Programmed Circuit
-	Tooltip: ""
+	Tooltip:
+		'''
+		Use to open configuration GUI
+		Shift-Right-Click on a machine
+		with a circuit slot to set it to
+		this circuit's value.
+		'''
 }
 
 prospector: {
@@ -31827,42 +31953,58 @@ pyrolyse_oven: {
 
 qbit_cpu_chip: {
 	DisplayName: Qubit CPU Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Qubit Central Processing Unit]"
 }
 
 qbit_cpu_wafer: {
 	DisplayName: Qubit CPU Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Qubit Circuit]"
 }
 
 quantum_eye: {
 	DisplayName: Quantum Eye
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Improved Ender Eye]"
 }
 
 quantum_processor: {
 	DisplayName: Quantum Processor
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Quantum Computing comes to life!]
+		[c/55FF55:EV-Tier Circuit]
+		'''
 }
 
 quantum_processor_assembly: {
 	DisplayName: Quantum Processor Assembly
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Quantum Computing comes to life!]
+		[c/55FF55:IV-Tier Circuit]
+		'''
 }
 
 quantum_processor_computer: {
 	DisplayName: Quantum Processor Supercomputer
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Quantum Computing comes to life!]
+		[c/55FF55:LuV-Tier Circuit]
+		'''
 }
 
 quantum_processor_mainframe: {
 	DisplayName: Quantum Processor Mainframe
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Quantum Computing comes to life!]
+		[c/55FF55:ZPM-Tier Circuit]
+		'''
 }
 
 quantum_star: {
 	DisplayName: Quantum Star
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Improved Nether Star]"
 }
 
 quarktech_boots: {
@@ -31897,22 +32039,22 @@ radioactive_hazard_sign_block: {
 
 ram_chip: {
 	DisplayName: RAM Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Random Access Memory]"
 }
 
 ram_wafer: {
 	DisplayName: RAM Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Memory]"
 }
 
 raw_crystal_chip: {
 	DisplayName: Raw Crystal Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Crystal Processor]"
 }
 
 raw_crystal_chip_parts: {
 	DisplayName: Raw Crystal Chip Parts
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Crystal Processor Parts]"
 }
 
 reaction_safe_mixing_casing: {
@@ -32012,22 +32154,22 @@ reservoir_hatch: {
 
 resin_circuit_board: {
 	DisplayName: Resin Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Coated Board]"
 }
 
 resin_printed_circuit_board: {
 	DisplayName: Resin Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:A Basic Circuit Board]"
 }
 
 resistor: {
 	DisplayName: Resistor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Basic Electronic Component]"
 }
 
 ring_extruder_mold: {
 	DisplayName: Extruder Mold (Ring)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Rings]"
 }
 
 robust_machine_casing: {
@@ -32037,17 +32179,17 @@ robust_machine_casing: {
 
 rod_extruder_mold: {
 	DisplayName: Extruder Mold (Rod)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Rods]"
 }
 
 rotor_casting_mold: {
 	DisplayName: Casting Mold (Rotor)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Mold for making Rotors]"
 }
 
 rotor_extruder_mold: {
 	DisplayName: Extruder Mold (Rotor)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Rotors]"
 }
 
 rtm_alloy_coil_block: {
@@ -32157,27 +32299,27 @@ shock_proof_cutting_casing: {
 
 shutter_module_cover: {
 	DisplayName: Shutter Module
-	Tooltip: ""
+	Tooltip: "[c/FFFFFF:Blocks Transfer][c/AAAAAA: through attached Side as][c/FFFFFF:Cover][c/AAAAAA:.]"
 }
 
 silicon_boule: {
 	DisplayName: Monocrystalline Silicon Boule
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 silicon_wafer: {
 	DisplayName: Silicon Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Circuit]"
 }
 
 simple_soc: {
 	DisplayName: Simple SoC
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Simple System on Chip]"
 }
 
 simple_soc_wafer: {
 	DisplayName: Simple SoC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Simple Circuit]"
 }
 
 slicing_blades: {
@@ -32232,42 +32374,46 @@ small_red_granite_bricks: {
 
 smd_capacitor: {
 	DisplayName: SMD Capacitor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Electronic Component]"
 }
 
 smd_diode: {
 	DisplayName: SMD Diode
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Electronic Component]"
 }
 
 smd_inductor: {
 	DisplayName: SMD Inductor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Electronic Component]"
 }
 
 smd_resistor: {
 	DisplayName: SMD Resistor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Electronic Component]"
 }
 
 smd_transistor: {
 	DisplayName: SMD Transistor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Electronic Component]"
 }
 
 soc: {
 	DisplayName: SoC
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:System on Chip]"
 }
 
 soc_wafer: {
 	DisplayName: SoC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Basic Circuit]"
 }
 
 solar_panel: {
 	DisplayName: Solar Panel
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:May the Sun be with you.]
+		Produces [c/FFFFFF:Energy][c/AAAAAA: from the][c/FFFF55:Sun][c/AAAAAA: as][c/FFFFFF:Cover][c/AAAAAA:.]
+		'''
 }
 
 solid_machine_casing: {
@@ -32437,7 +32583,7 @@ steel_turbine_casing: {
 
 stem_cells: {
 	DisplayName: Stem Cells
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Intelligence]"
 }
 
 sterilizing_filter_casing: {
@@ -32497,7 +32643,7 @@ tempered_glass: {
 
 terminal: {
 	DisplayName: Terminal
-	Tooltip: ""
+	Tooltip: Shift + R-Click on a controller to automatically build a multiblock with items from your inventory
 }
 
 text_module: {
@@ -32567,7 +32713,7 @@ titanium_turbine_casing: {
 
 transistor: {
 	DisplayName: Transistor
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Basic Electronic Component]"
 }
 
 treated_wood_boat: {
@@ -32692,7 +32838,7 @@ tungstensteel_turbine_casing: {
 
 turbine_rotor: {
 	DisplayName: %s Turbine Rotor
-	Tooltip: ""
+	Tooltip: Turbine Rotors for your power station
 }
 
 turret_hazard_sign_block: {
@@ -33157,12 +33303,12 @@ uev_wiremill: {
 
 uhpic_chip: {
 	DisplayName: UHPIC Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Ultra High Power IC]"
 }
 
 uhpic_wafer: {
 	DisplayName: UHPIC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Ultra High Power Circuit]"
 }
 
 uhv_1024a_laser_source_hatch: {
@@ -34087,12 +34233,12 @@ uiv_wiremill: {
 
 ulpic_chip: {
 	DisplayName: ULPIC Chip
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Ultra Low Power IC]"
 }
 
 ulpic_wafer: {
 	DisplayName: ULPIC Wafer
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Raw Ultra Low Power Circuit]"
 }
 
 ulv_16a_energy_converter: {
@@ -34202,7 +34348,7 @@ ulv_transformer_4a: {
 
 ulv_voltage_coil: {
 	DisplayName: Ultra Low Voltage Coil
-	Tooltip: ""
+	Tooltip: Primitive Coil
 }
 
 universal_fluid_cell: {
@@ -34297,7 +34443,7 @@ uv_battery_buffer_8x: {
 
 uv_battery_hull: {
 	DisplayName: Large Naquadria Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/00AAAA:UV][c/AAAAAA:Battery Hull]"
 }
 
 uv_bender: {
@@ -34572,7 +34718,7 @@ uv_muffler_hatch: {
 
 uv_naquadria_battery: {
 	DisplayName: Large Naquadria Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 uv_ore_washer: {
@@ -34697,7 +34843,7 @@ uv_transformer_4a: {
 
 uv_voltage_coil: {
 	DisplayName: Ultimate Voltage Coil
-	Tooltip: ""
+	Tooltip: Ultimate Coil
 }
 
 uv_wiremill: {
@@ -35172,7 +35318,11 @@ vacuum_freezer: {
 
 vacuum_tube: {
 	DisplayName: Vacuum Tube
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Technically a Diode]
+		[c/FF5555:ULV-Tier]
+		'''
 }
 
 vibration_safe_casing: {
@@ -35192,32 +35342,48 @@ watertight_casing: {
 
 wetware_circuit_board: {
 	DisplayName: Wetware Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:The Board that keeps life]"
 }
 
 wetware_printed_circuit_board: {
 	DisplayName: Wetware Printed Circuit Board
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:The Board that keeps life]"
 }
 
 wetware_processor: {
 	DisplayName: Wetware Processor
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:You have a feeling like it's watching you]
+		[c/AA0000:LuV-Tier Circuit]
+		'''
 }
 
 wetware_processor_assembly: {
 	DisplayName: Wetware Processor Assembly
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Can run Minecraft]
+		[c/AA0000:ZPM-Tier Circuit]
+		'''
 }
 
 wetware_processor_computer: {
 	DisplayName: Wetware Processor Supercomputer
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:Ultimate fusion of Flesh and Machine]
+		[c/AA0000:UV-Tier Circuit]
+		'''
 }
 
 wetware_processor_mainframe: {
 	DisplayName: Wetware Processor Mainframe
-	Tooltip: ""
+	Tooltip:
+		'''
+		[c/AAAAAA:The best Man has ever seen]
+		[c/AA0000:UHV-Tier Circuit]
+		'''
 }
 
 white_borderless_lamp: {
@@ -35252,7 +35418,7 @@ white_studs: {
 
 wire_extruder_mold: {
 	DisplayName: Extruder Mold (Wire)
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Extruder Shape for making Wires]"
 }
 
 wireless_transmitter_cover: {
@@ -35422,7 +35588,7 @@ zpm_battery_buffer_8x: {
 
 zpm_battery_hull: {
 	DisplayName: Medium Naquadria Battery Hull
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:An empty][c/FFFFFF:ZPM][c/AAAAAA:Battery Hull]"
 }
 
 zpm_bender: {
@@ -35697,7 +35863,7 @@ zpm_muffler_hatch: {
 
 zpm_naquadria_battery: {
 	DisplayName: Medium Naquadria Battery
-	Tooltip: ""
+	Tooltip: "[c/AAAAAA:Reusable Battery]"
 }
 
 zpm_ore_washer: {
@@ -35822,7 +35988,7 @@ zpm_transformer_4a: {
 
 zpm_voltage_coil: {
 	DisplayName: Zero Point Module Voltage Coil
-	Tooltip: ""
+	Tooltip: Super Coil
 }
 
 zpm_wiremill: {
@@ -37715,6 +37881,896 @@ zinc_bucket: {
 	Tooltip: ""
 }
 
+wrought_iron_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Wrought Iron Turbine Rotor
+}
+
+vanadium_steel_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Vanadium Steel Turbine Rotor
+}
+
+ultimet_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Ultimet Turbine Rotor
+}
+
+tungsten_steel_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Tungsten Steel Turbine Rotor
+}
+
+tungsten_carbide_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Tungsten Carbide Turbine Rotor
+}
+
+tungsten_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Tungsten Turbine Rotor
+}
+
+tritanium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Tritanium Turbine Rotor
+}
+
+titanium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Titanium Turbine Rotor
+}
+
+sterling_silver_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Sterling Silver Turbine Rotor
+}
+
+steel_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Steel Turbine Rotor
+}
+
+stainless_steel_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Stainless Steel Turbine Rotor
+}
+
+rose_gold_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Rose Gold Turbine Rotor
+}
+
+rhodium_plated_palladium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Rhodium Plated Palladium Turbine Rotor
+}
+
+osmium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Osmium Turbine Rotor
+}
+
+osmiridium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Osmiridium Turbine Rotor
+}
+
+neutronium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Neutronium Turbine Rotor
+}
+
+neodymium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Neodymium Turbine Rotor
+}
+
+naquadah_alloy_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Naquadah Alloy Turbine Rotor
+}
+
+naquadah_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Naquadah Turbine Rotor
+}
+
+molybdenum_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Molybdenum Turbine Rotor
+}
+
+manganese_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Manganese Turbine Rotor
+}
+
+magnalium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Magnalium Turbine Rotor
+}
+
+iron_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Iron Turbine Rotor
+}
+
+iridium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Iridium Turbine Rotor
+}
+
+invar_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Invar Turbine Rotor
+}
+
+hsss_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Hsss Turbine Rotor
+}
+
+hssg_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Hssg Turbine Rotor
+}
+
+hsse_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Hsse Turbine Rotor
+}
+
+cobalt_brass_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Cobalt Brass Turbine Rotor
+}
+
+chromium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Chromium Turbine Rotor
+}
+
+bronze_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Bronze Turbine Rotor
+}
+
+brass_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Brass Turbine Rotor
+}
+
+black_bronze_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Black Bronze Turbine Rotor
+}
+
+bismuth_bronze_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Bismuth Bronze Turbine Rotor
+}
+
+aluminium_turbine_rotor: {
+	Tooltip: ""
+	DisplayName: Aluminium Turbine Rotor
+}
+
+max_4096a_laser_source_hatch: {
+	Tooltip: ""
+	DisplayName: MAX 4096A Laser Source Hatch
+}
+
+max_4096a_laser_target_hatch: {
+	Tooltip: ""
+	DisplayName: MAX 4096A Laser Target Hatch
+}
+
+max_1024a_laser_source_hatch: {
+	Tooltip: ""
+	DisplayName: MAX 1024A Laser Source Hatch
+}
+
+max_1024a_laser_target_hatch: {
+	Tooltip: ""
+	DisplayName: MAX 1024A Laser Target Hatch
+}
+
+max_256a_laser_source_hatch: {
+	Tooltip: ""
+	DisplayName: MAX 256A Laser Source Hatch
+}
+
+max_256a_laser_target_hatch: {
+	Tooltip: ""
+	DisplayName: MAX 256A Laser Target Hatch
+}
+
+ev_miner: {
+	Tooltip: ""
+	DisplayName: EV Miner
+}
+
+zpm_block_breaker: {
+	Tooltip: ""
+	DisplayName: ZPM Block Breaker
+}
+
+luv_block_breaker: {
+	Tooltip: ""
+	DisplayName: LuV Block Breaker
+}
+
+iv_block_breaker: {
+	Tooltip: ""
+	DisplayName: IV Block Breaker
+}
+
+max_lamp: {
+	Tooltip: ""
+	DisplayName: MAX Lamp
+}
+
+opv_lamp: {
+	Tooltip: ""
+	DisplayName: OpV Lamp
+}
+
+uxv_lamp: {
+	Tooltip: ""
+	DisplayName: UXV Lamp
+}
+
+uiv_lamp: {
+	Tooltip: ""
+	DisplayName: UIV Lamp
+}
+
+uev_lamp: {
+	Tooltip: ""
+	DisplayName: UEV Lamp
+}
+
+uhv_lamp: {
+	Tooltip: ""
+	DisplayName: UHV Lamp
+}
+
+uv_lamp: {
+	Tooltip: ""
+	DisplayName: UV Lamp
+}
+
+zpm_lamp: {
+	Tooltip: ""
+	DisplayName: ZPM Lamp
+}
+
+luv_lamp: {
+	Tooltip: ""
+	DisplayName: LuV Lamp
+}
+
+iv_lamp: {
+	Tooltip: ""
+	DisplayName: IV Lamp
+}
+
+ev_lamp: {
+	Tooltip: ""
+	DisplayName: EV Lamp
+}
+
+hv_lamp: {
+	Tooltip: ""
+	DisplayName: HV Lamp
+}
+
+mv_lamp: {
+	Tooltip: ""
+	DisplayName: MV Lamp
+}
+
+lv_lamp: {
+	Tooltip: ""
+	DisplayName: LV Lamp
+}
+
+ulv_lamp: {
+	Tooltip: ""
+	DisplayName: ULV Lamp
+}
+
+max_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: MAX Solar Panel
+}
+
+opv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: OpV Solar Panel
+}
+
+uxv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: UXV Solar Panel
+}
+
+uiv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: UIV Solar Panel
+}
+
+uev_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: UEV Solar Panel
+}
+
+uhv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: UHV Solar Panel
+}
+
+uv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: UV Solar Panel
+}
+
+zpm_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: ZPM Solar Panel
+}
+
+luv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: LuV Solar Panel
+}
+
+iv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: IV Solar Panel
+}
+
+ev_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: EV Solar Panel
+}
+
+hv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: HV Solar Panel
+}
+
+mv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: MV Solar Panel
+}
+
+lv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: LV Solar Panel
+}
+
+ulv_solar_panel_machine: {
+	Tooltip: ""
+	DisplayName: ULV Solar Panel
+}
+
+max_steam_turbine: {
+	Tooltip: ""
+	DisplayName: MAX Steam Turbine
+}
+
+opv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: OpV Steam Turbine
+}
+
+uxv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: UXV Steam Turbine
+}
+
+uiv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: UIV Steam Turbine
+}
+
+uev_steam_turbine: {
+	Tooltip: ""
+	DisplayName: UEV Steam Turbine
+}
+
+uhv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: UHV Steam Turbine
+}
+
+uv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: UV Steam Turbine
+}
+
+zpm_steam_turbine: {
+	Tooltip: ""
+	DisplayName: ZPM Steam Turbine
+}
+
+luv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: LuV Steam Turbine
+}
+
+iv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: IV Steam Turbine
+}
+
+ev_steam_turbine: {
+	Tooltip: ""
+	DisplayName: EV Steam Turbine
+}
+
+ulv_steam_turbine: {
+	Tooltip: ""
+	DisplayName: ULV Steam Turbine
+}
+
+max_circuit_assembler: {
+	Tooltip: ""
+	DisplayName: MAX Circuit Assembler
+}
+
+ulv_circuit_assembler: {
+	Tooltip: ""
+	DisplayName: ULV Circuit Assembler
+}
+
+max_forming_press: {
+	Tooltip: ""
+	DisplayName: MAX Forming Press
+}
+
+ulv_forming_press: {
+	Tooltip: ""
+	DisplayName: ULV Forming Press
+}
+
+max_assembler: {
+	Tooltip: ""
+	DisplayName: MAX Assembler
+}
+
+ulv_assembler: {
+	Tooltip: ""
+	DisplayName: ULV Assembler
+}
+
+max_canner: {
+	Tooltip: ""
+	DisplayName: MAX Canner
+}
+
+ulv_canner: {
+	Tooltip: ""
+	DisplayName: ULV Canner
+}
+
+max_fermenter: {
+	Tooltip: ""
+	DisplayName: MAX Fermenter
+}
+
+ulv_fermenter: {
+	Tooltip: ""
+	DisplayName: ULV Fermenter
+}
+
+max_fluid_heater: {
+	Tooltip: ""
+	DisplayName: MAX Fluid Heater
+}
+
+ulv_fluid_heater: {
+	Tooltip: ""
+	DisplayName: ULV Fluid Heater
+}
+
+max_chemical_bath: {
+	Tooltip: ""
+	DisplayName: MAX Chemical Bath
+}
+
+ulv_chemical_bath: {
+	Tooltip: ""
+	DisplayName: ULV Chemical Bath
+}
+
+max_ore_washer: {
+	Tooltip: ""
+	DisplayName: MAX Ore Washer
+}
+
+ulv_ore_washer: {
+	Tooltip: ""
+	DisplayName: ULV Ore Washer
+}
+
+max_autoclave: {
+	Tooltip: ""
+	DisplayName: MAX Autoclave
+}
+
+ulv_autoclave: {
+	Tooltip: ""
+	DisplayName: ULV Autoclave
+}
+
+max_mixer: {
+	Tooltip: ""
+	DisplayName: MAX Mixer
+}
+
+ulv_mixer: {
+	Tooltip: ""
+	DisplayName: ULV Mixer
+}
+
+max_distillery: {
+	Tooltip: ""
+	DisplayName: MAX Distillery
+}
+
+ulv_distillery: {
+	Tooltip: ""
+	DisplayName: ULV Distillery
+}
+
+max_rock_crusher: {
+	Tooltip: ""
+	DisplayName: MAX Rock Crusher
+}
+
+ulv_rock_crusher: {
+	Tooltip: ""
+	DisplayName: ULV Rock Crusher
+}
+
+max_electric_furnace: {
+	Tooltip: ""
+	DisplayName: MAX Electric Furnace
+}
+
+ulv_electric_furnace: {
+	Tooltip: ""
+	DisplayName: ULV Electric Furnace
+}
+
+max_air_scrubber: {
+	Tooltip: ""
+	DisplayName: MAX Air Scrubber
+}
+
+opv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: OpV Air Scrubber
+}
+
+uxv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: UXV Air Scrubber
+}
+
+uiv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: UIV Air Scrubber
+}
+
+uev_air_scrubber: {
+	Tooltip: ""
+	DisplayName: UEV Air Scrubber
+}
+
+uhv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: UHV Air Scrubber
+}
+
+uv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: UV Air Scrubber
+}
+
+zpm_air_scrubber: {
+	Tooltip: ""
+	DisplayName: ZPM Air Scrubber
+}
+
+luv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: LuV Air Scrubber
+}
+
+iv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: IV Air Scrubber
+}
+
+ulv_air_scrubber: {
+	Tooltip: ""
+	DisplayName: ULV Air Scrubber
+}
+
+max_gas_collector: {
+	Tooltip: ""
+	DisplayName: MAX Gas Collector
+}
+
+ulv_gas_collector: {
+	Tooltip: ""
+	DisplayName: ULV Gas Collector
+}
+
+max_thermal_centrifuge: {
+	Tooltip: ""
+	DisplayName: MAX Thermal Centrifuge
+}
+
+ulv_thermal_centrifuge: {
+	Tooltip: ""
+	DisplayName: ULV Thermal Centrifuge
+}
+
+max_sifter: {
+	Tooltip: ""
+	DisplayName: MAX Sifter
+}
+
+ulv_sifter: {
+	Tooltip: ""
+	DisplayName: ULV Sifter
+}
+
+max_laser_engraver: {
+	Tooltip: ""
+	DisplayName: MAX Laser Engraver
+}
+
+ulv_laser_engraver: {
+	Tooltip: ""
+	DisplayName: ULV Laser Engraver
+}
+
+max_scanner: {
+	Tooltip: ""
+	DisplayName: MAX Scanner
+}
+
+ulv_scanner: {
+	Tooltip: ""
+	DisplayName: ULV Scanner
+}
+
+max_extruder: {
+	Tooltip: ""
+	DisplayName: MAX Extruder
+}
+
+ulv_extruder: {
+	Tooltip: ""
+	DisplayName: ULV Extruder
+}
+
+max_cutter: {
+	Tooltip: ""
+	DisplayName: MAX Cutter
+}
+
+ulv_cutter: {
+	Tooltip: ""
+	DisplayName: ULV Cutter
+}
+
+max_arc_furnace: {
+	Tooltip: ""
+	DisplayName: MAX Arc Furnace
+}
+
+ulv_arc_furnace: {
+	Tooltip: ""
+	DisplayName: ULV Arc Furnace
+}
+
+max_centrifuge: {
+	Tooltip: ""
+	DisplayName: MAX Centrifuge
+}
+
+ulv_centrifuge: {
+	Tooltip: ""
+	DisplayName: ULV Centrifuge
+}
+
+max_electrolyzer: {
+	Tooltip: ""
+	DisplayName: MAX Electrolyzer
+}
+
+ulv_electrolyzer: {
+	Tooltip: ""
+	DisplayName: ULV Electrolyzer
+}
+
+max_chemical_reactor: {
+	Tooltip: ""
+	DisplayName: MAX Chemical Reactor
+}
+
+ulv_chemical_reactor: {
+	Tooltip: ""
+	DisplayName: ULV Chemical Reactor
+}
+
+max_fluid_solidifier: {
+	Tooltip: ""
+	DisplayName: MAX Fluid Solidifier
+}
+
+ulv_fluid_solidifier: {
+	Tooltip: ""
+	DisplayName: ULV Fluid Solidifier
+}
+
+max_packer: {
+	Tooltip: ""
+	DisplayName: MAX Packer
+}
+
+ulv_packer: {
+	Tooltip: ""
+	DisplayName: ULV Packer
+}
+
+max_electromagnetic_separator: {
+	Tooltip: ""
+	DisplayName: MAX Electromagnetic Separator
+}
+
+ulv_electromagnetic_separator: {
+	Tooltip: ""
+	DisplayName: ULV Electromagnetic Separator
+}
+
+max_wiremill: {
+	Tooltip: ""
+	DisplayName: MAX Wiremill
+}
+
+ulv_wiremill: {
+	Tooltip: ""
+	DisplayName: ULV Wiremill
+}
+
+max_polarizer: {
+	Tooltip: ""
+	DisplayName: MAX Polarizer
+}
+
+ulv_polarizer: {
+	Tooltip: ""
+	DisplayName: ULV Polarizer
+}
+
+max_lathe: {
+	Tooltip: ""
+	DisplayName: MAX Lathe
+}
+
+ulv_lathe: {
+	Tooltip: ""
+	DisplayName: ULV Lathe
+}
+
+max_bender: {
+	Tooltip: ""
+	DisplayName: MAX Bender
+}
+
+ulv_bender: {
+	Tooltip: ""
+	DisplayName: ULV Bender
+}
+
+max_forge_hammer: {
+	Tooltip: ""
+	DisplayName: MAX Forge Hammer
+}
+
+ulv_forge_hammer: {
+	Tooltip: ""
+	DisplayName: ULV Forge Hammer
+}
+
+max_extractor: {
+	Tooltip: ""
+	DisplayName: MAX Extractor
+}
+
+ulv_extractor: {
+	Tooltip: ""
+	DisplayName: ULV Extractor
+}
+
+max_compressor: {
+	Tooltip: ""
+	DisplayName: MAX Compressor
+}
+
+ulv_compressor: {
+	Tooltip: ""
+	DisplayName: ULV Compressor
+}
+
+max_brewery: {
+	Tooltip: ""
+	DisplayName: MAX Brewery
+}
+
+ulv_brewery: {
+	Tooltip: ""
+	DisplayName: ULV Brewery
+}
+
+max_alloy_smelter: {
+	Tooltip: ""
+	DisplayName: MAX Alloy Smelter
+}
+
+ulv_alloy_smelter: {
+	Tooltip: ""
+	DisplayName: ULV Alloy Smelter
+}
+
+max_macerator: {
+	Tooltip: ""
+	DisplayName: MAX Macerator
+}
+
+ulv_macerator: {
+	Tooltip: ""
+	DisplayName: ULV Macerator
+}
+
+overclocked_gregith: {
+	Tooltip: ""
+	DisplayName: Overclocked Gregith
+}
+
+wrought_iron_gregith: {
+	Tooltip: ""
+	DisplayName: Wrought Iron Gregith
+}
+
+vanadium_steel_gregith: {
+	Tooltip: ""
+	DisplayName: Vanadium Steel Gregith
+}
+
+ultimet_gregith: {
+	Tooltip: ""
+	DisplayName: Ultimet Gregith
+}
+
+tungsten_steel_gregith: {
+	Tooltip: ""
+	DisplayName: Tungsten Steel Gregith
+}
+
+tungsten_carbide_gregith: {
+	Tooltip: ""
+	DisplayName: Tungsten Carbide Gregith
+}
+
 acid_etched_inert_casing: {
 	DisplayName: Acid-Etched Inert Casing
 	Tooltip:
@@ -37767,16 +38823,6 @@ GregTechIronToolsBag: {
 		Right-click to open. Drops the iron-tier crafting catalysts:
 		hammer, wrench, wire cutter, file, screwdriver, saw, mortar, crowbar, knife.
 		'''
-}
-
-simple_fluid_pipe: {
-	DisplayName: Simple Fluid Pipe
-	Tooltip: ""
-}
-
-simple_item_pipe: {
-	DisplayName: Simple Item Pipe
-	Tooltip: ""
 }
 
 SkipStoneAgeBag: {
@@ -38127,6 +39173,51 @@ molten_zeron_100_bucket: {
 	Tooltip: ""
 }
 
+simple_item_pipe_small: {
+	DisplayName: Small Simple Item Pipe
+	Tooltip: ""
+}
+
+simple_item_pipe: {
+	DisplayName: Simple Item Pipe
+	Tooltip: ""
+}
+
+simple_item_pipe_large: {
+	DisplayName: Large Simple Item Pipe
+	Tooltip: ""
+}
+
+simple_item_pipe_huge: {
+	DisplayName: Huge Simple Item Pipe
+	Tooltip: ""
+}
+
+simple_fluid_pipe_tiny: {
+	DisplayName: Tiny Simple Fluid Pipe
+	Tooltip: ""
+}
+
+simple_fluid_pipe_small: {
+	DisplayName: Small Simple Fluid Pipe
+	Tooltip: ""
+}
+
+simple_fluid_pipe: {
+	DisplayName: Simple Fluid Pipe
+	Tooltip: ""
+}
+
+simple_fluid_pipe_large: {
+	DisplayName: Large Simple Fluid Pipe
+	Tooltip: ""
+}
+
+simple_fluid_pipe_huge: {
+	DisplayName: Huge Simple Fluid Pipe
+	Tooltip: ""
+}
+
 aluminium_gregith: {
 	DisplayName: Aluminium Gregith
 	Tooltip: ""
@@ -38219,896 +39310,6 @@ sterling_silver_gregith: {
 
 titanium_gregith: {
 	DisplayName: Titanium Gregith
-	Tooltip: ""
-}
-
-tungsten_carbide_gregith: {
-	DisplayName: Tungsten Carbide Gregith
-	Tooltip: ""
-}
-
-tungsten_steel_gregith: {
-	DisplayName: Tungsten Steel Gregith
-	Tooltip: ""
-}
-
-ultimet_gregith: {
-	DisplayName: Ultimet Gregith
-	Tooltip: ""
-}
-
-vanadium_steel_gregith: {
-	DisplayName: Vanadium Steel Gregith
-	Tooltip: ""
-}
-
-wrought_iron_gregith: {
-	DisplayName: Wrought Iron Gregith
-	Tooltip: ""
-}
-
-overclocked_gregith: {
-	DisplayName: Overclocked Gregith
-	Tooltip: ""
-}
-
-ulv_macerator: {
-	DisplayName: ULV Macerator
-	Tooltip: ""
-}
-
-max_macerator: {
-	DisplayName: MAX Macerator
-	Tooltip: ""
-}
-
-ulv_alloy_smelter: {
-	DisplayName: ULV Alloy Smelter
-	Tooltip: ""
-}
-
-max_alloy_smelter: {
-	DisplayName: MAX Alloy Smelter
-	Tooltip: ""
-}
-
-ulv_brewery: {
-	DisplayName: ULV Brewery
-	Tooltip: ""
-}
-
-max_brewery: {
-	DisplayName: MAX Brewery
-	Tooltip: ""
-}
-
-ulv_compressor: {
-	DisplayName: ULV Compressor
-	Tooltip: ""
-}
-
-max_compressor: {
-	DisplayName: MAX Compressor
-	Tooltip: ""
-}
-
-ulv_extractor: {
-	DisplayName: ULV Extractor
-	Tooltip: ""
-}
-
-max_extractor: {
-	DisplayName: MAX Extractor
-	Tooltip: ""
-}
-
-ulv_forge_hammer: {
-	DisplayName: ULV Forge Hammer
-	Tooltip: ""
-}
-
-max_forge_hammer: {
-	DisplayName: MAX Forge Hammer
-	Tooltip: ""
-}
-
-ulv_bender: {
-	DisplayName: ULV Bender
-	Tooltip: ""
-}
-
-max_bender: {
-	DisplayName: MAX Bender
-	Tooltip: ""
-}
-
-ulv_lathe: {
-	DisplayName: ULV Lathe
-	Tooltip: ""
-}
-
-max_lathe: {
-	DisplayName: MAX Lathe
-	Tooltip: ""
-}
-
-ulv_polarizer: {
-	DisplayName: ULV Polarizer
-	Tooltip: ""
-}
-
-max_polarizer: {
-	DisplayName: MAX Polarizer
-	Tooltip: ""
-}
-
-ulv_wiremill: {
-	DisplayName: ULV Wiremill
-	Tooltip: ""
-}
-
-max_wiremill: {
-	DisplayName: MAX Wiremill
-	Tooltip: ""
-}
-
-ulv_electromagnetic_separator: {
-	DisplayName: ULV Electromagnetic Separator
-	Tooltip: ""
-}
-
-max_electromagnetic_separator: {
-	DisplayName: MAX Electromagnetic Separator
-	Tooltip: ""
-}
-
-ulv_packer: {
-	DisplayName: ULV Packer
-	Tooltip: ""
-}
-
-max_packer: {
-	DisplayName: MAX Packer
-	Tooltip: ""
-}
-
-ulv_fluid_solidifier: {
-	DisplayName: ULV Fluid Solidifier
-	Tooltip: ""
-}
-
-max_fluid_solidifier: {
-	DisplayName: MAX Fluid Solidifier
-	Tooltip: ""
-}
-
-ulv_chemical_reactor: {
-	DisplayName: ULV Chemical Reactor
-	Tooltip: ""
-}
-
-max_chemical_reactor: {
-	DisplayName: MAX Chemical Reactor
-	Tooltip: ""
-}
-
-ulv_electrolyzer: {
-	DisplayName: ULV Electrolyzer
-	Tooltip: ""
-}
-
-max_electrolyzer: {
-	DisplayName: MAX Electrolyzer
-	Tooltip: ""
-}
-
-ulv_centrifuge: {
-	DisplayName: ULV Centrifuge
-	Tooltip: ""
-}
-
-max_centrifuge: {
-	DisplayName: MAX Centrifuge
-	Tooltip: ""
-}
-
-ulv_arc_furnace: {
-	DisplayName: ULV Arc Furnace
-	Tooltip: ""
-}
-
-max_arc_furnace: {
-	DisplayName: MAX Arc Furnace
-	Tooltip: ""
-}
-
-ulv_cutter: {
-	DisplayName: ULV Cutter
-	Tooltip: ""
-}
-
-max_cutter: {
-	DisplayName: MAX Cutter
-	Tooltip: ""
-}
-
-ulv_extruder: {
-	DisplayName: ULV Extruder
-	Tooltip: ""
-}
-
-max_extruder: {
-	DisplayName: MAX Extruder
-	Tooltip: ""
-}
-
-ulv_scanner: {
-	DisplayName: ULV Scanner
-	Tooltip: ""
-}
-
-max_scanner: {
-	DisplayName: MAX Scanner
-	Tooltip: ""
-}
-
-ulv_laser_engraver: {
-	DisplayName: ULV Laser Engraver
-	Tooltip: ""
-}
-
-max_laser_engraver: {
-	DisplayName: MAX Laser Engraver
-	Tooltip: ""
-}
-
-ulv_sifter: {
-	DisplayName: ULV Sifter
-	Tooltip: ""
-}
-
-max_sifter: {
-	DisplayName: MAX Sifter
-	Tooltip: ""
-}
-
-ulv_thermal_centrifuge: {
-	DisplayName: ULV Thermal Centrifuge
-	Tooltip: ""
-}
-
-max_thermal_centrifuge: {
-	DisplayName: MAX Thermal Centrifuge
-	Tooltip: ""
-}
-
-ulv_gas_collector: {
-	DisplayName: ULV Gas Collector
-	Tooltip: ""
-}
-
-max_gas_collector: {
-	DisplayName: MAX Gas Collector
-	Tooltip: ""
-}
-
-ulv_air_scrubber: {
-	DisplayName: ULV Air Scrubber
-	Tooltip: ""
-}
-
-iv_air_scrubber: {
-	DisplayName: IV Air Scrubber
-	Tooltip: ""
-}
-
-luv_air_scrubber: {
-	DisplayName: LuV Air Scrubber
-	Tooltip: ""
-}
-
-zpm_air_scrubber: {
-	DisplayName: ZPM Air Scrubber
-	Tooltip: ""
-}
-
-uv_air_scrubber: {
-	DisplayName: UV Air Scrubber
-	Tooltip: ""
-}
-
-uhv_air_scrubber: {
-	DisplayName: UHV Air Scrubber
-	Tooltip: ""
-}
-
-uev_air_scrubber: {
-	DisplayName: UEV Air Scrubber
-	Tooltip: ""
-}
-
-uiv_air_scrubber: {
-	DisplayName: UIV Air Scrubber
-	Tooltip: ""
-}
-
-uxv_air_scrubber: {
-	DisplayName: UXV Air Scrubber
-	Tooltip: ""
-}
-
-opv_air_scrubber: {
-	DisplayName: OpV Air Scrubber
-	Tooltip: ""
-}
-
-max_air_scrubber: {
-	DisplayName: MAX Air Scrubber
-	Tooltip: ""
-}
-
-ulv_electric_furnace: {
-	DisplayName: ULV Electric Furnace
-	Tooltip: ""
-}
-
-max_electric_furnace: {
-	DisplayName: MAX Electric Furnace
-	Tooltip: ""
-}
-
-ulv_rock_crusher: {
-	DisplayName: ULV Rock Crusher
-	Tooltip: ""
-}
-
-max_rock_crusher: {
-	DisplayName: MAX Rock Crusher
-	Tooltip: ""
-}
-
-ulv_distillery: {
-	DisplayName: ULV Distillery
-	Tooltip: ""
-}
-
-max_distillery: {
-	DisplayName: MAX Distillery
-	Tooltip: ""
-}
-
-ulv_mixer: {
-	DisplayName: ULV Mixer
-	Tooltip: ""
-}
-
-max_mixer: {
-	DisplayName: MAX Mixer
-	Tooltip: ""
-}
-
-ulv_autoclave: {
-	DisplayName: ULV Autoclave
-	Tooltip: ""
-}
-
-max_autoclave: {
-	DisplayName: MAX Autoclave
-	Tooltip: ""
-}
-
-ulv_ore_washer: {
-	DisplayName: ULV Ore Washer
-	Tooltip: ""
-}
-
-max_ore_washer: {
-	DisplayName: MAX Ore Washer
-	Tooltip: ""
-}
-
-ulv_chemical_bath: {
-	DisplayName: ULV Chemical Bath
-	Tooltip: ""
-}
-
-max_chemical_bath: {
-	DisplayName: MAX Chemical Bath
-	Tooltip: ""
-}
-
-ulv_fluid_heater: {
-	DisplayName: ULV Fluid Heater
-	Tooltip: ""
-}
-
-max_fluid_heater: {
-	DisplayName: MAX Fluid Heater
-	Tooltip: ""
-}
-
-ulv_fermenter: {
-	DisplayName: ULV Fermenter
-	Tooltip: ""
-}
-
-max_fermenter: {
-	DisplayName: MAX Fermenter
-	Tooltip: ""
-}
-
-ulv_canner: {
-	DisplayName: ULV Canner
-	Tooltip: ""
-}
-
-max_canner: {
-	DisplayName: MAX Canner
-	Tooltip: ""
-}
-
-ulv_assembler: {
-	DisplayName: ULV Assembler
-	Tooltip: ""
-}
-
-max_assembler: {
-	DisplayName: MAX Assembler
-	Tooltip: ""
-}
-
-ulv_forming_press: {
-	DisplayName: ULV Forming Press
-	Tooltip: ""
-}
-
-max_forming_press: {
-	DisplayName: MAX Forming Press
-	Tooltip: ""
-}
-
-ulv_circuit_assembler: {
-	DisplayName: ULV Circuit Assembler
-	Tooltip: ""
-}
-
-max_circuit_assembler: {
-	DisplayName: MAX Circuit Assembler
-	Tooltip: ""
-}
-
-ulv_steam_turbine: {
-	DisplayName: ULV Steam Turbine
-	Tooltip: ""
-}
-
-ev_steam_turbine: {
-	DisplayName: EV Steam Turbine
-	Tooltip: ""
-}
-
-iv_steam_turbine: {
-	DisplayName: IV Steam Turbine
-	Tooltip: ""
-}
-
-luv_steam_turbine: {
-	DisplayName: LuV Steam Turbine
-	Tooltip: ""
-}
-
-zpm_steam_turbine: {
-	DisplayName: ZPM Steam Turbine
-	Tooltip: ""
-}
-
-uv_steam_turbine: {
-	DisplayName: UV Steam Turbine
-	Tooltip: ""
-}
-
-uhv_steam_turbine: {
-	DisplayName: UHV Steam Turbine
-	Tooltip: ""
-}
-
-uev_steam_turbine: {
-	DisplayName: UEV Steam Turbine
-	Tooltip: ""
-}
-
-uiv_steam_turbine: {
-	DisplayName: UIV Steam Turbine
-	Tooltip: ""
-}
-
-uxv_steam_turbine: {
-	DisplayName: UXV Steam Turbine
-	Tooltip: ""
-}
-
-opv_steam_turbine: {
-	DisplayName: OpV Steam Turbine
-	Tooltip: ""
-}
-
-max_steam_turbine: {
-	DisplayName: MAX Steam Turbine
-	Tooltip: ""
-}
-
-ulv_solar_panel_machine: {
-	DisplayName: ULV Solar Panel
-	Tooltip: ""
-}
-
-lv_solar_panel_machine: {
-	DisplayName: LV Solar Panel
-	Tooltip: ""
-}
-
-mv_solar_panel_machine: {
-	DisplayName: MV Solar Panel
-	Tooltip: ""
-}
-
-hv_solar_panel_machine: {
-	DisplayName: HV Solar Panel
-	Tooltip: ""
-}
-
-ev_solar_panel_machine: {
-	DisplayName: EV Solar Panel
-	Tooltip: ""
-}
-
-iv_solar_panel_machine: {
-	DisplayName: IV Solar Panel
-	Tooltip: ""
-}
-
-luv_solar_panel_machine: {
-	DisplayName: LuV Solar Panel
-	Tooltip: ""
-}
-
-zpm_solar_panel_machine: {
-	DisplayName: ZPM Solar Panel
-	Tooltip: ""
-}
-
-uv_solar_panel_machine: {
-	DisplayName: UV Solar Panel
-	Tooltip: ""
-}
-
-uhv_solar_panel_machine: {
-	DisplayName: UHV Solar Panel
-	Tooltip: ""
-}
-
-uev_solar_panel_machine: {
-	DisplayName: UEV Solar Panel
-	Tooltip: ""
-}
-
-uiv_solar_panel_machine: {
-	DisplayName: UIV Solar Panel
-	Tooltip: ""
-}
-
-uxv_solar_panel_machine: {
-	DisplayName: UXV Solar Panel
-	Tooltip: ""
-}
-
-opv_solar_panel_machine: {
-	DisplayName: OpV Solar Panel
-	Tooltip: ""
-}
-
-max_solar_panel_machine: {
-	DisplayName: MAX Solar Panel
-	Tooltip: ""
-}
-
-ulv_lamp: {
-	DisplayName: ULV Lamp
-	Tooltip: ""
-}
-
-lv_lamp: {
-	DisplayName: LV Lamp
-	Tooltip: ""
-}
-
-mv_lamp: {
-	DisplayName: MV Lamp
-	Tooltip: ""
-}
-
-hv_lamp: {
-	DisplayName: HV Lamp
-	Tooltip: ""
-}
-
-ev_lamp: {
-	DisplayName: EV Lamp
-	Tooltip: ""
-}
-
-iv_lamp: {
-	DisplayName: IV Lamp
-	Tooltip: ""
-}
-
-luv_lamp: {
-	DisplayName: LuV Lamp
-	Tooltip: ""
-}
-
-zpm_lamp: {
-	DisplayName: ZPM Lamp
-	Tooltip: ""
-}
-
-uv_lamp: {
-	DisplayName: UV Lamp
-	Tooltip: ""
-}
-
-uhv_lamp: {
-	DisplayName: UHV Lamp
-	Tooltip: ""
-}
-
-uev_lamp: {
-	DisplayName: UEV Lamp
-	Tooltip: ""
-}
-
-uiv_lamp: {
-	DisplayName: UIV Lamp
-	Tooltip: ""
-}
-
-uxv_lamp: {
-	DisplayName: UXV Lamp
-	Tooltip: ""
-}
-
-opv_lamp: {
-	DisplayName: OpV Lamp
-	Tooltip: ""
-}
-
-max_lamp: {
-	DisplayName: MAX Lamp
-	Tooltip: ""
-}
-
-iv_block_breaker: {
-	DisplayName: IV Block Breaker
-	Tooltip: ""
-}
-
-luv_block_breaker: {
-	DisplayName: LuV Block Breaker
-	Tooltip: ""
-}
-
-zpm_block_breaker: {
-	DisplayName: ZPM Block Breaker
-	Tooltip: ""
-}
-
-ev_miner: {
-	DisplayName: EV Miner
-	Tooltip: ""
-}
-
-max_256a_laser_target_hatch: {
-	DisplayName: MAX 256A Laser Target Hatch
-	Tooltip: ""
-}
-
-max_256a_laser_source_hatch: {
-	DisplayName: MAX 256A Laser Source Hatch
-	Tooltip: ""
-}
-
-max_1024a_laser_target_hatch: {
-	DisplayName: MAX 1024A Laser Target Hatch
-	Tooltip: ""
-}
-
-max_1024a_laser_source_hatch: {
-	DisplayName: MAX 1024A Laser Source Hatch
-	Tooltip: ""
-}
-
-max_4096a_laser_target_hatch: {
-	DisplayName: MAX 4096A Laser Target Hatch
-	Tooltip: ""
-}
-
-max_4096a_laser_source_hatch: {
-	DisplayName: MAX 4096A Laser Source Hatch
-	Tooltip: ""
-}
-
-aluminium_turbine_rotor: {
-	DisplayName: Aluminium Turbine Rotor
-	Tooltip: ""
-}
-
-bismuth_bronze_turbine_rotor: {
-	DisplayName: Bismuth Bronze Turbine Rotor
-	Tooltip: ""
-}
-
-black_bronze_turbine_rotor: {
-	DisplayName: Black Bronze Turbine Rotor
-	Tooltip: ""
-}
-
-brass_turbine_rotor: {
-	DisplayName: Brass Turbine Rotor
-	Tooltip: ""
-}
-
-bronze_turbine_rotor: {
-	DisplayName: Bronze Turbine Rotor
-	Tooltip: ""
-}
-
-chromium_turbine_rotor: {
-	DisplayName: Chromium Turbine Rotor
-	Tooltip: ""
-}
-
-cobalt_brass_turbine_rotor: {
-	DisplayName: Cobalt Brass Turbine Rotor
-	Tooltip: ""
-}
-
-hsse_turbine_rotor: {
-	DisplayName: Hsse Turbine Rotor
-	Tooltip: ""
-}
-
-hssg_turbine_rotor: {
-	DisplayName: Hssg Turbine Rotor
-	Tooltip: ""
-}
-
-hsss_turbine_rotor: {
-	DisplayName: Hsss Turbine Rotor
-	Tooltip: ""
-}
-
-invar_turbine_rotor: {
-	DisplayName: Invar Turbine Rotor
-	Tooltip: ""
-}
-
-iridium_turbine_rotor: {
-	DisplayName: Iridium Turbine Rotor
-	Tooltip: ""
-}
-
-iron_turbine_rotor: {
-	DisplayName: Iron Turbine Rotor
-	Tooltip: ""
-}
-
-magnalium_turbine_rotor: {
-	DisplayName: Magnalium Turbine Rotor
-	Tooltip: ""
-}
-
-manganese_turbine_rotor: {
-	DisplayName: Manganese Turbine Rotor
-	Tooltip: ""
-}
-
-molybdenum_turbine_rotor: {
-	DisplayName: Molybdenum Turbine Rotor
-	Tooltip: ""
-}
-
-naquadah_turbine_rotor: {
-	DisplayName: Naquadah Turbine Rotor
-	Tooltip: ""
-}
-
-naquadah_alloy_turbine_rotor: {
-	DisplayName: Naquadah Alloy Turbine Rotor
-	Tooltip: ""
-}
-
-neodymium_turbine_rotor: {
-	DisplayName: Neodymium Turbine Rotor
-	Tooltip: ""
-}
-
-neutronium_turbine_rotor: {
-	DisplayName: Neutronium Turbine Rotor
-	Tooltip: ""
-}
-
-osmiridium_turbine_rotor: {
-	DisplayName: Osmiridium Turbine Rotor
-	Tooltip: ""
-}
-
-osmium_turbine_rotor: {
-	DisplayName: Osmium Turbine Rotor
-	Tooltip: ""
-}
-
-rhodium_plated_palladium_turbine_rotor: {
-	DisplayName: Rhodium Plated Palladium Turbine Rotor
-	Tooltip: ""
-}
-
-rose_gold_turbine_rotor: {
-	DisplayName: Rose Gold Turbine Rotor
-	Tooltip: ""
-}
-
-stainless_steel_turbine_rotor: {
-	DisplayName: Stainless Steel Turbine Rotor
-	Tooltip: ""
-}
-
-steel_turbine_rotor: {
-	DisplayName: Steel Turbine Rotor
-	Tooltip: ""
-}
-
-sterling_silver_turbine_rotor: {
-	DisplayName: Sterling Silver Turbine Rotor
-	Tooltip: ""
-}
-
-titanium_turbine_rotor: {
-	DisplayName: Titanium Turbine Rotor
-	Tooltip: ""
-}
-
-tritanium_turbine_rotor: {
-	DisplayName: Tritanium Turbine Rotor
-	Tooltip: ""
-}
-
-tungsten_turbine_rotor: {
-	DisplayName: Tungsten Turbine Rotor
-	Tooltip: ""
-}
-
-tungsten_carbide_turbine_rotor: {
-	DisplayName: Tungsten Carbide Turbine Rotor
-	Tooltip: ""
-}
-
-tungsten_steel_turbine_rotor: {
-	DisplayName: Tungsten Steel Turbine Rotor
-	Tooltip: ""
-}
-
-ultimet_turbine_rotor: {
-	DisplayName: Ultimet Turbine Rotor
-	Tooltip: ""
-}
-
-vanadium_steel_turbine_rotor: {
-	DisplayName: Vanadium Steel Turbine Rotor
-	Tooltip: ""
-}
-
-wrought_iron_turbine_rotor: {
-	DisplayName: Wrought Iron Turbine Rotor
 	Tooltip: ""
 }
 

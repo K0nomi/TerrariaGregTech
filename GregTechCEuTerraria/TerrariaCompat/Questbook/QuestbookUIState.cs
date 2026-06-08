@@ -52,6 +52,14 @@ public sealed class QuestbookUIState : UIState
 		};
 		_panel.Append(title);
 
+		var warning = new UIText("WIP - information may be highly inaccurate. Ask in our discord for progression tips", 1.0f)
+		{
+			HAlign = 0.5f,
+			Top = StyleDimension.FromPixels(pad),
+			TextColor = Color.Red,
+		};
+		_panel.Append(warning);
+
 		var close = new UIText("X", 1.1f)
 		{
 			HAlign = 1f,

@@ -150,6 +150,15 @@ public sealed class MagnetUIState : UIState
 			Top  = StyleDimension.FromPixels((y + ToggleH + 4) * Scale),
 		});
 
+		panel.Append(new UIDynamicLabel(
+			getter: () => FilterWarning.IsEmptyWhitelist(Mi?.SimpleFilter) ? FilterWarning.Text : "",
+			scale:  0.62f,
+			color:  FilterWarning.Color)
+		{
+			Left = StyleDimension.FromPixels(tx * Scale),
+			Top  = StyleDimension.FromPixels((y + ToggleH * 2 + 8) * Scale),
+		});
+
 		return 3 * slot;
 	}
 
