@@ -8,7 +8,6 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.Fluid;
 
-// Fluid-pipe place/cut/refund. Symmetric to ItemPipeLayerHandle.
 public sealed class FluidPipeLayerHandle : IGridLayerHandle
 {
 	public static readonly FluidPipeLayerHandle Instance = new();
@@ -18,6 +17,7 @@ public sealed class FluidPipeLayerHandle : IGridLayerHandle
 
 	public bool TryPlace(FluidPipeCell cell, int x, int y, Player placer)
 	{
+		if (PipeIntersection.BlocksPipeAt(x, y)) return false;
 		var existing = FluidPipeLayerSystem.Pipes.CellAt(x, y);
 		if (existing.HasValue && existing.Value.Equals(cell)) return false;
 		if (existing.HasValue) RefundAt(placer, existing.Value);
@@ -54,7 +54,6 @@ public sealed class FluidPipeLayerHandle : IGridLayerHandle
 		}
 	}
 
-	// Simple pipes need the tML-name branch; see ItemPipeLayerHandle.RefundAt.
 	private static void RefundAt(Player player, FluidPipeCell cell)
 	{
 		int type;

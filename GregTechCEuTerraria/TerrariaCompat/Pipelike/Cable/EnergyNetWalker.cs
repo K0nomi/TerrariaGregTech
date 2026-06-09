@@ -43,7 +43,6 @@ internal sealed class EnergyNetWalker : PipeNetWalker<CableCell, CableCell, Cabl
 	protected override PipeNetWalker<CableCell, CableCell, CableLayer> CreateSubWalker(
 		CableLayer pipeNet, IODirection facingToNextPos, (int x, int y) nextPos, int walkedBlocks)
 	{
-		// Copy pipes + loss per branch (verbatim with upstream).
 		var walker = new EnergyNetWalker(pipeNet, nextPos, walkedBlocks, _routes, _tryGetEndpoint)
 		{
 			_pipes = new List<(int x, int y)>(_pipes),
@@ -58,10 +57,8 @@ internal sealed class EnergyNetWalker : PipeNetWalker<CableCell, CableCell, Cabl
 		_loss += pipeTile.LossPerAmp;
 	}
 
-	// Same-cell route; IODirection.None signals "internal" delivery.
 	protected override void CheckSelfPos(CableCell pipeTile, (int x, int y) pos)
 	{
-		// Mirrors upstream's CheckNeighbour assert.
 		if (_pipes.Count == 0 || _pipes[^1] != pos)
 			throw new System.InvalidOperationException(
 				"The current pipe is not the last added pipe. Something went seriously wrong!");
@@ -75,6 +72,8 @@ internal sealed class EnergyNetWalker : PipeNetWalker<CableCell, CableCell, Cabl
 			distance:       WalkedBlocks,
 			loss:           _loss));
 	}
+
+	protected override bool SupportsCrossover => true;
 
 	protected override bool IsValidPipe(CableCell currentPipe, CableCell otherPipe,
 		(int x, int y) pipePos, IODirection faceToNeighbour)

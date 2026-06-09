@@ -9,8 +9,6 @@ using Terraria.ID;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.Cable;
 
-// Cable place/cut/refund. Sibling of *PipeLayerHandle. WireItem.BuildCell
-// is the SSOT for material -> cell.
 public sealed class CableLayerHandle : IGridLayerHandle
 {
 	public static readonly CableLayerHandle Instance = new();
@@ -20,6 +18,7 @@ public sealed class CableLayerHandle : IGridLayerHandle
 
 	public bool TryPlace(CableCell cell, int x, int y, Player placer)
 	{
+		if (Pipelike.PipeIntersection.BlocksPipeAt(x, y)) return false;
 		var existing = CableLayerSystem.Cables.CellAt(x, y);
 		if (existing.HasValue && existing.Value.Equals(cell)) return false;
 		if (existing.HasValue) RefundCableAt(placer, existing.Value);

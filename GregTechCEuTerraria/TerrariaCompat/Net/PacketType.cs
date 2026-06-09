@@ -64,4 +64,5 @@ public enum PacketType : byte
 	ItemCollectEffect = 84,  // Server->Client play the item-collected sparkle dust at one or more (x, y) tile coords - the visual half of an Item Collector consuming dropped items in-place (Dust.NewDust no-ops on a dedicated server, and the collection runs server-only). Batched: one packet per machine per tick.
 	LdEndpointToggle = 85,   // Client->Server flip a long-distance pipeline endpoint's IO role (screwdriver IN<->OUT). Same shape as TransformerToggle - re-sync via TileEntitySharing.
 	MachineEnergySync = 86,  // Server->Client compact per-machine energy-stored sync (Point16 + long, ~12 B). Energy is OMITTED from the full MachineStateSync blob (NEC.SaveForSync / WEMM.SaveDataForSync) so per-tick energy jitter stops re-sending the whole blob; this carries it cheaply instead. Mirror of upstream's per-field @SyncToClient energyStored.
+	CrossoverChange  = 87,   // Client->Server (server relays) "a Pipe Intersection tile changed at (x,y); re-evaluate the cable/item/fluid nets". Tile content rides vanilla tile-sync; this only carries the rebuild trigger (PlaceInWorld/KillTile fire on the acting client only).
 }

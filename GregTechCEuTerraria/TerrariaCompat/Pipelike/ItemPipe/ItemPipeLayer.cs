@@ -5,7 +5,8 @@ namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.ItemPipe;
 
 public sealed class ItemPipeLayer : GridLayer<ItemPipeCell>
 {
-	// Same-material = same net. Size + Restrictive don't gate connectivity.
+	protected override bool SupportsCrossover => true;
+
 	public override bool Connects(int x1, int y1, int x2, int y2)
 	{
 		var a = CellAt(x1, y1);

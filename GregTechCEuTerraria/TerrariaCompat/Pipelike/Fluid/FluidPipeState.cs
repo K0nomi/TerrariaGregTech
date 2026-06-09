@@ -39,7 +39,6 @@ public class FluidPipeState : IFluidPipeHost
 		X = x;
 		Y = y;
 		_nodeData = nodeData;
-		// Per-pipe random phase so a network doesn't fire on one tick.
 		_offset = new Random(unchecked(x * 73856093 ^ y * 19349663)).Next(20);
 		CreateTanksList();
 	}
@@ -53,7 +52,8 @@ public class FluidPipeState : IFluidPipeHost
 	public bool IsBlocked(CoverSide side)
 	{
 		var (dx, dy) = OffsetFor(side);
-		if (PipeNeighborProbe.IsConnectedPipe(X, Y, X + dx, Y + dy, PipeKind.Fluid))
+		var (px, py) = Api.Pipenet.PipePassthrough.EffectiveNeighbor(X, Y, dx, dy);
+		if (PipeNeighborProbe.IsConnectedPipe(X, Y, px, py, PipeKind.Fluid))
 			return false;
 		var pcv = FluidPipeLayerSystem.GetSides(X, Y);
 		return pcv is null || pcv.GetMode(side) == PipeSideMode.Off;
@@ -140,7 +140,6 @@ public class FluidPipeState : IFluidPipeHost
 		if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient) return;
 		if (GetOffsetTimer() % global::GregTechCEuTerraria.Api.TickScale.FromMcTicks(FREQUENCY) != 0) return;
 
-		// 4-side mask (upstream 6-side & 63); sentinel = all-sides-set.
 		LastReceivedFrom &= 15;
 		if (LastReceivedFrom == 15)
 		{
@@ -277,7 +276,8 @@ public class FluidPipeState : IFluidPipeHost
 		if (kind == SideNeighbourKind.Pipe)
 		{
 			var (dx, dy) = OffsetFor(facing);
-			var neighborState = FluidPipeLayerSystem.EnsureState(X + dx, Y + dy);
+			var (px, py) = Api.Pipenet.PipePassthrough.EffectiveNeighbor(X, Y, dx, dy);
+			var neighborState = FluidPipeLayerSystem.EnsureState(px, py);
 			return neighborState.GetTankList(OppositeSide(facing));
 		}
 		return handler;

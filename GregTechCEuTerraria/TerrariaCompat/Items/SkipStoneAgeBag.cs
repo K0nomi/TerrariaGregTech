@@ -62,6 +62,7 @@ public sealed class SkipStoneAgeBag : ModItem, ITextureWarmUp
 		// PipeItemRegistry isn't on the resolver path.
 		GivePipe(src, player, "steel_tiny_fluid_pipe", 100);
 		GivePipe(src, player, "tin_small_item_pipe",   100);
+		GiveMachine(src, player, "pipe_intersection",   10);
 
 		GiveBag(src, player, "primitive_pump", 1);
 		GiveBag(src, player, "coke_oven",      1);

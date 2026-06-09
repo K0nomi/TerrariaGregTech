@@ -3,12 +3,11 @@ using GregTechCEuTerraria.Api.Pipenet;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.Cable;
 
-// Sparse cable map. CableCell is denormalised so this + EnergyNetGraph +
-// EnergyNet stay MaterialRegistry-free (unit-testable without tML).
+// Sparse cable map
 public sealed class CableLayer : GridLayer<CableCell>
 {
-	// DEVIATION: cables connect only to same-tier neighbours
-	// (upstream links any). Mixed-tier joins are useless without a transformer.
+	protected override bool SupportsCrossover => true;
+
 	public override bool Connects(int x1, int y1, int x2, int y2)
 	{
 		var a = CellAt(x1, y1);

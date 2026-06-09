@@ -119,11 +119,13 @@ public sealed class ItemNetWalker : PipeNetWalker<ItemPipeCell, ItemPipeProperti
 			filters:    filtersForRoute));
 	}
 
+	protected override bool SupportsCrossover => true;
+
 	protected override bool IsValidPipe(
 		ItemPipeCell currentPipe, ItemPipeCell neighbourPipe, (int x, int y) pipePos, IODirection faceToNeighbour)
 	{
-		var (nx, ny) = (pipePos.x + OffsetForIODirection(faceToNeighbour).dx,
-		                pipePos.y + OffsetForIODirection(faceToNeighbour).dy);
+		var off = OffsetForIODirection(faceToNeighbour);
+		var (nx, ny) = PipePassthrough.EffectiveNeighbor(pipePos.x, pipePos.y, off.dx, off.dy);
 		if (!PipeNeighborProbe.IsConnectedPipe(pipePos.x, pipePos.y, nx, ny, PipeKind.Item))
 			return false;
 		var thisCover      = ItemPipeLayerSystem.GetSides(pipePos.x, pipePos.y)?

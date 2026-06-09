@@ -1,5 +1,7 @@
 ## 0.0.4
 
+Pipe update! Wires/pipes now have a proper neat render, animated in world and can intersect (check Pipe Intersection item)
+
 - Added native gt tooltips for crafting ingredients (thanks Konomi)
 - Added nether star to WoF drop pool (thanks Flungus, hamood)
 - Added redstone relation to amber (thanks Neko CR-21)
@@ -19,7 +21,6 @@
 - Fixed EoW and BoC loot droprates (thanks HiKoNe)
 - Fixed wrenches pipe highlight (thanks hamood)
 - Fixed edge case with 2 touching fluid pipes of different type interacting with the same tile (thanks PotatoSagall)
-- Removed pipe placement delay because tedious
 
 ## 0.0.3
 

@@ -9,9 +9,7 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.Cable;
 
-// Orchestrates the energy net: rebuilds connected components when the cable
-// layer changes, links endpoints via "wire behind machine" same-cell adjacency
-// (see LinkEndpoints), ticks every network in PostUpdateWorld.
+// rebuilds connected components when the cable layer changes
 public sealed class EnergyNetSystem : ModSystem
 {
 	private static readonly List<EnergyNet> _networks = new();
@@ -35,6 +33,20 @@ public sealed class EnergyNetSystem : ModSystem
 			return (0, 0);
 		}
 		return (net.LastTickExtracted, net.LastTickDelivered);
+	}
+
+	public const float LoadSmoothRate = 0.05f;
+
+	private static readonly Dictionary<(int x, int y), float> _clientLoad = new();
+	public static Dictionary<(int x, int y), float> ClientLoad => _clientLoad;
+
+	public static float WireActivityAt(int x, int y)
+	{
+		var net = NetAt(x, y);
+		if (net is null) return 0f;
+		if (TerrariaCompat.Machine.MetaMachine.IsClient)
+			return _clientLoad.TryGetValue(net.AnchorCell, out var v) ? v : 0f;
+		return net.SmoothedLoad;
 	}
 
 	public static void RegisterEndpoint(int x, int y, IEnergyContainer container)
@@ -76,13 +88,11 @@ public sealed class EnergyNetSystem : ModSystem
 
 	private static int _lastEntityCount = -1;
 
-	// Default ~10 Hz at 60 fps, overridden per-tick by config
 	private const int DefaultStateSyncPeriod = 6;
 	private static int StateSyncPeriod =>
 		global::GregTechCEuTerraria.Config.GTConfig.Instance?.NetworkSyncPeriod ?? DefaultStateSyncPeriod;
 	private static int _stateSyncCounter;
 
-	// Rebuild trigger - runs on BOTH server (via PostUpdateWorld) and client
 	public static void MaybeRebuild()
 	{
 		int currentCount = TileEntity.ByID.Count;
@@ -187,8 +197,9 @@ public sealed class EnergyNetSystem : ModSystem
 			}
 		}
 
-		// Periodic state-sync broadcast (server only).
-		// Targets = GUI viewers union players within NearbyRadiusPx.
+		foreach (var net in _networks)
+			net.AdvanceLoadSmoothing(LoadSmoothRate);
+
 		if (Main.netMode == Terraria.ID.NetmodeID.Server)
 		{
 			int period = StateSyncPeriod;
@@ -258,7 +269,6 @@ public sealed class EnergyNetSystem : ModSystem
 
 	}
 
-	// SAME-CELL connectivity model ("wire behind machine")
 	internal static void LinkEndpoints(EnergyNet net, NetworkComponent comp)
 	{
 		var seenProducers = new HashSet<IEnergyContainer>();

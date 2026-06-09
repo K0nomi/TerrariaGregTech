@@ -101,6 +101,8 @@ public sealed class GregTechCEuTerraria : Mod
 		TerrariaCompat.Tiles.Casings.CasingRegistry.Register(this);
 		Stage("Registering turbine rotors");
 		TerrariaCompat.Items.TurbineRotorItemLoader.Register(this);
+		TerrariaCompat.Pipelike.PipeIntersection.InstallHook();
+
 		var resolver = TerrariaCompat.Recipes.IngredientResolverImpl.Instance;
 		IIngredientResolver.Default = resolver;
 
@@ -128,6 +130,7 @@ public sealed class GregTechCEuTerraria : Mod
 	{
 		RuntimeTextureRegistry.DisposeAll();
 
+		TerrariaCompat.Pipelike.PipeIntersection.UninstallHook();
 		IIngredientResolver.Default = null;
 
 		TerrariaCompat.BossDrops.BossDropRegistry.Unload();

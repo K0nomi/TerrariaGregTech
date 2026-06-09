@@ -79,6 +79,7 @@ public static class NetRouter
 			case PacketType.FluidPipeStats:   FluidPipeStatsPacket.HandleOnClient(reader); break;
 			case PacketType.ProfilerSync:     ProfilerSyncPacket.HandleOnClient(reader); break;
 			case PacketType.ItemCollectEffect: ItemCollectEffectPacket.HandleOnClient(reader); break;
+			case PacketType.CrossoverChange:  Pipelike.PipeIntersection.HandleChange(reader, whoAmI); break;
 			default:
 				NetHelpers.LogBadPacket("dispatch", $"unknown PacketType={(byte)type} from whoAmI={whoAmI}");
 				break;

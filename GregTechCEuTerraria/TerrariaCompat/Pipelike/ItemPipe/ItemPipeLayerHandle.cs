@@ -8,9 +8,6 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.ItemPipe;
 
-// Item-pipe place/cut/refund cycle. Singleton. PipeItem.BuildItemCell is
-// the SSOT for material -> cell conversion; this handle just gates + sets +
-// broadcasts + refunds.
 public sealed class ItemPipeLayerHandle : IGridLayerHandle
 {
 	public static readonly ItemPipeLayerHandle Instance = new();
@@ -20,11 +17,11 @@ public sealed class ItemPipeLayerHandle : IGridLayerHandle
 
 	public bool TryPlace(ItemPipeCell cell, int x, int y, Player placer)
 	{
+		if (PipeIntersection.BlocksPipeAt(x, y)) return false;
 		var existing = ItemPipeLayerSystem.Pipes.CellAt(x, y);
 		if (existing.HasValue && existing.Value.Equals(cell)) return false;
 		if (existing.HasValue) RefundAt(placer, existing.Value);
 		ItemPipeLayerSystem.Pipes.Set(x, y, cell);
-		// PipeCoverable holds the cell's per-tick state + per-side covers.
 		ItemPipeLayerSystem.EnsureSides(x, y);
 		ItemPipeNetSystem.OnPipeAdded(x, y, cell);
 		PipePackets.SendPlacedItem(x, y, cell);
@@ -45,9 +42,6 @@ public sealed class ItemPipeLayerHandle : IGridLayerHandle
 		return true;
 	}
 
-	// Re-evaluates adjacent pipe-side covers' subscriptions; required for an
-	// Active side whose neighbour just toggled inventory <-> pipe. Internal +
-	// static so the MP packet handlers can call it after their mutations.
 	internal static void NotifyAdjacentCoversNeighborChanged(int x, int y)
 	{
 		foreach (var (_, dx, dy) in IODirectionExtensions.Cardinal4)
@@ -59,9 +53,6 @@ public sealed class ItemPipeLayerHandle : IGridLayerHandle
 		}
 	}
 
-	// Simple pipes live outside the dump-driven PipeItemRegistry, so they
-	// need the tML-name lookup branch (the dump-id reconstruction would
-	// produce a key like "simple_item_normal_item_pipe" with no entry).
 	private static void RefundAt(Player player, ItemPipeCell cell)
 	{
 		int type;

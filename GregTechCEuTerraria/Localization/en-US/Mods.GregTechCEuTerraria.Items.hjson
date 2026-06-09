@@ -39642,3 +39642,8 @@ multiblock_bag_steel_multiblock_tank: {
 	DisplayName: Steel Multiblock Tank Multiblock Bag
 	Tooltip: Right-click to open - drops the structure parts to assemble this multiblock.
 }
+
+pipe_intersection: {
+	DisplayName: Pipe Intersection
+	Tooltip: ""
+}

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using GregTechCEuTerraria.Api.Capability.Recipe;
 using GregTechCEuTerraria.Api.Cover;
+using GregTechCEuTerraria.Api.Fluids;
 using GregTechCEuTerraria.Common.Materials;
 using GregTechCEuTerraria.Api.Pipenet;
 using GregTechCEuTerraria.TerrariaCompat.Cover;
+using GregTechCEuTerraria.TerrariaCompat.Machine.Rendering;
 using GregTechCEuTerraria.TerrariaCompat.Pipelike.ItemPipe;
 using GregTechCEuTerraria.TerrariaCompat.Pipelike.Fluid;
 using Microsoft.Xna.Framework;
@@ -13,32 +15,23 @@ using Terraria;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike;
 
-// Renders placed pipes (both layers). Hooked from each layer system's
-// DoDraw_WallsAndBlacks detour - background z-band, so blocks placed on top
-// cover the pipe (mirrors how cables sit below tiles).
-//
-// Per-size 64x64 procedural atlas: 4x4 grid of 16x16 frames, frame index =
-// neighbour connection mask (N=1, S=2, W=4, E=8).
 public static class PipeRenderer
 {
-	private const int FrameSize = 16;
-	private const int GridSide  = 4;
-	private const int SheetSide = FrameSize * GridSide;
+	private const string PipeSideTex = "GregTechCEuTerraria/Content/Textures/block/pipe/pipe_side";
 
-	// Chunkier than cables so pipes read distinctly. Item/fluid share the
-	// thickness - colour + restrictive overlay carry the distinction.
 	private static readonly Dictionary<PipeSize, int> _thicknessBySize = new()
 	{
 		{ PipeSize.Tiny,       4  },
-		{ PipeSize.Small,      6  },
-		{ PipeSize.Normal,     8  },
-		{ PipeSize.Large,      10 },
-		{ PipeSize.Huge,       12 },
-		{ PipeSize.Quadruple,  12 },
-		{ PipeSize.Nonuple,    14 },
+		{ PipeSize.Small,      5  },
+		{ PipeSize.Normal,     6  },
+		{ PipeSize.Large,      7  },
+		{ PipeSize.Huge,       8  },
+		{ PipeSize.Quadruple,  9  },
+		{ PipeSize.Nonuple,    10 },
 	};
 
-	private static readonly Dictionary<PipeSize, Texture2D> _atlasCache = new();
+	private static int ThicknessFor(PipeSize size) =>
+		_thicknessBySize.TryGetValue(size, out var t) ? t : 6;
 
 	public static void DrawItemPipes()
 	{
@@ -54,9 +47,6 @@ public static class PipeRenderer
 		DrawLayer(Main.spriteBatch, layer, kind: PipeKind.Fluid, foreground: false);
 	}
 
-	// Per-kind overlay so pipe runs behind blocks stay traceable. Player only
-	// sees the layer matching their held pipe item. Owns its SpriteBatch -
-	// PostDrawTiles fires outside the wall pass.
 	public static void DrawItemForegroundOverlay()
 	{
 		var layer = ItemPipeLayerSystem.Pipes;
@@ -81,8 +71,6 @@ public static class PipeRenderer
 		finally { sb.End(); }
 	}
 
-	// Per-cell tint / size / restrictive flag from kind-specific accessor;
-	// everything else is one shared path over GridLayer<TCell>.
 	private static void DrawLayer<TCell>(SpriteBatch sb, GridLayer<TCell> layer, PipeKind kind, bool foreground)
 		where TCell : struct
 	{
@@ -91,6 +79,9 @@ public static class PipeRenderer
 		int firstY = (int)(Main.screenPosition.Y / 16) - 1;
 		int lastY  = (int)((Main.screenPosition.Y + Main.screenHeight) / 16) + 1;
 
+		var tex = PipeBodyArt.Tex(PipeSideTex);
+		if (tex is null) return;
+
 		foreach (var kv in layer.All)
 		{
 			int x = kv.Key.x;
@@ -98,97 +89,62 @@ public static class PipeRenderer
 			if (x < firstX || x > lastX || y < firstY || y > lastY) continue;
 
 			(string materialId, PipeSize size, bool restrictive) = ReadCell(kv.Value, kind);
-			var atlas = AtlasFor(size);
-			if (atlas is null) continue;
-
-			int frame = layer.ConnectionMask(x, y);
-			int col = frame % GridSide;
-			int row = frame / GridSide;
-			var src = new Rectangle(col * FrameSize, row * FrameSize, FrameSize, FrameSize);
+			int mask = layer.ConnectionMask(x, y) | EndpointMask(kind, x, y);
 
 			Vector2 pos = new Vector2(
 				x * 16 - (int)Main.screenPosition.X,
 				y * 16 - (int)Main.screenPosition.Y);
 
+			Color light = foreground ? Color.White : Lighting.GetColor(x, y);
+
 			Color tint = MaterialColor(materialId);
-			// Restrictive item pipes read darker - no separate texture set.
 			if (restrictive) tint = Darken(tint, 0.55f);
+			tint = Mul(tint, light);
 
-			if (!foreground)
-			{
-				Color light = Lighting.GetColor(x, y);
-				tint = new Color(
-					(byte)(tint.R * light.R / 255),
-					(byte)(tint.G * light.G / 255),
-					(byte)(tint.B * light.B / 255));
-			}
-			// Foreground overlay skips ambient modulation (matches vanilla
-			// wire-overlay full-brightness in dark caves).
+			PipeBodyArt.DrawCell(sb, tex, pos, mask, ThicknessFor(size), tint);
 
-			sb.Draw(atlas, pos, src, tint);
+			if (kind == PipeKind.Fluid)
+				DrawFluidFill(sb, x, y, pos, mask, size, light);
+			else
+				DrawItemDots(sb, x, y, pos, mask, light);
 
-			// Per-side funnel endpoints on top of the pipe. Passive =
-			// material colour, Orange = Active push
-			// (pipe->inv), Blue = Active pull (inv->pipe). Only renders when
-			// the side has an actual inventory neighbour.
-			DrawSideFunnels(sb, x, y, kind, pos, MaterialColor(materialId));
+			DrawSideConnectors(sb, x, y, kind, pos);
 		}
 	}
 
-	// === Per-side funnels =====================================================
-	private static Texture2D? _funnelTriangleTex;
-	private static Texture2D? _funnelSquareTex;
-
-	// 8x8 triangle, tip at x=0 (pipe centre), base at x=W-1 (outer edge).
-	// Drawn with origin=(0,4); FlipHorizontally swaps tip/base for IO.OUT.
-	private static Texture2D? FunnelTriangle()
+	private static int EndpointMask(PipeKind kind, int x, int y)
 	{
-		if (_funnelTriangleTex is not null) return _funnelTriangleTex;
-		if (Main.graphics?.GraphicsDevice is null) return null;
-		const int W = 8, H = 8;
-		var tex = RuntimeTextureRegistry.New(W, H);
-		var px = new Color[W * H];
-		for (int x = 0; x < W; x++)
+		var pcv = kind == PipeKind.Fluid
+			? FluidPipeLayerSystem.GetSides(x, y)
+			: ItemPipeLayerSystem .GetSides(x, y);
+		if (pcv is null) return 0;
+		int m = 0;
+		foreach (var side in CoverSides.All)
 		{
-			int half = (x * (H / 2) + (W / 2)) / W;
-			int yLo = (H / 2) - half;
-			int yHi = (H / 2) + half;
-			for (int y = yLo; y <= yHi && y < H; y++)
-				px[y * W + x] = Color.White;
+			if (pcv.GetMode(side) == PipeSideMode.Off) continue;
+			if (PipeNeighborProbe.ProbeAt(x, y, side, kind) != SideNeighbourKind.Inventory) continue;
+			m |= side switch
+			{
+				CoverSide.Up    => 1,
+				CoverSide.Down  => 2,
+				CoverSide.Left  => 4,
+				CoverSide.Right => 8,
+				_               => 0,
+			};
 		}
-		tex.SetData(px);
-		return _funnelTriangleTex = tex;
+		return m;
 	}
 
-	// Passive-mode marker (no flow direction). 8x8 to match triangle footprint.
-	private static Texture2D? FunnelSquare()
-	{
-		if (_funnelSquareTex is not null) return _funnelSquareTex;
-		if (Main.graphics?.GraphicsDevice is null) return null;
-		const int W = 8, H = 8;
-		var tex = RuntimeTextureRegistry.New(W, H);
-		var px = new Color[W * H];
-		// 6x6 centred; 1-px border keeps it from dominating the triangle widths.
-		for (int x = 1; x < W - 1; x++)
-			for (int y = 1; y < H - 1; y++)
-				px[y * W + x] = Color.White;
-		tex.SetData(px);
-		return _funnelSquareTex = tex;
-	}
+	private const string ConnectorDir = "GregTechCEuTerraria/Content/TerrariaCompat/Connectors";
 
-	private static void DrawSideFunnels(SpriteBatch sb, int x, int y, PipeKind kind, Vector2 cellScreenPos, Color pipeMaterialColor)
+	private static void DrawSideConnectors(SpriteBatch sb, int x, int y, PipeKind kind, Vector2 cellScreenPos)
 	{
 		var pcv = kind == PipeKind.Fluid
 			? FluidPipeLayerSystem.GetSides(x, y)
 			: ItemPipeLayerSystem .GetSides(x, y);
 		if (pcv is null) return;
 
-		var triTex    = FunnelTriangle();
-		var squareTex = FunnelSquare();
-		if (triTex is null || squareTex is null) return;
-
 		Color light = Lighting.GetColor(x, y);
-		bool busy = IsPipeBusy(x, y, kind);
 
 		foreach (var side in CoverSides.All)
 		{
@@ -198,108 +154,50 @@ public static class PipeRenderer
 			var probe = PipeNeighborProbe.ProbeAt(x, y, side, kind);
 			if (probe != SideNeighbourKind.Inventory) continue;
 
-			Color funnelColor = PickFunnelColor(pcv, side, mode, pipeMaterialColor);
-			Color tintedColor = new Color(
-				(byte)(funnelColor.R * light.R / 255),
-				(byte)(funnelColor.G * light.G / 255),
-				(byte)(funnelColor.B * light.B / 255));
+			var conn = ConnectorTex(kind, mode, pcv, side);
+			if (conn is null) continue;
 
-			Vector2 pivot = cellScreenPos + new Vector2(8, 8);
 			float rotation = side switch
 			{
-				CoverSide.Right => 0f,
-				CoverSide.Down  => MathHelper.PiOver2,
-				CoverSide.Left  => MathHelper.Pi,
-				CoverSide.Up    => MathHelper.Pi + MathHelper.PiOver2,
+				CoverSide.Down  => 0f,
+				CoverSide.Left  => MathHelper.PiOver2,
+				CoverSide.Up    => MathHelper.Pi,
+				CoverSide.Right => MathHelper.Pi + MathHelper.PiOver2,
 				_               => 0f,
 			};
-
-			if (mode == PipeSideMode.Passive)
-			{
-				sb.Draw(squareTex, pivot, null, tintedColor, rotation,
-					new Vector2(0, 4), 1f, SpriteEffects.None, 0f);
-			}
-			else
-			{
-				// IO.IN  = arrow inward (tip at pipe centre); texture as-is.
-				// IO.OUT = arrow outward; FlipHorizontally swaps tip/base.
-				bool extract = PipeCoverable.ActiveIoAt(pcv, side) == IO.OUT;
-				var effects = extract ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-				sb.Draw(triTex, pivot, null, tintedColor, rotation,
-					new Vector2(0, 4), 1f, effects, 0f);
-			}
-
-			// Trickle dust at the funnel base while the pipe is active.
-			if (busy && Main.rand.NextFloat() < 0.10f)
-				SpawnActivityDust(x, y, side, mode, pcv, funnelColor);
+			sb.Draw(conn, cellScreenPos + new Vector2(8, 8), null, light, rotation,
+				new Vector2(8, 8), 1f, SpriteEffects.None, 0f);
 		}
 	}
 
-	private static bool IsPipeBusy(int x, int y, PipeKind kind)
+	private static Texture2D? ConnectorTex(PipeKind kind, PipeSideMode mode, PipeCoverable pcv, CoverSide side)
 	{
-		// MP client reads the periodic stats cache; SP / server reads live state.
-		if (kind == PipeKind.Fluid)
+		string kindWord = kind == PipeKind.Fluid ? "fluid" : "item";
+		var filterType = pcv.GetFilterType(side);
+		string modeWord;
+		if (mode == PipeSideMode.Passive)
 		{
-			if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
-			{
-				if (!Fluid.FluidPipeLayerSystem.ClientTankSnapshots.TryGetValue((x, y), out var stacks)
-				    || stacks is null) return false;
-				foreach (var f in stacks) if (!f.IsEmpty) return true;
-				return false;
-			}
-			var st = Fluid.FluidPipeLayerSystem.GetState(x, y);
-			if (st is null) return false;
-			foreach (var f in st.GetContainedFluids()) if (!f.IsEmpty) return true;
-			return false;
+			if (filterType == PipeCoverable.PipeFilterType.None) return null;
+			modeWord = "passive";
 		}
-
-		if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
-			return ItemPipeNetSystem.ClientTransferStats.TryGetValue((x, y), out int v) && v > 0;
-		var ipcv = ItemPipeLayerSystem.GetSides(x, y);
-		return ipcv is not null && ipcv.TransferredItems > 0;
-	}
-
-	private static void SpawnActivityDust(int x, int y, CoverSide side, PipeSideMode mode,
-		PipeCoverable pcv, Color color)
-	{
-		// Spawn at the funnel base - one cell-edge step from pipe centre.
-		float cx = x * 16 + 8;
-		float cy = y * 16 + 8;
-		var (dx, dy) = side switch
-		{
-			CoverSide.Up    => (0f, -8f),
-			CoverSide.Down  => (0f, +8f),
-			CoverSide.Left  => (-8f, 0f),
-			CoverSide.Right => (+8f, 0f),
-			_               => (0f, 0f),
-		};
-		Vector2 pos = new Vector2(cx + dx, cy + dy);
-
-		// Velocity direction: push -> outward, pull -> inward, passive -> static jitter.
-		float speed = 0.6f;
-		Vector2 vel;
-		if (mode == PipeSideMode.Active && PipeCoverable.ActiveIoAt(pcv, side) == IO.OUT)
-			vel = new Vector2(dx, dy) / 8f * speed;   // outward
-		else if (mode == PipeSideMode.Active)
-			vel = new Vector2(-dx, -dy) / 8f * speed; // inward (pull / IO.IN)
 		else
-			vel = new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-0.2f, 0.2f));
-
-		// Treasure-sparkle dust tinted with funnel colour - mode readable
-		// even when the funnel itself is offscreen.
-		int dust = Terraria.Dust.NewDust(pos - new Vector2(1, 1), 2, 2,
-			Terraria.ID.DustID.TreasureSparkle, vel.X, vel.Y, 100, color, 0.9f);
-		Terraria.Main.dust[dust].noGravity = true;
-		Terraria.Main.dust[dust].fadeIn = 1.2f;
+		{
+			var io = PipeCoverable.ActiveIoAt(pcv, side);
+			modeWord = io == IO.OUT ? "push" : io == IO.IN ? "pull" : "passive";
+		}
+		string flt = filterType == PipeCoverable.PipeFilterType.None
+			? "blacklist"
+			: (SideFilterIsBlacklist(kind, pcv, side) ? "blacklist" : "whitelist");
+		return PipeBodyArt.Tex($"{ConnectorDir}/{kindWord}_{modeWord}_{flt}");
 	}
 
-	private static Color PickFunnelColor(PipeCoverable pcv, CoverSide side, PipeSideMode mode, Color pipeMaterialColor)
+	private static bool SideFilterIsBlacklist(PipeKind kind, PipeCoverable pcv, CoverSide side)
 	{
-		if (mode == PipeSideMode.Passive) return pipeMaterialColor;
-		// IO.OUT = push (extract) = orange; IO.IN = pull (insert) = blue.
-		bool push = PipeCoverable.ActiveIoAt(pcv, side) == IO.OUT;
-		return push ? new Color(255, 140, 40)
-		            : new Color( 80, 160, 255);
+		var cover = pcv.GetCoverAtSide(side);
+		if (cover is null) return false;
+		return kind == PipeKind.Fluid
+			? (cover.UiFluidFilter?.IsBlackList ?? false)
+			: (cover.UiItemFilter?.IsBlackList ?? false);
 	}
 
 	private static (string, PipeSize, bool) ReadCell<TCell>(TCell cell, PipeKind kind) where TCell : struct
@@ -316,53 +214,91 @@ public static class PipeRenderer
 		}
 	}
 
-	private static Texture2D? AtlasFor(PipeSize size)
-	{
-		if (_atlasCache.TryGetValue(size, out var cached)) return cached;
-		if (Main.graphics?.GraphicsDevice is null) return null;
-		int thickness = _thicknessBySize.TryGetValue(size, out var t) ? t : 8;
+	private const float DotSpeed   = 0.9f;
+	private const int   DotsPerArm = 2;
 
-		var tex = RuntimeTextureRegistry.New(SheetSide, SheetSide);
-		var pixels = new Color[SheetSide * SheetSide];
-		for (int frame = 0; frame < 16; frame++)
+	private static readonly (CoverSide side, int dx, int dy, int bit)[] ArmDirs =
+	{
+		(CoverSide.Up, 0, -1, 1), (CoverSide.Down, 0, 1, 2),
+		(CoverSide.Left, -1, 0, 4), (CoverSide.Right, 1, 0, 8),
+	};
+
+	private static void DrawItemDots(SpriteBatch sb, int x, int y, Vector2 pos, int mask, Color light)
+	{
+		if (!ItemBusy(x, y)) return;
+		if (!ItemPipe.ItemPipeFlow.TryGetOutflow(x, y, out var outDir)) return;
+
+		var px  = Terraria.GameContent.TextureAssets.MagicPixel.Value;
+		Color dot = Mul(new Color(255, 140, 0), light);
+		Vector2 center = pos + new Vector2(8f, 8f);
+		float baseT = Main.GameUpdateCount * DotSpeed / 8f + (x + y) * 0.13f;
+
+		foreach (var (side, dx, dy, bit) in ArmDirs)
 		{
-			int col = frame % GridSide;
-			int row = frame / GridSide;
-			int ox = col * FrameSize;
-			int oy = row * FrameSize;
-			DrawFrame(pixels, SheetSide, ox, oy, frame, thickness);
-		}
-		tex.SetData(pixels);
-		_atlasCache[size] = tex;
-		return tex;
-	}
-
-	// 16x16 frame for connection mask (N=1, S=2, W=4, E=8). Centred hub +
-	// per-arm band. mask == 0 draws just the hub so an isolated cell renders.
-	private static void DrawFrame(Color[] dest, int stride, int ox, int oy, int mask, int thickness)
-	{
-		int half = thickness / 2;
-		int center = FrameSize / 2;
-		int xLo = center - half;
-		int xHi = center + half - (thickness % 2 == 0 ? 1 : 0);
-
-		FillRect(dest, stride, ox + xLo, oy + xLo, ox + xHi, oy + xHi, Color.White);
-
-		if ((mask & 1) != 0) FillRect(dest, stride, ox + xLo, oy + 0,         ox + xHi, oy + xLo, Color.White); // N
-		if ((mask & 2) != 0) FillRect(dest, stride, ox + xLo, oy + xHi,       ox + xHi, oy + 15,  Color.White); // S
-		if ((mask & 4) != 0) FillRect(dest, stride, ox + 0,   oy + xLo,       ox + xLo, oy + xHi, Color.White); // W
-		if ((mask & 8) != 0) FillRect(dest, stride, ox + xHi, oy + xLo,       ox + 15,  oy + xHi, Color.White); // E
-	}
-
-	private static void FillRect(Color[] dest, int stride, int x0, int y0, int x1, int y1, Color c)
-	{
-		for (int y = y0; y <= y1; y++)
-		{
-			for (int x = x0; x <= x1; x++)
+			if ((mask & bit) == 0) continue;
+			bool outward = side == outDir;
+			Vector2 edge = center + new Vector2(dx * 8f, dy * 8f);
+			for (int i = 0; i < DotsPerArm; i++)
 			{
-				dest[y * stride + x] = c;
+				float t = Frac(baseT + (float)i / DotsPerArm);
+				float p = outward ? t : 1f - t;
+				Vector2 dp = Vector2.Lerp(center, edge, p);
+				sb.Draw(px, dp, new Rectangle(0, 0, 1, 1), dot, 0f,
+					new Vector2(0.5f, 0.5f), 2f, SpriteEffects.None, 0f);
 			}
 		}
+	}
+
+	private static bool ItemBusy(int x, int y)
+	{
+		if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
+			return ItemPipe.ItemPipeNetSystem.ClientTransferStats.TryGetValue((x, y), out int v) && v > 0;
+		var pcv = ItemPipeLayerSystem.GetSides(x, y);
+		return pcv is not null && pcv.TransferredItems > 0;
+	}
+
+	private static float Frac(float v) => v - (float)System.Math.Floor(v);
+
+	private static void DrawFluidFill(SpriteBatch sb, int x, int y, Vector2 pos, int mask, PipeSize size, Color light)
+	{
+		var (fluid, fill) = GetPipeFluid(x, y);
+		if (fluid is null || fill <= 0f) return;
+		if (!FluidIconRenderer.TryGetFrame(fluid, out var ftex, out var fsrc, out var fbase) || ftex is null)
+			return;
+		int maxInner = System.Math.Max(2, ThicknessFor(size) - 2);
+		int inner    = System.Math.Max(1, (int)(maxInner * fill + 0.5f));
+		PipeBodyArt.DrawCellStretch(sb, ftex, fsrc, pos, mask, inner, Mul(fbase, light));
+	}
+
+	private static (FluidType? fluid, float fill) GetPipeFluid(int x, int y)
+	{
+		if (Main.netMode == Terraria.ID.NetmodeID.MultiplayerClient)
+		{
+			if (Fluid.FluidPipeLayerSystem.ClientTankSnapshots.TryGetValue((x, y), out var stacks) && stacks != null)
+			{
+				int cap = ClientCapacity(x, y);
+				foreach (var f in stacks) if (!f.IsEmpty) return (f.Type, Frac(f.Amount, cap));
+			}
+			return (null, 0f);
+		}
+		var st = Fluid.FluidPipeLayerSystem.GetState(x, y);
+		if (st is null) return (null, 0f);
+		int cap2 = st.CapacityPerTank;
+		foreach (var f in st.GetContainedFluids()) if (!f.IsEmpty) return (f.Type, Frac(f.Amount, cap2));
+		return (null, 0f);
+	}
+
+	private static int ClientCapacity(int x, int y)
+	{
+		var c = Fluid.FluidPipeLayerSystem.Pipes.CellAt(x, y);
+		return c.HasValue ? System.Math.Max(1, c.Value.Throughput * 20) : 1;
+	}
+
+	private static float Frac(int amount, int cap)
+	{
+		if (cap <= 0) return 1f;
+		float f = amount / (float)cap;
+		return f < 0f ? 0f : f > 1f ? 1f : f;
 	}
 
 	private static Color MaterialColor(string materialId)
@@ -372,16 +308,9 @@ public static class PipeRenderer
 		return new Color((byte)((c >> 16) & 0xFF), (byte)((c >> 8) & 0xFF), (byte)(c & 0xFF));
 	}
 
+	private static Color Mul(Color a, Color b) =>
+		new Color(a.R * b.R / 255, a.G * b.G / 255, a.B * b.B / 255);
+
 	private static Color Darken(Color c, float factor) =>
 		new Color((byte)(c.R * factor), (byte)(c.G * factor), (byte)(c.B * factor));
-
-	public static void ClearAtlasCache()
-	{
-		foreach (var t in _atlasCache.Values) t?.Dispose();
-		_atlasCache.Clear();
-		_funnelTriangleTex?.Dispose();
-		_funnelTriangleTex = null;
-		_funnelSquareTex?.Dispose();
-		_funnelSquareTex = null;
-	}
 }

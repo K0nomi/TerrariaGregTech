@@ -31,7 +31,8 @@ public static class PipeNeighborProbe
 		var (dx, dy) = dir.Offset();
 		int nx = x + dx, ny = y + dy;
 
-		if (IsConnectedPipe(x, y, nx, ny, PipeKind.Fluid))
+		var (px, py) = Api.Pipenet.PipePassthrough.EffectiveNeighbor(x, y, dx, dy);
+		if (IsConnectedPipe(x, y, px, py, PipeKind.Fluid))
 			return (SideNeighbourKind.Pipe, null);
 
 		var face = dir.Opposite();
@@ -51,7 +52,8 @@ public static class PipeNeighborProbe
 		var (dx, dy) = dir.Offset();
 		int nx = x + dx, ny = y + dy;
 
-		if (IsConnectedPipe(x, y, nx, ny, PipeKind.Item))
+		var (px, py) = Api.Pipenet.PipePassthrough.EffectiveNeighbor(x, y, dx, dy);
+		if (IsConnectedPipe(x, y, px, py, PipeKind.Item))
 			return (SideNeighbourKind.Pipe, null);
 
 		var face = dir.Opposite();

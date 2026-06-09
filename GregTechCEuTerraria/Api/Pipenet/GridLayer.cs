@@ -5,14 +5,7 @@ namespace GregTechCEuTerraria.Api.Pipenet;
 
 // Sparse 2D map of placed cells on a "wire-style" layer parallel to the tile
 // grid. The layer does not occupy block space - cells can coexist with any
-// tile or with empty air.
-//
-// Abstract base shared by the cable layer (energy net) and the item / fluid
-// pipe layers. Subclasses parameterise the per-cell payload type and override
-// Connects to define when two adjacent cells form a network link (same-tier
-// for cables, same-kind + same-material for pipes).
-//
-// Pure - no Terraria deps. Save/load + render lives on a per-layer ModSystem.
+// tile or with empty air
 public abstract class GridLayer<TCell> where TCell : struct
 {
 	private readonly Dictionary<(int x, int y), TCell> _cells = new();
@@ -20,10 +13,12 @@ public abstract class GridLayer<TCell> where TCell : struct
 	public int Count => _cells.Count;
 	public IReadOnlyDictionary<(int x, int y), TCell> All => _cells;
 
-	// Set whenever topology changes (Set / Remove / Clear that actually mutated).
-	// The owning network system polls and rebuilds; it calls ClearDirty after.
 	public bool IsDirty { get; private set; }
 	public void ClearDirty() => IsDirty = false;
+	public void MarkDirty() => IsDirty = true;
+
+	// Pipe Intersection enabled
+	protected virtual bool SupportsCrossover => false;
 
 	public bool Has(int x, int y) => _cells.ContainsKey((x, y));
 
@@ -52,8 +47,6 @@ public abstract class GridLayer<TCell> where TCell : struct
 		IsDirty = true;
 	}
 
-	// Whether two layer positions form a connection - used by both the network
-	// flood and the render mask. Subclasses define the connectivity rule.
 	public abstract bool Connects(int x1, int y1, int x2, int y2);
 
 	// N=1, S=2, W=4, E=8 - combined into a 0..15 frame index. A cell only
@@ -62,10 +55,18 @@ public abstract class GridLayer<TCell> where TCell : struct
 	public int ConnectionMask(int x, int y)
 	{
 		int mask = 0;
-		if (Connects(x, y, x, y - 1)) mask |= 1;
-		if (Connects(x, y, x, y + 1)) mask |= 2;
-		if (Connects(x, y, x - 1, y)) mask |= 4;
-		if (Connects(x, y, x + 1, y)) mask |= 8;
+		if (!SupportsCrossover)
+		{
+			if (Connects(x, y, x, y - 1)) mask |= 1;
+			if (Connects(x, y, x, y + 1)) mask |= 2;
+			if (Connects(x, y, x - 1, y)) mask |= 4;
+			if (Connects(x, y, x + 1, y)) mask |= 8;
+			return mask;
+		}
+		var n = PipePassthrough.EffectiveNeighbor(x, y, 0, -1); if (Connects(x, y, n.x, n.y)) mask |= 1;
+		var s = PipePassthrough.EffectiveNeighbor(x, y, 0,  1); if (Connects(x, y, s.x, s.y)) mask |= 2;
+		var w = PipePassthrough.EffectiveNeighbor(x, y, -1, 0); if (Connects(x, y, w.x, w.y)) mask |= 4;
+		var e = PipePassthrough.EffectiveNeighbor(x, y,  1, 0); if (Connects(x, y, e.x, e.y)) mask |= 8;
 		return mask;
 	}
 }

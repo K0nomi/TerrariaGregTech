@@ -1,13 +1,11 @@
 #nullable enable
 using GregTechCEuTerraria.Common.Energy;
+using GregTechCEuTerraria.Api.Pipenet;
 using System.Collections.Generic;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Pipelike.Cable;
 
-// BFS-flood connected components. Weakest-link electrical aggregation
-// (MIN voltage / MIN amperage / MAX loss-per-amp). Pure - no Terraria deps,
-// unit-testable. Upstream does per-path BFS for routing; the network-wide
-// approximation keeps rebuild O(cells) instead of O(cells^2).
+// BFS-flood connected components
 public static class EnergyNetGraph
 {
 	public static List<NetworkComponent> Build(CableLayer layer)
@@ -55,20 +53,18 @@ public static class EnergyNetGraph
 			Enqueue(layer, queue, visited, pos, pos.x + 1, pos.y);
 		}
 
-		// Clamp empty-network minAmperage to 0 (otherwise int.MaxValue lies).
 		if (!seenAny) minAmperage = 0;
 
 		return new NetworkComponent(cells, minTier, minAmperage, maxLossPerAmp);
 	}
 
-	// Different-tier neighbours are left unvisited so Build seeds them as
-	// separate components (different tiers = separate networks).
 	private static void Enqueue(CableLayer layer, Queue<(int, int)> q, HashSet<(int, int)> visited,
 		(int x, int y) from, int x, int y)
 	{
-		var key = (x, y);
+		var (tx, ty) = PipePassthrough.EffectiveNeighbor(from.x, from.y, x - from.x, y - from.y);
+		var key = (tx, ty);
 		if (visited.Contains(key)) return;
-		if (!layer.Connects(from.x, from.y, x, y)) return;
+		if (!layer.Connects(from.x, from.y, tx, ty)) return;
 		visited.Add(key);
 		q.Enqueue(key);
 	}

@@ -12,10 +12,7 @@ using Terraria.ModLoader;
 
 namespace GregTechCEuTerraria.TerrariaCompat.Machine.Rendering;
 
-// Fluid-still resolver+drawer for UI (recipe browser / tank widgets).
-// Mirrors FluidBuilder.determineTextures: custom art at block/fluids/fluid.<id>
-// (untinted) vs generic per-icon-type material_sets/dull/{liquid|gas|plasma|molten}
-// tinted by fluid colour. .mcmeta sequence (pingpong) is honoured.
+// Fluid drawer for UI (recipe browser / tank widgets / pipes).
 public static class FluidIconRenderer
 {
 	private const string TexRoot = "GregTechCEuTerraria/Content/Textures";
@@ -30,8 +27,6 @@ public static class FluidIconRenderer
 		if (_byFluid.TryGetValue(fluid.Id, out var hit)) return hit;
 
 		FluidIcon icon;
-		// File presence is the signal (upstream's customStill always disables
-		// colour). NOT gated on IsColorEnabled - the dump doesn't carry it.
 		if (Load($"block/fluids/fluid.{fluid.Id}", tint: false) is { Tex: not null } custom)
 			icon = custom;
 		else
@@ -43,7 +38,6 @@ public static class FluidIconRenderer
 
 	private static FluidIcon ResolveGeneric(FluidType fluid)
 	{
-		// Icon types only ship under the `dull` set.
 		string iconType = fluid.SourceKey?.IconType ?? "liquid";
 		var icon = Load($"block/material_sets/dull/{iconType}", tint: true);
 		if (icon is { Tex: not null }) return icon.Value;
@@ -51,7 +45,6 @@ public static class FluidIconRenderer
 		       ?? new FluidIcon(null, true, Array.Empty<int>(), 1);
 	}
 
-	// Cached per-path (many fluids share the generic texture).
 	private static FluidIcon? Load(string relPath, bool tint)
 	{
 		if (_byPath.TryGetValue(relPath, out var cached))
@@ -89,9 +82,6 @@ public static class FluidIconRenderer
 	private static (int FrameTime, int[]? Frames) ReadAnimation(string modRelPath) =>
 		McMeta.Read(ModContent.GetInstance<GregTechCEuTerraria>(), modRelPath);
 
-	// Draws a fluid still into `dest` (point-clamped). UI callers leave `light`
-	// null; world-tile callers pass Lighting.GetColor. Returns false when no
-	// texture resolved (caller draws a flat fill).
 	public static bool Draw(SpriteBatch sb, FluidType fluid, Rectangle dest, float alpha = 1f, Color? light = null)
 	{
 		var icon = Resolve(fluid);
@@ -107,6 +97,22 @@ public static class FluidIconRenderer
 			baseCol = new Color(baseCol.R * l.R / 255, baseCol.G * l.G / 255, baseCol.B * l.B / 255);
 		Color drawTint = baseCol * alpha;
 		PointClampDraw.Draw(sb, () => sb.Draw(icon.Tex, dest, src, drawTint));
+		return true;
+	}
+
+	public static bool TryGetFrame(FluidType fluid, out Texture2D? tex, out Rectangle src, out Color baseColor)
+	{
+		var icon = Resolve(fluid);
+		if (icon.Tex is null || icon.Sequence.Length == 0)
+		{
+			tex = null; src = default; baseColor = default; return false;
+		}
+		int side     = icon.Tex.Width;
+		int seqIdx   = (int)(Main.GameUpdateCount / (uint)icon.FrameTime % (uint)icon.Sequence.Length);
+		int physical = icon.Sequence[seqIdx];
+		tex       = icon.Tex;
+		src       = new Rectangle(0, physical * side, side, side);
+		baseColor = icon.Tint ? RgbColor(fluid.Color) : Color.White;
 		return true;
 	}
 

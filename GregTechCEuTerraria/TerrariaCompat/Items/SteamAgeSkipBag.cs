@@ -76,6 +76,7 @@ public sealed class SteamAgeSkipBag : ModItem, ITextureWarmUp
 		// Simple pipes - mod-side ModItems (not in the dump), so Mod.Find by name.
 		GiveMachine(src, player, "simple_item_pipe",  100);
 		GiveMachine(src, player, "simple_fluid_pipe", 100);
+		GiveMachine(src, player, "pipe_intersection",  10);
 	}
 
 	private static void Give(IEntitySource src, Player player, string upstreamId, int stack)
