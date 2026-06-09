@@ -122,10 +122,12 @@ public sealed class ItemNetWalker : PipeNetWalker<ItemPipeCell, ItemPipeProperti
 	protected override bool IsValidPipe(
 		ItemPipeCell currentPipe, ItemPipeCell neighbourPipe, (int x, int y) pipePos, IODirection faceToNeighbour)
 	{
-		var thisCover      = ItemPipeLayerSystem.GetSides(pipePos.x, pipePos.y)?
-			.GetCoverAtSide(ToCoverSide(faceToNeighbour));
 		var (nx, ny) = (pipePos.x + OffsetForIODirection(faceToNeighbour).dx,
 		                pipePos.y + OffsetForIODirection(faceToNeighbour).dy);
+		if (!PipeNeighborProbe.IsConnectedPipe(pipePos.x, pipePos.y, nx, ny, PipeKind.Item))
+			return false;
+		var thisCover      = ItemPipeLayerSystem.GetSides(pipePos.x, pipePos.y)?
+			.GetCoverAtSide(ToCoverSide(faceToNeighbour));
 		var neighbourCover = ItemPipeLayerSystem.GetSides(nx, ny)?
 			.GetCoverAtSide(ToCoverSide(IODirectionOpposite(faceToNeighbour)));
 

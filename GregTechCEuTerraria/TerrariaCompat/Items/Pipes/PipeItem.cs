@@ -59,13 +59,13 @@ public sealed class PipeItem : ModItem, ITextureWarmUp
 		Item.maxStack = 999;
 		Item.width = 32;
 		Item.height = 32;
-		Item.useTime = 8;
-		Item.useAnimation = 8;
+		Item.useTime = 2;
+		Item.useAnimation = 6;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.autoReuse = true;
 		Item.consumable = false; // manual stack management
 		Item.rare = ItemRarityID.White;
-		Item.UseSound = SoundID.Item50;
+		Item.UseSound = null;
 	}
 
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -137,20 +137,16 @@ public sealed class PipeItem : ModItem, ITextureWarmUp
 			placed = Pipelike.ItemPipe.ItemPipeLayerHandle.Instance.TryPlace(BuildItemCell(), x, y, player);
 		}
 		if (!placed) return false;
+		Terraria.Audio.SoundEngine.PlaySound(SoundID.Item50, new Vector2(x * 16, y * 16));
 		Item.stack--;
 		return true;
 	}
 
-	// Single source of truth for material -> cell. Used only by UseItem.
 	private Pipelike.ItemPipe.ItemPipeCell BuildItemCell()
 	{
 		var size = Pipelike.PipeSizes.FromWord(_sizeWord);
-		// Falls back to upstream's default `new ItemPipeProperties()` (1, 0.25)
-		// when materials.json doesn't carry the data (Material.ItemPipe TODO);
-		// per-size resistance multiplier still differentiates the routes.
 		var basePriority = _material!.ItemPipe?.Priority     ?? 1;
 		var baseRate     = _material .ItemPipe?.TransferRate ?? 0.25f;
-		// Verbatim ItemPipeType.modifyProperties.
 		var mod = Pipelike.ItemPipe.ItemPipeSizeModifier.For(size, _restrictive);
 		int  priority = (int)((basePriority * mod.ResistanceMultiplier) + 0.5f);
 		float rate    = baseRate * mod.RateMultiplier;
@@ -162,13 +158,10 @@ public sealed class PipeItem : ModItem, ITextureWarmUp
 			TransferRate: rate);
 	}
 
-	// Null when material has no FluidPipe (safety belt - registry filters first).
 	private Pipelike.Fluid.FluidPipeCell? BuildFluidCell()
 	{
 		var props = _material!.FluidPipe;
 		if (props is null) return null;
-		// Verbatim FluidPipeType.modifyProperties - without this every size sat
-		// at the bare material throughput (200 mB/t for naquadah, all sizes).
 		var size = Pipelike.PipeSizes.FromWord(_sizeWord);
 		int throughput = props.Throughput * Pipelike.PipeSizes.FluidPipeCapacityMultiplier(size);
 		int channels   = Pipelike.PipeSizes.FluidPipeChannels(size);
@@ -186,13 +179,9 @@ public sealed class PipeItem : ModItem, ITextureWarmUp
 
 	public override void HoldItem(Player player)
 	{
-		// Bake-on-hold covers RMB-picked-into-hotbar items not yet drawn in a
-		// slot (otherwise the swing reads the raw 16x16 -> magenta placeholder).
 		EnsureTextureBaked();
 		if (Main.myPlayer != player.whoAmI) return;
 		if (_material is null) return;
-		// Hover tooltip + RMB-held cut shared with simple pipes via
-		// PipeHeldItemBehavior so both behave identically.
 		string heldKindLabel = _kind == Pipelike.PipeKind.Fluid
 			? "Fluid Pipe"
 			: (_restrictive ? "Restrictive Item Pipe" : "Item Pipe");
@@ -214,7 +203,6 @@ public sealed class PipeItem : ModItem, ITextureWarmUp
 		_              => "Pipe",
 	};
 
-	// Pipe-end silhouette is white; multiply per-pixel RGB by material colour.
 	private Color Tint()
 	{
 		uint c = _material?.Color ?? 0xFFFFFFu;

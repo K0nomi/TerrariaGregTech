@@ -50,12 +50,12 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 	{
 		Item.maxStack = 999;
 		Item.width = 32; Item.height = 32;
-		Item.useTime = 8; Item.useAnimation = 8;
+		Item.useTime = 2; Item.useAnimation = 6;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.autoReuse = true;
 		Item.consumable = false;
 		Item.rare = ItemRarityID.White;
-		Item.UseSound = SoundID.Item50;
+		Item.UseSound = null;
 	}
 
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -95,6 +95,7 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 		if (!Pipelike.ItemPipe.ItemPipeLayerHandle.Instance.TryPlace(cell, x, y, player))
 			return false;
 
+		Terraria.Audio.SoundEngine.PlaySound(SoundID.Item50, new Microsoft.Xna.Framework.Vector2(x * 16, y * 16));
 		AutoInsertOnAdjacentStorage(Pipelike.PipeKind.Item, x, y);
 
 		Item.stack--;
@@ -105,19 +106,8 @@ public sealed class SimpleItemPipeItem : ModItem, ITextureWarmUp
 	{
 		foreach (var side in CoverSides.All)
 		{
-			var (dx, dy) = side switch
-			{
-				CoverSide.Up    => (0, -1),
-				CoverSide.Down  => (0,  1),
-				CoverSide.Left  => (-1, 0),
-				CoverSide.Right => ( 1, 0),
-				_               => (0, 0),
-			};
-			var arrival = WorldCapability.ToIODirection(side).Opposite();
-			bool hasStorage = layer == Pipelike.PipeKind.Item
-				? WorldCapability.ItemHandlerAt (x + dx, y + dy, arrival) != null
-				: WorldCapability.FluidHandlerAt(x + dx, y + dy, arrival) != null;
-			if (!hasStorage) continue;
+			if (Pipelike.PipeNeighborProbe.ProbeAt(x, y, side, layer)
+				!= Pipelike.SideNeighbourKind.Inventory) continue;
 			SimplePipeSideSetPacket.Send(layer, x, y, side, SimpleSideMode.Insert);
 		}
 	}

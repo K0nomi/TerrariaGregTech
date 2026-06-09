@@ -50,12 +50,12 @@ public sealed class SimpleFluidPipeItem : ModItem, ITextureWarmUp
 	{
 		Item.maxStack = 999;
 		Item.width = 32; Item.height = 32;
-		Item.useTime = 8; Item.useAnimation = 8;
+		Item.useTime = 2; Item.useAnimation = 6;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.autoReuse = true;
 		Item.consumable = false;
 		Item.rare = ItemRarityID.White;
-		Item.UseSound = SoundID.Item50;
+		Item.UseSound = null;
 	}
 
 	private int Throughput => PotinBaseThroughput * PipeSizes.FluidPipeCapacityMultiplier(Size);
@@ -97,6 +97,7 @@ public sealed class SimpleFluidPipeItem : ModItem, ITextureWarmUp
 		if (!Pipelike.Fluid.FluidPipeLayerHandle.Instance.TryPlace(cell, x, y, player))
 			return false;
 
+		Terraria.Audio.SoundEngine.PlaySound(SoundID.Item50, new Microsoft.Xna.Framework.Vector2(x * 16, y * 16));
 		SimpleItemPipeItem.AutoInsertOnAdjacentStorage(Pipelike.PipeKind.Fluid, x, y);
 
 		Item.stack--;

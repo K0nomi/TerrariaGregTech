@@ -32,12 +32,12 @@ public sealed class LaserPipeItem : ModItem, ITextureWarmUp
 	{
 		Item.maxStack = 999;
 		Item.width = 32; Item.height = 32;
-		Item.useTime = 8; Item.useAnimation = 8;
+		Item.useTime = 2; Item.useAnimation = 6;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.autoReuse = true;
 		Item.consumable = false;
 		Item.rare = ItemRarityID.LightPurple;
-		Item.UseSound = SoundID.Item50;
+		Item.UseSound = null;
 	}
 
 	public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -60,6 +60,7 @@ public sealed class LaserPipeItem : ModItem, ITextureWarmUp
 
 		if (!LaserPipeLayerHandle.Instance.TryPlace(x, y, player)) return false;
 
+		Terraria.Audio.SoundEngine.PlaySound(SoundID.Item50, new Microsoft.Xna.Framework.Vector2(x * 16, y * 16));
 		Item.stack--;
 		return true;
 	}
